@@ -1,26 +1,21 @@
 <template>
   <div class="date-picker">
     <div class="date-header">
-      <div class="arrow" @touchend="goleft">
+      <div class="icon-container" style="width: 1rem;" @click="lastMonth">
         <svg class="icon" aria-hidden="false">
           <use xlink:href="#icon-zuoyoujiantou"></use>
         </svg>
       </div>
-      <div class="current-date" @click="openPicker">
-        <div class="date">{{dateObj.date}}</div>
-        <div class="day">{{dateObj.day}}</div>
+      <div class="date">
+        {{dateObj.year}}年{{dateObj.month}}月
       </div>
-      <div class="arrow arrow-right" @touchend="goright">
+      <div class="icon-container" style="width: 1rem; transform: rotate(180deg)" @click="nextMonth">
         <svg class="icon" aria-hidden="false">
           <use xlink:href="#icon-zuoyoujiantou"></use>
         </svg>
       </div>
     </div>
-    <div class="date-content" v-show="showPicker">
-      <div class="date-info flex-between">
-        <div class="year-month">{{dateObj.year}}年{{dateObj.month}}月</div>
-        <div class="day">{{dateObj.day}}</div>
-      </div>
+    <div class="date-content">
       <ul class="date-days flex-between">
         <li class="day-item">一</li>
         <li class="day-item">二</li>
@@ -30,13 +25,8 @@
         <li class="day-item">六</li>
         <li class="day-item">日</li>
       </ul>
-      <div class="day-list" v-if="isAndroid">
-        <div class="list-item" v-for="(item,index) in days" :data-index="index" @click="pickDate(index)">
-          <div :class="{active: (item === currentDate.day && dateObj.year === currentDate.year && dateObj.month === currentDate.month )}">{{item}}</div>
-        </div>
-      </div>
-      <div class="day-list" v-else>
-        <div class="list-item" v-for="(item,index) in days" :data-index="index" @touchend="pickDate(index)">
+      <div class="day-list">
+        <div class="list-item" v-for="(item,index) in days" @touchend="pickDate(index)">
           <div :class="{active: (item === currentDate.day && dateObj.year === currentDate.year && dateObj.month === currentDate.month )}">{{item}}</div>
         </div>
       </div>
@@ -81,68 +71,40 @@
         days: [],
         currentDate:{},
         showPicker: false,
-        isAndroid: navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1, //android终端
       }
     },
     methods:{
-      /*前一天*/
-      goleft(){
-        this.closePicker();
-        if(((new Date().getTime()-this.ms)/(24*60*60*1000))<30){
-          this.ms -= 24*60*60*1000;
-          sessionStorage.setItem("ms",this.ms);
-          this.currentDate = {
-            year: new Date(this.ms).getFullYear(),
-            month: new Date(this.ms).getMonth() + 1,
-            day: new Date(this.ms).getDate()
-          };
-          this.dateObj = DateFormat(this.ms);
-          this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
-          this.$emit("childEvent",this.ms,false);
+      /*前一个月*/
+      lastMonth(){
+        if(this.dateObj.month>1){
+          this.dateObj.month --;
         }else{
-          this.$alert("最多可查看30天的数据");
+          this.dateObj.month = 12;
+          this.dateObj.year --;
         }
-      },
-      /*后一天*/
-      goright(){
-        this.closePicker();
-        if((this.ms - new Date().getTime())/(24*60*60*1000) < 6){
-          this.ms += 24*60*60*1000;
-          sessionStorage.setItem("ms",this.ms);
-          this.currentDate = {
-            year: new Date(this.ms).getFullYear(),
-            month: new Date(this.ms).getMonth() + 1,
-            day: new Date(this.ms).getDate()
-          };
-          this.dateObj = DateFormat(this.ms);
-          this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
-          this.$emit("childEvent",this.ms,false);
-        }else{
-          this.$alert("最多可查看一周的数据");
-        }
-      },
-      /*展开日期选择*/
-      openPicker(){
         this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
-        this.showPicker = !this.showPicker;
-        this.$emit("childEvent",0,this.showPicker);
       },
-      /*关闭日期选择*/
-      closePicker(){
-        this.showPicker = false;
+      /*后一个月*/
+      nextMonth(){
+        if(this.dateObj.month<12){
+          this.dateObj.month ++;
+        }else{
+          this.dateObj.month = 1;
+          this.dateObj.year ++;
+        }
+        this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
       },
       /*选择日期*/
       pickDate(index){
         if(this.days[index]){
-          this.closePicker();
           let month = parseInt(this.dateObj.month)>9?this.dateObj.month:"0"+this.dateObj.month;
           let day = parseInt(this.days[index])>9?this.days[index]:"0"+this.days[index];
           let dateString = this.dateObj.year+""+month+""+day;
           let ms = Date.parse(dateString.substr(4,2)+"/"+dateString.substr(6,2)+"/"+dateString.substr(0,4));
           this.ms = ms;
           this.dateObj = DateFormat(ms);
-          this.$emit("childEvent",ms,false);
           let date = new Date(ms);
+          this.$emit("childEvent",ms);
           sessionStorage.setItem("ms",ms);
           this.currentDate = {
             year: date.getFullYear(),
@@ -150,9 +112,9 @@
             day: date.getDate()
           };
         }
-      },
+      }
     },
-    created(){
+    mounted(){
       if(sessionStorage.getItem("ms")){
         let ms = parseInt(sessionStorage.getItem("ms"));
         this.dateObj = DateFormat(ms);
@@ -162,6 +124,7 @@
             month: new Date(ms).getMonth() + 1,
             day: new Date(ms).getDate()
         };
+        this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
       }else{
         this.dateObj = DateFormat(new Date());
         this.ms = new Date().getTime();
@@ -170,53 +133,33 @@
           month: new Date().getMonth() + 1,
           day: new Date().getDate()
         };
+        this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
       }
-      this.$emit("childEvent",this.ms,false);
-    },
+    }
   }
 </script>
 
 <style lang="stylus" scoped>
   .date-picker{
-    padding-bottom: 0.5rem;
+    /*padding-bottom: 0.5rem;*/
   }
   .date-header{
     display flex;
     justify-content space-around;
     align-items center;
-    width 3rem;
-    height 0.87rem;
-    margin 0 auto;
+    height 0.45rem;
+    line-height 0.45rem;
   }
-  .current-date{
-    display flex;
-    justify-content center;
-    align-items center;
-    font-size 0.17rem;
-    color white;
-    .date{
-      margin-right 0.36rem;
-    }
+  .date{
+    text-align center;
   }
-  .icon{
-    width: 0.21rem;
-    height: 0.21rem;
-    color: rgba(255,255,255,0.5);
-  }
-  .arrow{
+  .icon-container{
     z-index 9;
     cursor pointer;
-  }
-  .arrow-left{
-    margin-right 0.46rem;
-  }
-  .arrow-right{
-    transform: rotate(180deg);
+    text-align center;
   }
   .date-content{
-    position: fixed;
-    top: 1.11rem;
-    left: 0;
+    width: 100%;
     height: 100%;
     background: rgba(44,44,44,0.3);
   }
@@ -259,6 +202,7 @@
     box-shadow 0 5px 10px rgba(0,0,0,0.15);
   }
   .list-item{
+    cursor pointer;
     z-index 9;
     width: 14.28%;
     height: 0.34rem;

@@ -49,7 +49,7 @@
             <span>{{newsData_item.resTopNewsCategoryName}}</span>
             <span>&nbsp&nbsp&nbsp&nbsp{{newsData_item.resCreateDate | home_time_format}}</span>
             <span>&nbsp&nbsp&nbsp&nbsp <svg style="font-size: 0.15rem" class="icon" aria-hidden="false">
-              <use xlink:href="#icon-read"></use>
+              <use xlink:href="#icon-yuedu"></use>
             </svg>：{{newsData_item.clicks}}</span>
           </li>
         </ul>
@@ -62,7 +62,7 @@
               <span>{{newsData_item.resTopNewsCategoryName}}</span>
               <span>&nbsp {{newsData_item.resCreateDate | home_time_format}}</span>
               <span>&nbsp <svg style="font-size: 0.15rem" class="icon" aria-hidden="false">
-              <use xlink:href="#icon-read"></use>
+              <use xlink:href="#icon-yuedu"></use>
             </svg>：{{newsData_item.clicks}}</span>
             </div>
           </div>
@@ -146,7 +146,7 @@
         }
       },
       go_news(item){
-        let title = Util.Title_format(item.resTitle)
+        let title = Util.Title_format(item.resTitle);
         window.location.href = `epipe://?&mark=newsdetail&title=${title}&_id=${item.resId}TTTTTT`
       },
       transitionend (current) {

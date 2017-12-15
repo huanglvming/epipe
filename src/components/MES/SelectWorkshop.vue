@@ -1,6 +1,6 @@
 <template>
   <div class="select-workshop">
-    <div class="header">
+    <div class="header" :style="{background: color}">
       <div class="svg" @click="emitEvent(1)">
         <svg class="icon icon-back" aria-hidden="false">
           <use xlink:href="#icon-zuoyoujiantou"></use>
@@ -9,7 +9,7 @@
       选择车间
     </div>
     <div class="choice-items">
-      <div class="choice-item" v-for="(item,index) in choice" :key="index" @click="select(index)">{{item}}</div>
+      <div class="choice-item" v-for="(item,index) in choice" :key="index" @click="select(index)">{{item.workshopName}}</div>
     </div>
   </div>
 </template>
@@ -18,10 +18,14 @@
   import {mapState, mapMutations} from 'vuex';
   export default{
     name: 'SelectWorkshop',
+    props: ["color"],
     data(){
       return{
-        choice:["所有车间","第一车间","第二车间","第三车间"],
+        choice:[],
       }
+    },
+    created(){
+      this.getWorkshop();
     },
     methods:{
       ...mapMutations([
@@ -33,6 +37,15 @@
       },
       emitEvent(type){
         this.$emit('childevent',type);
+      },
+      /*获取车间*/
+      getWorkshop(){
+        this.$mes.get("/common/workshop","").then(res =>{
+          console.log("获取车间",res);
+          if(res.h.code === 200){
+            this.choice = res.b.list;
+          }
+        });
       },
     }
   }

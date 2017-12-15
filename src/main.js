@@ -23,6 +23,16 @@ import axios from "axios";
 import VueAxios from "vue-axios";
 Vue.use(VueAxios, axios);
 
+//引入echarts以及封装的echarts方法库
+// import echarts from "echarts";
+import echartsLib from "./js/echartsLib";
+// Vue.prototype.$echarts = echarts;
+Vue.prototype.echartsLib = echartsLib;
+
+//引入mes封装方法
+import MES from "./js/MES";
+Vue.prototype.$mes = MES;
+
 //  提示框
 import {Alert, Confirm, Prompt, Toast} from "wc-messagebox";
 import "wc-messagebox/style.css";

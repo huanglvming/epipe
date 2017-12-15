@@ -17,20 +17,18 @@
       </div>
     </div>
     <div v-show="is_show">
-      <div v-show="home" class="head_title">
-        {{detail.title}}
+      <div v-show="home" class="head_title" v-html="detail.title">
+        <!--{{detail.title | escape2Html}}-->
       </div>
       <ul v-show="home" class="head_title_ul">
-        <li v-if="detail.author_name">作者：<span>{{detail.author_name}}</span></li>
-        <li v-if="detail.source_of_name">来源：<span>{{detail.source_of_name}}</span></li>
+        <li v-if="detail.authorName">作者：<span>{{detail.authorName}}</span></li>
+        <li v-if="detail.sourceOfName">来源：<span>{{detail.sourceOfName}}</span></li>
         <li v-if="detail.keywords">TAG：<span style="color: #0fc37c">{{detail.keywords}}</span></li>
         <li v-if="detail.create_date">
-          发布时间：<span>{{detail.create_date | home_time_format}}</span>
+          发布时间：<span>{{detail.createDate | home_time_format}}</span>
         </li>
       </ul>
-      <div class="detail_content" v-html="content">
-
-      </div>
+      <div class="detail_content" v-html="content"></div>
     </div>
 
   </section>
@@ -59,7 +57,7 @@
           console.log(data.data)
           if (data.data.b) {
             that.is_show = true;
-            console.log(data.data.b)
+            console.log("detail",data.data.b);
             that.detail = data.data.b
             that.content =data.data.b.contents
           }

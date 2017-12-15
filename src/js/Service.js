@@ -2,9 +2,8 @@
  * Created by lenovo on 2017/6/12.
  */
 const Service = {
-  // host: "http://192.168.3.166:8181/api",
-  // host: "http://3msapi.epipe.cn/api",
-  host: "http://192.168.3.166:8280/member/v1",
+  host: "http://3msapi.epipe.cn/api",
+  // host: window.location.href.indexOf("app.epipe.cn")>0 ? "http://3msapi.epipe.cn/api" : "http://192.168.3.166:8280/member/v1",
   newHomeNews: "/topnews/getWaterfallPagedList",//新版首页新闻
   detailNewHomeNews: "/resourceMain/getDetails/",//新版首页新闻详情
   content_show: "/content/show/index", //首页广告图
@@ -32,6 +31,15 @@ const Service = {
   department: "/organ/office/select",  //组织部门查询
   userInfo: "/user/info",    //用户信息查询
   application: "/organ/user/apply/organ",  //申请加入组织
+  daily: "/check/report/daily",  //企业日报 考勤
+  earlylist: "/check/report/daily/rank",  //早到榜
+  latelist: "/check/report/late/list",  //迟到榜
+  leavelist: "/check/report/earlySign/list",  //早退榜
+  overtimelist: "/check/report/overtime/list",  //早退榜
+  noSign: "/check/report/nosign/list",  //未打卡
+  slogan: "/organ/work/setting",  //工作台信息设置
+  like: "/check/report/daily/rank/zan",  //点赞
+  message: "/company/message/tolist",  //消息助手
   queryString: function (params, postFlag) {
     let paramUrl = "";
     for (let key in params) {

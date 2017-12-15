@@ -1,6 +1,6 @@
 <template>
   <div class="select-product">
-    <div class="header">
+    <div class="header" :style="{background: color}">
       <div class="svg" @click="emitEvent(3)">
         <svg class="icon icon-back" aria-hidden="false">
           <use xlink:href="#icon-zuoyoujiantou"></use>
@@ -9,7 +9,7 @@
       选择产品
     </div>
     <div class="choice-items">
-      <div class="choice-item" v-for="(item,index) in choice" :key="index" @click="select(index)">{{item}}</div>
+      <div class="choice-item" v-for="(item,index) in choice" :key="index" @click="select(index)">{{item.partName}}</div>
     </div>
   </div>
 </template>
@@ -17,10 +17,20 @@
 <script>
   export default{
     name: 'SelectProduct',
+    props: ["color"],
     data(){
       return{
-        choice:["所有产品","第一产品","第二产品","第三产品"],
+        choice:[{compName:"所有产品"}],
       }
+    },
+    created(){
+      let vm = this;
+      eventBus.$on('getProduct',id =>{
+        vm.getData(id);
+      });
+    },
+    beforeDestroy() {
+      eventBus.$off('getProduct');
     },
     methods:{
       emitEvent(type){
@@ -29,6 +39,18 @@
       select(index){
         this.$emit('childselect',this.choice[index]);
         this.$emit('childevent',3);
+      },
+      /*获取产品*/
+      getData(id){
+        this.$mes.get("/common/part",{
+          "lineId":id
+        }).then(res =>{
+          console.log("获取产品",res);
+          if(res.h.code === 200){
+            this.choice = res.b.list;
+            this.choice.unshift({partName:"所有产品"});
+          }
+        });
       },
     }
   }
