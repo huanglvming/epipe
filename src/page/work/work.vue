@@ -104,6 +104,9 @@
     color: #666;
   }
   .broadcast-message{
+    white-space nowrap;
+    overflow hidden;
+    text-overflow ellipsis;
     font-size: 0.16rem;
     color: #333;
   }
@@ -157,7 +160,6 @@
       </div>
     </div>
     <div class="banner-wrapper">
-      <!--<img style="min-height:1.36rem" @click="go_newsdetail(banner)" :src=banner.imgUrl class="banner_img">-->
       <div class="banner-h1">{{slogans.firstLine}}</div>
       <div class="banner-h2">{{slogans.secondLine}}</div>
       <div class="banner-h3">{{dateString}}</div>
@@ -178,25 +180,25 @@
           </div>
         </div>
       </div>
-      <div class="tab_work_con">
-        <ul class="tab_work_2con">
-          <li></li>
-          <li>智能报表</li>
-        </ul>
-        <ul class="tab_work_3con">
-          <li @click="go_daily">
-            <div>
-              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
-                <use xlink:href="#icon-qiyeribao"></use>
-              </svg>
-            </div>
-            <div>企业日报</div>
-          </li>
-          <li></li>
-          <li></li>
-          <li></li>
-        </ul>
-      </div>
+      <!--<div class="tab_work_con">-->
+        <!--<ul class="tab_work_2con">-->
+          <!--<li></li>-->
+          <!--<li>智能报表</li>-->
+        <!--</ul>-->
+        <!--<ul class="tab_work_3con">-->
+          <!--<li @click="go_daily">-->
+            <!--<div>-->
+              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
+                <!--<use xlink:href="#icon-qiyeribao"></use>-->
+              <!--</svg>-->
+            <!--</div>-->
+            <!--<div>企业日报</div>-->
+          <!--</li>-->
+          <!--<li></li>-->
+          <!--<li></li>-->
+          <!--<li></li>-->
+        <!--</ul>-->
+      <!--</div>-->
       <div class="tab_work_con">
         <ul class="tab_work_2con">
           <li></li>
@@ -234,6 +236,14 @@
               </svg>
             </div>
             <div>外勤</div>
+          </li>
+          <li @click="go_daily">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-qiyeribao"></use>
+              </svg>
+            </div>
+            <div>企业日报</div>
           </li>
         </ul>
       </div>
@@ -277,70 +287,70 @@
           </li>
         </ul>
       </div>
-      <!--<div class="tab_work_con">-->
-        <!--<ul class="tab_work_2con">-->
-          <!--<li></li>-->
-          <!--<li>移动制造</li>-->
-        <!--</ul>-->
-        <!--<ul class="tab_work_3con">-->
-          <!--<li @click="go_output">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-shengchanguanli"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div style="font-size:0.14rem;margin-top: 0.05rem">生产管理</div>-->
-          <!--</li>-->
-          <!--<li @click="go_materierl">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-wuliaoguanli"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div style="font-size:0.14rem;margin-top: 0.05rem">物料管理</div>-->
-          <!--</li>-->
-          <!--<li @click="go_machine">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-shebeiguanli"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div style="font-size:0.14rem;margin-top: 0.05rem">设备管理</div>-->
-          <!--</li>-->
-          <!--<li @click="go_quality">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-zhiliangguanli"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div style="font-size:0.14rem;margin-top: 0.05rem">质量管理</div>-->
-          <!--</li>-->
-          <!--<li @click="go_energy">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-nengyuanguanli"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div style="font-size:0.14rem;margin-top: 0.05rem">能源管理</div>-->
-          <!--</li>-->
-          <!--<li @click="go_energyMonitor">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-nengyuanjiankong"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div style="font-size:0.14rem;margin-top: 0.05rem">能源监控</div>-->
-          <!--</li>-->
-          <!--<li @click="go_trendMonitor">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-qushijiankong"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div style="font-size:0.14rem;margin-top: 0.05rem">趋势监控</div>-->
-          <!--</li>-->
-        <!--</ul>-->
-      <!--</div>-->
+      <div class="tab_work_con" v-show="showMES">
+        <ul class="tab_work_2con">
+          <li></li>
+          <li>移动制造</li>
+        </ul>
+        <ul class="tab_work_3con">
+          <li @click="go_output">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-shengchanguanli"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">生产管理</div>
+          </li>
+          <li @click="go_materierl">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-wuliaoguanli"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">物料管理</div>
+          </li>
+          <li @click="go_machine">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-shebeiguanli"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">设备管理</div>
+          </li>
+          <li @click="go_quality">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-zhiliangguanli"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">质量管理</div>
+          </li>
+          <li @click="go_energy">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-nengyuanguanli"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">能源管理</div>
+          </li>
+          <li @click="go_energyMonitor">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-nengyuanjiankong"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">能源监控</div>
+          </li>
+          <li @click="go_trendMonitor">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-qushijiankong"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">趋势监控</div>
+          </li>
+        </ul>
+      </div>
     </div>
   </section>
 </template>
@@ -351,6 +361,13 @@
     var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"','ldquo':'"','rdquo':'"','mdash':'_'};
     return str.replace(/&(lt|gt|nbsp|amp|quot|ldquo|rdquo|mdash);/ig,function(all,t){
       return arrEntities[t]});
+  }
+  function getCookie(name) {
+    var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
+    if (arr = document.cookie.match(reg))
+      return unescape(arr[2]);
+    else
+      return null;
   }
   export default {
     data () {
@@ -365,6 +382,7 @@
         dateString: date.getFullYear()+"-"+(date.getMonth()+1)+"-"+date.getDate()+"  "+days[date.getDay()],
         interval: null,
         logo: require("../../assets/no_wifi.png"),
+        showMES: false,
       }
     },
     created(){
@@ -475,6 +493,29 @@
           this.$toast(err.data.h.msg);
         });
       },
+      /*获取用户信息*/
+      getUserInfo(){
+        const userToken = getCookie("auth_token") ? getCookie("auth_token") : "bc0b43b3-c9b2-49a5-b1c9-72c029580437";
+        this.axios.get('/user/info/by/token',{params: {token: userToken}}).then(res =>{
+          console.log("用户信息",res);
+          if(res.data.h.code === 200){
+            this.getFactory(res.data.b.centerGroupId);
+          }
+        })
+      },
+      /*获取工厂ID*/
+      getFactory(id){
+        this.$mes.get("/user/factoryId",{
+          companyId: id
+        }).then(res =>{
+          console.log("工厂信息",res);
+          if(res.b.factoryId){
+            this.showMES = true;
+          }else{
+            this.showMES = false;
+          }
+        })
+      },
       /*获取banner图片*/
       getBanner(){
         let that = this;
@@ -553,6 +594,7 @@
       },
     },
     mounted(){
+      this.getUserInfo();
       this.organization();
       this.slogan();
       this.message();

@@ -1,7 +1,7 @@
 <template>
   <div class="output-daily">
     <top-header bgcolor="#609EF7" title="良率日报" native="native"></top-header>
-    <selection-bar ref="selection" :msg="dailydata" color="#609ef7" @childEvent="showContent" @emitSearch="search"></selection-bar>
+    <selection-bar ref="selection" :msg="dailydata" color="#609ef7" @childEvent="showContent" @emitGetData="getData" @emitSearch="search"></selection-bar>
     <div class="content-wrapper" v-show="content">
       <div class="current-selections" v-show="workshop || workline || product || date">
         <div class="current-selections-content">
@@ -131,10 +131,10 @@
         this.workline = obj.workline?obj.workline:"所有产线";
         this.product = obj.product?obj.product:"所有产品";
         this.date = obj.date?obj.date:new Date().getFullYear()+"-"+(new Date().getMonth()+1)+"-"+new Date().getDate();
-        this.result = true;
-        this.no_selection = false;
-        console.log("数据更新",obj);
-        this.getData(obj);
+//        this.result = true;
+//        this.no_selection = false;
+//        console.log("数据更新",obj);
+//        this.getData(obj);
       },
       close(){
         let $ref = this.$refs.selection.store;
@@ -144,7 +144,6 @@
       },
       /*echarts图表*/
       echarts(target,param){
-//        let el = this.$echarts.init(target);
         let el = echarts.init(target);
         this.echartsLib.Bars(el,param);
       },

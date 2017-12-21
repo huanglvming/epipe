@@ -57,7 +57,7 @@
           </div>
         </div>
       </div>
-      <div class="selections-btn" :style="{color: color,border: '1px solid'+color}">确定</div>
+      <div class="selections-btn" :class="{'selections-btn-active':store.workshop&&store.workline&&store.product&&store.date}" @click="handleConfirm">确定</div>
     </div>
     <div class="mask" v-show="mask" @click="closeMask()"></div>
     <select-workshop :color="color" v-show="module.workshop" @childevent="closeCondition" @childselect="workshop"></select-workshop>
@@ -95,8 +95,11 @@
         },
         store:{
           workshop: "",
+          workshop_id: "",
           workline: "",
+          workline_id: "",
           product: "",
+          product_id: "",
           date: ""
         },
         workno: "",
@@ -157,11 +160,11 @@
             this.module.date = true;
             break;
         }
-        this.mask = this.more = false;
+//        this.mask = this.more = false;
       },
       /*取消选择层*/
       closeCondition(id){
-        this.$emit("childEvent",true);
+//        this.$emit("childEvent",true);
         switch (id){
           case 1:
             this.module.workshop = false;
@@ -180,8 +183,9 @@
       /*选择车间*/
       workshop(val){
         console.log("车间对象",val);
-        this.$emit("childEvent",true);
+//        this.$emit("childEvent",true);
         this.store.workshop = val.workshopName;
+        this.store.workshop_id = val.workShopId;
         this.msg.workshop = val.workshopName;
         this.msg.workshop_id = val.workShopId;
         eventBus.$emit('getWorkline', val.workShopId);
@@ -190,23 +194,33 @@
       workline(val){
         console.log("选择产线",val);
         this.store.workline = val.lineName;
+        this.store.workline_id = val.lineId;
         this.msg.workline = val.lineName;
         this.msg.workline_id = val.lineId;
-        this.$emit("childEvent",true);
+//        this.$emit("childEvent",true);
         eventBus.$emit('getProduct', val.lineId);
       },
       /*选择产品*/
       product(val){
+        console.log("选择产品",val);
         this.store.product = val.partName;
+        this.store.product_id = val.partId;
         this.msg.product = val.partName;
         this.msg.product_id = val.partId;
-        this.$emit("childEvent",true);
+//        this.$emit("childEvent",true);
       },
       /*选择日期*/
       date(val){
         console.log("选择日期",val);
         this.store.date = val;
         this.msg.date = val;
+      },
+      /*确定*/
+      handleConfirm(){
+        if(this.store.workshop && this.store.workline && this.store.product && this.store.date){
+          this.$emit("emitGetData",this.store);
+          this.showMore();
+        }
       },
     },
   }
@@ -314,9 +328,13 @@
     margin-top: 0.2rem;
     text-align center;
     line-height: 0.44rem;
+    color: #ddd;
+    border: 1px solid #ebebeb;
+    border-radius 0.02rem;
+  }
+  .selections-btn-active{
     color: #499844;
     border: 1px solid #499844;
-    border-radius 0.02rem;
   }
   .arrow-down{
     width:0.08rem;

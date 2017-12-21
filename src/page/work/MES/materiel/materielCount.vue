@@ -122,6 +122,10 @@
     },
     methods:{
       tabSelection(index){
+        if(index === 3 && !this.selection.workshop){
+          this.$toast("请选择车间");
+          return;
+        }
         this.tabItem = index;
         this.showContent = false;
       },
@@ -247,7 +251,6 @@
       },
       /*绘图*/
       echarts(target,data){
-//        let el = this.$echarts.init(target);
         let el = echarts.init(target);
         this.echartsLib.MutipleBars(el,data);
       }

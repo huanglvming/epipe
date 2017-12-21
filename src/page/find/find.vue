@@ -45,9 +45,9 @@
       </ul>
     </div>
     <div @click="go_newsdetail(supplyData)">
-      <ul class="tender_div1">
-        <li>{{supplyData.title}}</li>
-        <li class="simple-ellipsis">{{supplyData.content}}</li>
+      <ul class="tender_div1" v-for="(item,index) in supplyData" :key="index">
+        <li v-html="item.title" class="item-title"></li>
+        <li class="simple-ellipsis" v-html="item.content"></li>
       </ul>
     </div>
 
@@ -68,9 +68,9 @@
       </ul>
     </div>
     <div @click="go_newsdetail(tenderData)">
-      <ul class="tender_div1">
-        <li>{{tenderData.title}}</li>
-        <li class="simple-ellipsis">{{tenderData.content}}</li>
+      <ul class="tender_div1" v-for="(item,index) in tenderData" :key="index">
+        <li v-html="item.title" class="item-title"></li>
+        <li class="simple-ellipsis" v-html="item.content"></li>
       </ul>
     </div>
   </section>
@@ -85,8 +85,8 @@
       return {
         banner: '',
         exhibitionData: {},
-        supplyData: {},
-        tenderData: {},
+        supplyData: [],
+        tenderData: [],
         loading: false
       }
     },
@@ -117,32 +117,35 @@
       }
 
       function supply() { //供需
-        return that.axios.get(that.Service.content_headline + that.Service.queryString({type: 4, pageSize: 1}));
+        return that.axios.get(that.Service.content_headline + that.Service.queryString({type: 4, pageSize: 3}));
       }
 
       function tender() { //招投标
-        return that.axios.get(that.Service.content_headline + that.Service.queryString({type: 2, pageSize: 1}));
+        return that.axios.get(that.Service.content_headline + that.Service.queryString({type: 2, pageSize: 3}));
       }
     /*
     * 一次性的把展会 供需 招投标
     * */
       that.axios.all([getcontent_show(), exhibition(), supply(), tender()]).then(that.axios.spread(function (banner, exhibitionData, supplyData, tenderData) {
-          if (banner.data.b) {
+        console.log("banner:",banner);
+        console.log("exhibitionData:",exhibitionData);
+        console.log("supplyData:",supplyData);
+        console.log("tenderData:",tenderData);
+        if (banner.data.b) {
             banner.data.b[0].imgUrl=banner.data.b[0].imgUrl+'?imageslim&imageView2/1/w/750/h/320'
             that.banner = banner.data.b[0]
-            window.localStorage.find_banner = JSON.stringify(banner.data.b[0])
+            window.localStorage.find_banner = JSON.stringify(banner.data.b[0]);
           }
           if (exhibitionData.data.b) {
-            that.exhibitionData = exhibitionData.data.b.data[0]
-            console.log(that.exhibitionData)
+            that.exhibitionData = exhibitionData.data.b.data[0];
           }
           if (supplyData.data.b) {
             supplyData.data.b.data[0].content = Util.HTMLDecode(supplyData.data.b.data[0].content).replace(/<[^>]+>/g, "").replace(/\s/g, "")
-            that.supplyData = supplyData.data.b.data[0]
+            that.supplyData = supplyData.data.b.data
           }
           if (tenderData.data.b) {
             tenderData.data.b.data[0].content = Util.HTMLDecode(tenderData.data.b.data[0].content).replace(/<[^>]+>/g, "").replace(/\s/g, "")
-            that.tenderData = tenderData.data.b.data[0]
+            that.tenderData = tenderData.data.b.data;
           }
         }
       )).catch(function (error) {
@@ -186,7 +189,11 @@
     overflow: hidden;
     margin-top -0.005rem
   }
-
+  .item-title{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
   .exhit_div div {
     height: 0.45rem;
     width: 100%;
@@ -220,7 +227,9 @@
   .tender_div1:active {
     background-color $opacity_bgcolor
   }
-
+  .tender_div1:not(:last-child){
+    border-bottom: 1px solid #dedede;
+  }
   .find_con_div > ul {
     display: flex;
     flex-direction: row;

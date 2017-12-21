@@ -141,7 +141,7 @@
         result: true,
         date: "日期",
         workshop_arr:[],
-        workline_arr:["所有产线","第一产线","第二产线","第三产线"],
+        workline_arr:[],
         dateObj: {},
         currentDate:{},
         workdateType: 0,
@@ -177,6 +177,9 @@
         this.mask = true;
         this.showContent = false;
         this.tabItem = num;
+        if(num === 2 && this.selection.workshop == '车间'){
+          this.$toast("请选择车间");
+        }
         if(num === 3){
           this.workdateSelect = true;
         }
@@ -394,7 +397,6 @@
       },
       /*绘图*/
       echarts(target,data){
-//        let el = this.$echarts.init(target);
         let el = echarts.init(target);
         this.echartsLib.Bars(el,data);
       }

@@ -149,6 +149,14 @@
     },
     methods:{
       tabSelection(index){
+        if(index === 2 && !this.selection.workshop){
+          this.$toast("请选择车间");
+          return;
+        }
+        if(index === 3 && !this.selection.workline){
+          this.$toast("请选择产线");
+          return;
+        }
         this.contentType = index;
         this.showContent = false;
       },
@@ -280,12 +288,10 @@
       echarts(params,type){
         var target  = document.querySelector(".result");
         if(type === 1){
-//          let el = this.$echarts.init(target);
           let el = echarts.init(target);
           el.clear();
           this.echartsLib.MutipleBars(el,params);
         }else{
-//          let el = this.$echarts.init(target);
           let el = echarts.init(target);
           el.clear();
           this.echartsLib.compare(el,params);

@@ -107,6 +107,10 @@
     methods:{
       /*选项卡切换*/
       tabSelection(index){
+        if(index === 2 && !this.selection.workshop){
+          this.$toast("请选择车间");
+          return;
+        }
         this.contentType = index;
         this.showContent = false;
       },

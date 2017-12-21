@@ -2,14 +2,21 @@
   <!--<vue-pull-refresh :on-refresh="onRefresh">-->
   <div>
     <section class="home">
-      <wc-swiper style="min-height: 1.59rem" @transitionend="transitionend">
-        <wc-slide v-for="(banner,value) in banners" :key="value">
-          <div>
-            <img style="width: 100%;display: block;" @click="go_newsdetail(banner)" :src=banner.imgUrl>
-          </div>
-        </wc-slide>
-        <pagination :dots="banners.length" :active="currentSlide" slot="pagination"/>
-      </wc-swiper>
+      <!--<wc-swiper style="min-height: 1.59rem" @transitionend="transitionend">-->
+        <!--<wc-slide v-for="(banner,value) in banners" :key="value">-->
+          <!--<div>-->
+            <!--<img style="width: 100%;display: block;" @click="go_newsdetail(banner)" :src=banner.imgUrl>-->
+          <!--</div>-->
+        <!--</wc-slide>-->
+        <!--<pagination :dots="banners.length" :active="currentSlide" slot="pagination"/>-->
+      <!--</wc-swiper>-->
+      <div class="banner-wrapper">
+        <carousel-3d :autoplay="true" :autoplayTimeout="5000" :autoplayHoverPause="true" :width="config.width" :height="config.height" :border="0" :perspective="0">
+          <slide v-for="(banner,index) in banners" :key="index" :index="index">
+            <img @click="go_newsdetail(banner)" :src=banner.imgUrl>
+          </slide>
+        </carousel-3d>
+      </div>
       <ul class="home_nav_top">
         <li @click="go_exhibition">
           <div style="background: -webkit-linear-gradient(top, #51cdfc 0%,#27b1eb 100%);">
@@ -84,17 +91,24 @@
   import Util from '../../js/Util.js'
   import InfiniteLoading from 'vue-infinite-loading';
   import Pagination from '../../components/Pagination.vue';
+  import { Carousel3d, Slide } from 'vue-carousel-3d';
   export default {
     data () {
       return {
         banners: [1, 2],
         newsData: [], //新闻列表
         currentSlide: 0,
+        config:{
+          width: 350,
+          height: 180
+        },
       }
     },
     components: {
       InfiniteLoading,
       Pagination,
+      Carousel3d,
+      Slide
     },
     methods: {
       onInfinite(){
@@ -160,6 +174,10 @@
       if (window.localStorage.newsData) {
         this.newsData = JSON.parse(window.localStorage.newsData)
       }
+      /*根据屏幕分辨率设置轮播图大小*/
+      const deviceWidth = document.body.clientWidth;
+      this.config.width = (deviceWidth/375)*350;
+      this.config.height = (deviceWidth/375)*180;
     },
     mounted() {
       let that = this;
@@ -193,7 +211,7 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="stylus">
+<style lang="stylus" scoped>
   @import "../../style/variable.styl";
   .wc-swiper-container {
     height auto
@@ -208,6 +226,17 @@
       border none
       display block
 
+  .banner-wrapper{
+    overflow hidden;
+    background: white;
+  }
+  .carousel-3d-container{
+    margin 0;
+  }
+  .carousel-3d-slide img{
+    display block;
+    height: 100%;
+  }
   .home_title_con7 {
     color: #999;
     font-size: 0.12rem;

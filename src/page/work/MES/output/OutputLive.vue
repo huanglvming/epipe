@@ -110,7 +110,7 @@
         result: true,
         date: "日期",
         workshop_arr:[],
-        workline_arr:["所有产线","第一产线","第二产线","第三产线"],
+        workline_arr:[],
         dateObj: {},
         currentDate: {},
         days: [],
@@ -139,6 +139,9 @@
         this.mask = true;
         this.showContent = false;
         this.tabItem = num;
+        if(num === 2 && this.selection.workshop == '车间'){
+          this.$toast("请选择车间");
+        }
       },
       /*选择车间*/
       workshopSelect(index){
@@ -291,7 +294,6 @@
       /*绘图*/
       echarts(data,type){
         let target =  document.querySelector(".my-echarts");
-//        let el = this.$echarts.init(target);
         let el = echarts.init(target);
         el.clear();
         if(type === 1){
