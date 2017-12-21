@@ -54,7 +54,7 @@ const MachineList = r => require.ensure([], () => r(require('@/page/work/MES/equ
 const DetailsList = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/DetailsList.vue')), 'group-mes')
 const EnergyMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/EnergyMonitoring.vue')), 'group-mes')
 const TrendMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/TrendMonitoring.vue')), 'group-mes')
-
+const AccountLogin = r => require.ensure([], () => r(require('@/page/mall/login/AccountLogin.vue')), 'group-mes')
 
 export default new Router({
   routes: [
@@ -265,6 +265,10 @@ export default new Router({
     {
       path: '/trendmonitoring',  //趋势监控
       component: TrendMonitoring,
+    },
+    {
+      path: '/accountlogin',  //趋势监控
+      component: AccountLogin,
     },
   ]
 })
