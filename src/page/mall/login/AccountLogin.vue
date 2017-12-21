@@ -17,14 +17,19 @@
   }
 </script>
 <style lang="stylus" scoped>
-  .account-login{
-    padding 0.7rem .55rem 0 .55rem;
-  }
-  .inputpart{
-    height:.98rem;
+  .account-login
+    height :100%;
+    background: #fff;
+    padding: .35rem .275rem 0 .275rem;
+    box-sizing: border-box;
+    position: absolute
+  
+  .inputpart
+    height:.49rem;
     border:none;
-    border-bottom :2px solid #ccc;
-    font-size .32rem;
-    color #999;
-  }
+    border-bottom :1px solid #ccc;
+    font-size: .16rem;
+    width :100%;
+    color: #999;
+  
 </style>
