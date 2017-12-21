@@ -1,5 +1,5 @@
 <template>
-  <div class="early-list">
+  <div class="not-clocking">
     <div class="header">
       <div class="header-top">
         <div class="svg" @click="goback">
@@ -7,7 +7,7 @@
             <use xlink:href="#icon-zuoyoujiantou"></use>
           </svg>
         </div>
-        迟到
+        加班
       </div>
       <div class="header-content">
         <div class="date">{{date}}</div>
@@ -15,7 +15,7 @@
     </div>
     <div class="content-wrapper no-self">
       <div class="list-container" :class="{'list-container-empty': list.length===0}">
-        <div class="list-item flex-box" v-for="(item,index) in list" :key="index">
+        <div class="list-item flex-box" v-for="(item,index) in list">
           <div class="flex-box" @click="userInfo">
             <div class="user-info flex-box">
               <div class="avater">
@@ -28,8 +28,8 @@
               </div>
             </div>
           </div>
-          <div class="flex-box">
-            <div class="time">{{item.signTime}}</div>
+          <div class="desc">
+            <p>{{item.signTime}}</p>
           </div>
         </div>
       </div>
@@ -40,10 +40,10 @@
 
 <script>
   export default{
-    name: "LateList",
+    name: "Leave",
     data(){
       return{
-        myself: false,
+        myself: true,
         list: [],
         date: "",
         ms: 0,
@@ -53,9 +53,9 @@
       goback(){
         window.history.back();
       },
-      getLateList(date){
-        this.axios.get(this.Service.latelist+"?checkDate="+date).then(res =>{
-          console.log("迟到榜",res);
+      getNosignList(date){
+        this.axios.get(this.Service.overtimelist+"?checkDate="+date).then(res =>{
+          console.log("加班榜",res);
           if(res.data.h.code === 200){
             this.list = res.data.b.data;
           }
@@ -69,13 +69,13 @@
       this.date = this.$route.query.date;
       this.ms = parseInt(this.$route.query.ms);
       let date = new Date(this.ms).getFullYear()+"-"+(parseInt(new Date(this.ms).getMonth())+1)+"-"+new Date(this.ms).getDate();
-      this.getLateList(date);
-    }
+      this.getNosignList(date);
+    },
   }
 </script>
 
 <style lang="stylus" scoped>
-  .early-list{
+  .not-clocking{
     padding-top: 1.81rem;
   }
   .header{
@@ -157,10 +157,6 @@
     }
   }
   .name{
-    max-width: 6em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
     margin-bottom: 0.1rem;
     font-size: 0.17rem;
     line-height 1;
@@ -224,5 +220,13 @@
     font-size 0.14rem;
     text-align center;
     color #999;
+  }
+  .desc{
+    font-size: 0.16rem;
+    color: #666;
+    line-height 1;
+  }
+  .desc p:nth-child(2){
+    margin-top 0.1rem;
   }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="select-workline">
-    <div class="header">
+    <div class="header" :style="{background: color}">
       <div class="svg" @click="emitEvent(2)">
         <svg class="icon icon-back" aria-hidden="false">
           <use xlink:href="#icon-zuoyoujiantou"></use>
@@ -9,7 +9,7 @@
       选择生产线
     </div>
     <div class="choice-items">
-      <div class="choice-item" v-for="(item,index) in choice" :key="index" @click="select(index)">{{item}}</div>
+      <div class="choice-item" v-for="(item,index) in choice" :key="index" @click="select(index)">{{item.lineName}}</div>
     </div>
   </div>
 </template>
@@ -17,14 +17,21 @@
 <script>
   export default{
     name: 'SelectWorkline',
+    props: ["color"],
     data(){
       return{
-        headerPros:{
-          bgcolor: "#499844",
-          title: "选择生产线",
-        },
-        choice:["所有生产线","第一生产线","第二生产线","第三生产线"],
+        choice:[{lineName:"所有产线"}],
       }
+    },
+    created(){
+      let vm = this;
+      eventBus.$on('getWorkline',id =>{
+        vm.getWorkline(id);
+        vm.init = false;
+      });
+    },
+    beforeDestroy() {
+      eventBus.$off('getWorkline');
     },
     methods:{
       emitEvent(type){
@@ -33,6 +40,18 @@
       select(index){
         this.$emit('childselect',this.choice[index]);
         this.$emit('childevent',2);
+      },
+      /*获取产线*/
+      getWorkline(id){
+        this.$mes.get("/common/line",{
+          "workShopId": id
+        }).then(res =>{
+          console.log("获取产线",res);
+          if(res.h.code === 200){
+            this.choice = res.b.list;
+            this.choice.unshift({lineName:"所有产线"});
+          }
+        });
       },
     }
   }

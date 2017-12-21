@@ -9,6 +9,10 @@ function resolve (dir) {
 }
 
 module.exports = {
+  devtool: 'cheap-module-source-map',
+  externals: {
+    "echarts": "echarts"
+  },
   entry: {
     app: './src/main.js'
   },

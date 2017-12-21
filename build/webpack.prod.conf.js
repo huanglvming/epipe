@@ -8,6 +8,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
 
 var env = process.env.NODE_ENV === 'testing'
   ? require('../config/test.env')
@@ -27,15 +28,18 @@ var webpackConfig = merge(baseWebpackConfig, {
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   plugins: [
+    new BundleAnalyzerPlugin(),
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
-        warnings: false
+        warnings: false,
+        drop_console: true,
+        pure_funcs: ['console.log']
       },
-      sourceMap: true
+      sourceMap: false
     }),
     // extract css into its own file
     new ExtractTextPlugin({
@@ -96,7 +100,7 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
   ]
 })
 

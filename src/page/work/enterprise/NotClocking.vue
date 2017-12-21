@@ -2,7 +2,7 @@
   <div class="not-clocking">
     <div class="header">
       <div class="header-top">
-        <div class="svg" @click="emitEvent(3)">
+        <div class="svg" @click="goback">
           <svg class="icon icon-back" aria-hidden="false">
             <use xlink:href="#icon-zuoyoujiantou"></use>
           </svg>
@@ -10,164 +10,28 @@
         未打卡
       </div>
       <div class="header-content">
-        <div class="date">10月31日  星期二</div>
-      </div>
-      <div class="myself list-item flex-box" v-if="myself">
-        <div class="flex-box">
-          <div class="list">7</div>
-          <div class="user-info flex-box">
-            <div class="avater"></div>
-            <div class="info-container">
-              <div class="name">Forward</div>
-              <p class="department">产品部</p>
-            </div>
-          </div>
-        </div>
-        <div class="desc">
-          <p>上午未打卡</p>
-          <p>下午未打卡</p>
-        </div>
+        <div class="date">{{date}}</div>
       </div>
     </div>
-    <div class="content-wrapper" :class="{'no-self': !myself}">
-      <div class="list-container">
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
+    <div class="content-wrapper no-self">
+      <div class="list-container" :class="{'list-container-empty': list.length===0}">
+        <div class="list-item flex-box" v-for="(item,index) in list">
+          <div class="flex-box" @click="userInfo">
             <div class="user-info flex-box">
-              <div class="avater"></div>
+              <div class="avater">
+                <img :src="item.image" v-if="item.image">
+                <img src="../../../assets/avatar.png" v-else>
+              </div>
               <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
+                <div class="name">{{item.userName}}</div>
+                <p class="department">{{item.officeName}}</p>
               </div>
             </div>
           </div>
           <div class="desc">
-            <p>上午未打卡</p>
-            <p>下午未打卡</p>
-          </div>
-        </div>
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
-            <div class="user-info flex-box">
-              <div class="avater"></div>
-              <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <p>下午未打卡</p>
-          </div>
-        </div>
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
-            <div class="user-info flex-box">
-              <div class="avater"></div>
-              <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <p>上午未打卡</p>
-          </div>
-        </div>
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
-            <div class="user-info flex-box">
-              <div class="avater"></div>
-              <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <p>上午未打卡</p>
-            <p>下午未打卡</p>
-          </div>
-        </div>
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
-            <div class="user-info flex-box">
-              <div class="avater"></div>
-              <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <p>上午未打卡</p>
-          </div>
-        </div>
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
-            <div class="user-info flex-box">
-              <div class="avater"></div>
-              <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <p>下午未打卡</p>
-          </div>
-        </div>
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
-            <div class="user-info flex-box">
-              <div class="avater"></div>
-              <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <p>上午未打卡</p>
-            <p>下午未打卡</p>
-          </div>
-        </div>
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
-            <div class="user-info flex-box">
-              <div class="avater"></div>
-              <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <p>上午未打卡</p>
-            <p>下午未打卡</p>
-          </div>
-        </div>
-        <div class="list-item flex-box">
-          <div class="flex-box">
-            <div class="list">7</div>
-            <div class="user-info flex-box">
-              <div class="avater"></div>
-              <div class="info-container">
-                <div class="name">Forward</div>
-                <p class="department">产品部</p>
-              </div>
-            </div>
-          </div>
-          <div class="desc">
-            <p>上午未打卡</p>
+            <p v-if="item.type == 1">上午未打卡</p>
+            <p v-else-if="item.type == 2">下午未打卡</p>
+            <p v-else>全天未打卡</p>
           </div>
         </div>
       </div>
@@ -182,7 +46,32 @@
     data(){
       return{
         myself: true,
+        list: [],
+        date: "",
+        ms: 0,
       }
+    },
+    methods:{
+      goback(){
+        window.history.back();
+      },
+      getNosignList(date){
+        this.axios.get(this.Service.noSign+"?checkDate="+date).then(res =>{
+          console.log("未打卡",res);
+          if(res.data.h.code === 200){
+            this.list = res.data.b.data;
+          }
+        });
+      },
+      userInfo(){
+        window.location.href = "epipe://?&mark=userinfo&_id="+this.list[index].userId;
+      },
+    },
+    mounted(){
+      this.date = this.$route.query.date;
+      this.ms = parseInt(this.$route.query.ms);
+      let date = new Date(this.ms).getFullYear()+"-"+(parseInt(new Date(this.ms).getMonth())+1)+"-"+new Date(this.ms).getDate();
+      this.getNosignList(date);
     },
   }
 </script>
@@ -263,7 +152,11 @@
     height: 0.47rem;
     margin-right: 0.1rem;
     border-radius: 50%;
-    border: 1px solid red;
+    img{
+      width: 100%;
+      height: 100%;
+      border-radius 50%;
+    }
   }
   .name{
     margin-bottom: 0.1rem;
@@ -272,9 +165,9 @@
     color: #333;
   }
   .department{
-    font-size: 0.16rem;
+    font-size: 0.14rem;
     line-height 1;
-    color: #333;
+    color: #696969;
   }
   .time{
     margin-right 0.1rem;
@@ -298,13 +191,14 @@
   .content-wrapper{
     z-index 9;
     position relative;
-    overflow-y auto;
-    max-height 4.3rem;
-    margin-top: 0.5rem;
-  }
-  .no-self{
+    overflow-y: scroll;
     max-height 5.3rem;
+    width: 3.44rem;
+    margin: 0 auto;
     margin-top: -0.5rem;
+    background: white;
+    -webkit-overflow-scrolling: touch;
+    box-shadow 0 0 20px rgba(95,157,247,0.2);
   }
   .list-container{
     box-sizing border-box;
@@ -312,10 +206,13 @@
     margin: 0 auto;
     padding-left 0.15rem;
     background white;
-    box-shadow 0 0 20px rgba(95,157,247,0.2);
+    border-bottom: 1px solid #ebebeb;
     .list-item{
       padding-right 0.15rem;
     }
+  }
+  .list-container-empty{
+    margin-bottom 1rem;
   }
   .list-container .list-item:not(:last-child){
     border-bottom: 1px solid #EBEBEB;

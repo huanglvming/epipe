@@ -6,36 +6,36 @@
       </svg>
       <p class="tab-title tab-title-active">产出看板</p>
     </div>
-    <div class="tab-item" v-else>
+    <router-link tag="div" to="/outputlive" class="tab-item" v-else>
       <svg class="tab-icon" aria-hidden="false">
         <use xlink:href="#icon-chanchukanban"></use>
       </svg>
       <p class="tab-title">产出看板</p>
-    </div>
+    </router-link>
     <div class="tab-item" v-if="category === 2">
       <svg class="tab-icon" aria-hidden="false">
         <use xlink:href="#icon-chanchuribaoactive"></use>
       </svg>
       <p class="tab-title tab-title-active">产出日报</p>
     </div>
-    <div class="tab-item" v-else>
+    <router-link to="/outputdaily" class="tab-item" v-else>
       <svg class="tab-icon" aria-hidden="false">
         <use xlink:href="#icon-chanchuribao"></use>
       </svg>
       <p class="tab-title">产出日报</p>
-    </div>
-    <div class="tab-item" v-if="category === 3">
+    </router-link>
+    <router-link tag="div" to="/outputcount" class="tab-item" v-if="category === 3">
       <svg class="tab-icon" aria-hidden="false">
         <use xlink:href="#icon-chanchutongjiactive"></use>
       </svg>
       <p class="tab-title tab-title-active">产出统计</p>
-    </div>
-    <div class="tab-item" v-else>
+    </router-link>
+    <router-link tag="div" to="/outputcount" class="tab-item" v-else>
       <svg class="tab-icon" aria-hidden="false">
         <use xlink:href="#icon-chanchutongji"></use>
       </svg>
       <p class="tab-title">产出统计</p>
-    </div>
+    </router-link>
   </div>
 </template>
 

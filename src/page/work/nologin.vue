@@ -98,8 +98,10 @@
             locationId: 30
           }
         }).then(function (res) {
-          console.log(res);
-          vm.imgUrl = res.data.b[0].imgUrl;
+          console.log("获取banner",res);
+          if( res.data.b.length>0){
+            vm.imgUrl = res.data.b[0].imgUrl;
+          }
         });
       },
       //显示搜索页

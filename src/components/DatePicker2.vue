@@ -1,7 +1,7 @@
 <template>
   <div class="date-picker">
     <div class="date-header">
-      <div class="arrow" @touchend="goleft">
+      <div class="arrow" @click="goleft">
         <svg class="icon" aria-hidden="false">
           <use xlink:href="#icon-zuoyoujiantou"></use>
         </svg>
@@ -10,7 +10,7 @@
         <div class="date">{{dateObj.date}}</div>
         <div class="day">{{dateObj.day}}</div>
       </div>
-      <div class="arrow arrow-right" @touchend="goright">
+      <div class="arrow arrow-right" @click="goright">
         <svg class="icon" aria-hidden="false">
           <use xlink:href="#icon-zuoyoujiantou"></use>
         </svg>
@@ -30,13 +30,8 @@
         <li class="day-item">六</li>
         <li class="day-item">日</li>
       </ul>
-      <div class="day-list" v-if="isAndroid">
-        <div class="list-item" v-for="(item,index) in days" :data-index="index" @click="pickDate(index)">
-          <div :class="{active: (item === currentDate.day && dateObj.year === currentDate.year && dateObj.month === currentDate.month )}">{{item}}</div>
-        </div>
-      </div>
-      <div class="day-list" v-else>
-        <div class="list-item" v-for="(item,index) in days" :data-index="index" @touchend="pickDate(index)">
+      <div class="day-list">
+        <div class="list-item" v-for="(item,index) in days" @click="pickDate(index)">
           <div :class="{active: (item === currentDate.day && dateObj.year === currentDate.year && dateObj.month === currentDate.month )}">{{item}}</div>
         </div>
       </div>
@@ -81,45 +76,34 @@
         days: [],
         currentDate:{},
         showPicker: false,
-        isAndroid: navigator.userAgent.indexOf('Android') > -1 || navigator.userAgent.indexOf('Adr') > -1, //android终端
       }
     },
     methods:{
       /*前一天*/
       goleft(){
-        this.closePicker();
-        if(((new Date().getTime()-this.ms)/(24*60*60*1000))<30){
-          this.ms -= 24*60*60*1000;
-          sessionStorage.setItem("ms",this.ms);
-          this.currentDate = {
-            year: new Date(this.ms).getFullYear(),
-            month: new Date(this.ms).getMonth() + 1,
-            day: new Date(this.ms).getDate()
-          };
-          this.dateObj = DateFormat(this.ms);
-          this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
-          this.$emit("childEvent",this.ms,false);
-        }else{
-          this.$alert("最多可查看30天的数据");
-        }
+        this.ms -= 24*60*60*1000;
+        sessionStorage.setItem("ms",this.ms);
+        this.currentDate = {
+          year: new Date(this.ms).getFullYear(),
+          month: new Date(this.ms).getMonth() + 1,
+          day: new Date(this.ms).getDate()
+        };
+        this.dateObj = DateFormat(this.ms);
+        this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
+        this.$emit("childEvent",this.ms,false);
       },
       /*后一天*/
       goright(){
-        this.closePicker();
-        if((this.ms - new Date().getTime())/(24*60*60*1000) < 6){
-          this.ms += 24*60*60*1000;
-          sessionStorage.setItem("ms",this.ms);
-          this.currentDate = {
-            year: new Date(this.ms).getFullYear(),
-            month: new Date(this.ms).getMonth() + 1,
-            day: new Date(this.ms).getDate()
-          };
-          this.dateObj = DateFormat(this.ms);
-          this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
-          this.$emit("childEvent",this.ms,false);
-        }else{
-          this.$alert("最多可查看一周的数据");
-        }
+        this.ms += 24*60*60*1000;
+        sessionStorage.setItem("ms",this.ms);
+        this.currentDate = {
+          year: new Date(this.ms).getFullYear(),
+          month: new Date(this.ms).getMonth() + 1,
+          day: new Date(this.ms).getDate()
+        };
+        this.dateObj = DateFormat(this.ms);
+        this.days = setDaysArr(this.dateObj.year,this.dateObj.month);
+        this.$emit("childEvent",this.ms,false);
       },
       /*展开日期选择*/
       openPicker(){
@@ -134,7 +118,8 @@
       /*选择日期*/
       pickDate(index){
         if(this.days[index]){
-          this.closePicker();
+//          let dateString = this.dateObj.year+""+this.dateObj.month+""+this.days[index];
+//          let ms = Date.parse(dateString.substr(4,2)+"/"+dateString.substr(6,2)+"/"+dateString.substr(0,4));
           let month = parseInt(this.dateObj.month)>9?this.dateObj.month:"0"+this.dateObj.month;
           let day = parseInt(this.days[index])>9?this.days[index]:"0"+this.days[index];
           let dateString = this.dateObj.year+""+month+""+day;
@@ -150,9 +135,9 @@
             day: date.getDate()
           };
         }
-      },
+      }
     },
-    created(){
+    mounted(){
       if(sessionStorage.getItem("ms")){
         let ms = parseInt(sessionStorage.getItem("ms"));
         this.dateObj = DateFormat(ms);
@@ -172,7 +157,7 @@
         };
       }
       this.$emit("childEvent",this.ms,false);
-    },
+    }
   }
 </script>
 
@@ -259,6 +244,7 @@
     box-shadow 0 5px 10px rgba(0,0,0,0.15);
   }
   .list-item{
+    cursor pointer;
     z-index 9;
     width: 14.28%;
     height: 0.34rem;

@@ -5,15 +5,16 @@
         <svg class="icon-search" aria-hidden="false">
           <use xlink:href="#icon-sousuo1"></use>
         </svg>
-        <input type="tel" pattern="[0-9]*" placeholder="请输入工单账号"  @focus="showSearch()" @blur="hideSearch()">
+        <input type="tel" pattern="[0-9]*" placeholder="请输入工单账号" v-model="workno"  @focus="showSearch()" @blur="hideSearch()">
       </div>
-      <div class="btn btn-confirm" @click="search()" v-if="confirm">
+      <div class="btn btn-confirm" @click="search(workno)" v-if="confirm">
         <span>确定</span>
       </div>
       <div class="btn btn-more" :class="{'btn-more-active': more}" @click="showMore()" v-else>
-        <span>更多</span>
+        <span :style="{color: color}">更多</span>
         <svg aria-hidden="false" class="arrow-down" :class="{'arrow-up':more}">
-          <use xlink:href="#icon-sanjiao"></use>
+          <use xlink:href="#icon-jiantou" v-if="color"></use>
+          <use xlink:href="#icon-sanjiao" v-else></use>
         </svg>
       </div>
     </div>
@@ -56,13 +57,13 @@
           </div>
         </div>
       </div>
-      <div class="selections-btn">确定</div>
+      <div class="selections-btn" :class="{'selections-btn-active':store.workshop&&store.workline&&store.product&&store.date}" @click="handleConfirm">确定</div>
     </div>
     <div class="mask" v-show="mask" @click="closeMask()"></div>
-    <select-workshop v-show="module.workshop" @childevent="closeCondition" @childselect="workshop"></select-workshop>
-    <select-workline v-show="module.workline" @childevent="closeCondition" @childselect="workline"></select-workline>
-    <select-product v-show="module.product" @childevent="closeCondition" @childselect="product"></select-product>
-    <select-date v-show="module.date" @childevent="closeCondition" @childselect="date"></select-date>
+    <select-workshop :color="color" v-show="module.workshop" @childevent="closeCondition" @childselect="workshop"></select-workshop>
+    <select-workline :color="color" v-show="module.workline" @childevent="closeCondition" @childselect="workline"></select-workline>
+    <select-product :color="color" v-show="module.product" @childevent="closeCondition" @childselect="product"></select-product>
+    <select-date :color="color" v-show="module.date" @childevent="closeCondition" @childselect="date"></select-date>
   </div>
 </template>
 
@@ -79,7 +80,7 @@
       SelectProduct,
       SelectDate,
     },
-    props:["msg"],
+    props:["msg","color"],
     data(){
       return{
         more: false,
@@ -94,10 +95,14 @@
         },
         store:{
           workshop: "",
+          workshop_id: "",
           workline: "",
+          workline_id: "",
           product: "",
+          product_id: "",
           date: ""
-        }
+        },
+        workno: "",
       }
     },
     computed:{
@@ -118,18 +123,22 @@
       /*显示更多*/
       showMore(){
         this.mask = this.more = !this.more;
+        this.$emit("childEvent",!this.more);
       },
       /*显示确定按钮*/
       showSearch(){
         this.mask = this.confirm = true;
+        this.$emit("childEvent",false);
       },
       /*隐藏确定按钮*/
       hideSearch(){
         this.mask = this.confirm = false;
+        this.$emit("childEvent",true);
       },
       /*查询*/
-      search(){
-
+      search(val){
+        this.workno = "";
+        this.$emit("emitSearch",val);
       },
       /*关闭弹层*/
       closeMask(){
@@ -151,10 +160,11 @@
             this.module.date = true;
             break;
         }
-        this.mask = this.more = false;
+//        this.mask = this.more = false;
       },
       /*取消选择层*/
       closeCondition(id){
+//        this.$emit("childEvent",true);
         switch (id){
           case 1:
             this.module.workshop = false;
@@ -172,23 +182,45 @@
       },
       /*选择车间*/
       workshop(val){
-        this.store.workshop = val;
-        this.msg.workshop = val;
+        console.log("车间对象",val);
+//        this.$emit("childEvent",true);
+        this.store.workshop = val.workshopName;
+        this.store.workshop_id = val.workShopId;
+        this.msg.workshop = val.workshopName;
+        this.msg.workshop_id = val.workShopId;
+        eventBus.$emit('getWorkline', val.workShopId);
       },
       /*选择产线*/
       workline(val){
-        this.store.workline = val;
-        this.msg.workline = val;
+        console.log("选择产线",val);
+        this.store.workline = val.lineName;
+        this.store.workline_id = val.lineId;
+        this.msg.workline = val.lineName;
+        this.msg.workline_id = val.lineId;
+//        this.$emit("childEvent",true);
+        eventBus.$emit('getProduct', val.lineId);
       },
       /*选择产品*/
       product(val){
-        this.store.product = val;
-        this.msg.product = val;
+        console.log("选择产品",val);
+        this.store.product = val.partName;
+        this.store.product_id = val.partId;
+        this.msg.product = val.partName;
+        this.msg.product_id = val.partId;
+//        this.$emit("childEvent",true);
       },
       /*选择日期*/
       date(val){
+        console.log("选择日期",val);
         this.store.date = val;
         this.msg.date = val;
+      },
+      /*确定*/
+      handleConfirm(){
+        if(this.store.workshop && this.store.workline && this.store.product && this.store.date){
+          this.$emit("emitGetData",this.store);
+          this.showMore();
+        }
       },
     },
   }
@@ -296,9 +328,13 @@
     margin-top: 0.2rem;
     text-align center;
     line-height: 0.44rem;
+    color: #ddd;
+    border: 1px solid #ebebeb;
+    border-radius 0.02rem;
+  }
+  .selections-btn-active{
     color: #499844;
     border: 1px solid #499844;
-    border-radius 0.02rem;
   }
   .arrow-down{
     width:0.08rem;

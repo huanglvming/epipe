@@ -16,26 +16,44 @@ const Nologin = r => require.ensure([], () => r(require('@/page/work/nologin.vue
 const Agreement = r => require.ensure([], () => r(require('@/page/user/registertext.vue')), 'group-foo')
 const Registertext = r => require.ensure([], () => r(require('@/page/user/agreement.vue')), 'group-foo')
 const Help = r => require.ensure([], () => r(require('@/page/user/help.vue')), 'group-foo')
-const Footprint = r => require.ensure([], () => r(require('@/page/work/footprint.vue')), 'group-foo')
-const Checkmap = r => require.ensure([], () => r(require('@/page/work/checkmap.vue')), 'group-foo')
-const Journal = r => require.ensure([], () => r(require('@/page/work/journal.vue')), 'group-foo')
-const Imchoice = r => require.ensure([], () => r(require('@/page/work/imchoice.vue')), 'group-foo')
-const Daynews = r => require.ensure([], () => r(require('@/page/work/daynews.vue')), 'group-foo')
-const Weeknews = r => require.ensure([], () => r(require('@/page/work/weeknews.vue')), 'group-foo')
-const Monthnews = r => require.ensure([], () => r(require('@/page/work/monthnews.vue')), 'group-foo')
-const Journaldetail = r => require.ensure([], () => r(require('@/page/work/Journaldetail.vue')), 'group-foo')
-const Application = r => require.ensure([], () => r(require('@/page/work/application.vue')), 'group-foo')
-const Edit = r => require.ensure([], () => r(require('@/page/work/edit.vue')), 'group-foo')
-const Create = r => require.ensure([], () => r(require('@/page/work/create.vue')), 'group-foo')
-const Search = r => require.ensure([], () => r(require('@/page/work/search.vue')), 'group-foo')
-const Pending = r => require.ensure([], () => r(require('@/page/work/pending.vue')), 'group-foo')
-const Department = r => require.ensure([], () => r(require('@/page/work/department.vue')), 'group-foo')
-const OutputLive = r => require.ensure([], () => r(require('@/page/work/OutputLive.vue')), 'group-foo')
-const OutputDaily = r => require.ensure([], () => r(require('@/page/work/OutputDaily.vue')), 'group-foo')
-const EarlyList = r => require.ensure([], () => r(require('@/page/work/enterprise/EarlyList.vue')), 'group-foo')
-const LateList = r => require.ensure([], () => r(require('@/page/work/enterprise/LateList.vue')), 'group-foo')
-const NotClocking = r => require.ensure([], () => r(require('@/page/work/enterprise/NotClocking.vue')), 'group-foo')
-const DailyReport = r => require.ensure([], () => r(require('@/page/work/enterprise/DailyReport.vue')), 'group-foo')
+const Footprint = r => require.ensure([], () => r(require('@/page/work/footprint.vue')), 'group-work')
+const Checkmap = r => require.ensure([], () => r(require('@/page/work/checkmap.vue')), 'group-work')
+const Journal = r => require.ensure([], () => r(require('@/page/work/journal.vue')), 'group-work')
+const Imchoice = r => require.ensure([], () => r(require('@/page/work/imchoice.vue')), 'group-work')
+const Daynews = r => require.ensure([], () => r(require('@/page/work/daynews.vue')), 'group-work')
+const Weeknews = r => require.ensure([], () => r(require('@/page/work/weeknews.vue')), 'group-work')
+const Monthnews = r => require.ensure([], () => r(require('@/page/work/monthnews.vue')), 'group-work')
+const Journaldetail = r => require.ensure([], () => r(require('@/page/work/Journaldetail.vue')), 'group-work')
+const Application = r => require.ensure([], () => r(require('@/page/work/application.vue')), 'group-work')
+const Edit = r => require.ensure([], () => r(require('@/page/work/edit.vue')), 'group-work')
+const Create = r => require.ensure([], () => r(require('@/page/work/create.vue')), 'group-work')
+const Search = r => require.ensure([], () => r(require('@/page/work/search.vue')), 'group-work')
+const Pending = r => require.ensure([], () => r(require('@/page/work/pending.vue')), 'group-work')
+const Department = r => require.ensure([], () => r(require('@/page/work/department.vue')), 'group-work')
+const EarlyList = r => require.ensure([], () => r(require('@/page/work/enterprise/EarlyList.vue')), 'group-enterprise')
+const LateList = r => require.ensure([], () => r(require('@/page/work/enterprise/LateList.vue')), 'group-enterprise')
+const NotClocking = r => require.ensure([], () => r(require('@/page/work/enterprise/NotClocking.vue')), 'group-enterprise')
+const LeaveList = r => require.ensure([], () => r(require('@/page/work/enterprise/LeaveList.vue')), 'group-enterprise')
+const OvertimeList = r => require.ensure([], () => r(require('@/page/work/enterprise/OvertimeList.vue')), 'group-enterprise')
+const DailyReport = r => require.ensure([], () => r(require('@/page/work/enterprise/DailyReport.vue')), 'group-enterprise')
+const OutputLive = r => require.ensure([], () => r(require('@/page/work/MES/output/OutputLive.vue')), 'group-mes')
+const OutputDaily = r => require.ensure([], () => r(require('@/page/work/MES/output/OutputDaily.vue')), 'group-mes')
+const OutputCount = r => require.ensure([], () => r(require('@/page/work/MES/output/OutputCount.vue')), 'group-mes')
+const MaterielDaily = r => require.ensure([], () => r(require('@/page/work/MES/materiel/MaterielDaily.vue')), 'group-mes')
+const MaterielCount = r => require.ensure([], () => r(require('@/page/work/MES/materiel/MaterielCount.vue')), 'group-mes')
+const QualityDaily = r => require.ensure([], () => r(require('@/page/work/MES/quality/QualityDaily.vue')), 'group-mes')
+const QualityCount = r => require.ensure([], () => r(require('@/page/work/MES/quality/QualityCount.vue')), 'group-mes')
+const Power = r => require.ensure([], () => r(require('@/page/work/MES/energycontrol/Power.vue')), 'group-mes')
+const Water = r => require.ensure([], () => r(require('@/page/work/MES/energycontrol/Water.vue')), 'group-mes')
+const OEE = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/OEE.vue')), 'group-mes')
+const Warning = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/Warning.vue')), 'group-mes')
+const DeviceDetails = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/DeviceDetails.vue')), 'group-mes')
+const DetailsInfo = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/DetailsInfo.vue')), 'group-mes')
+const RunHistory = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/RunHistory.vue')), 'group-mes')
+const MachineList = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/MachineList.vue')), 'group-mes')
+const DetailsList = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/DetailsList.vue')), 'group-mes')
+const EnergyMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/EnergyMonitoring.vue')), 'group-mes')
+const TrendMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/TrendMonitoring.vue')), 'group-mes')
 
 
 export default new Router({
@@ -157,6 +175,10 @@ export default new Router({
       component: OutputLive,
     },
     {
+      path: '/outputcount',  //产出看板
+      component: OutputCount,
+    },
+    {
       path: '/outputdaily',  //产出看板
       component: OutputDaily,
     },
@@ -173,8 +195,76 @@ export default new Router({
       component: LateList,
     },
     {
+      path: '/leavelist',  //早退榜
+      component: LeaveList,
+    },
+    {
+      path: '/overtimelist',  //加班榜
+      component: OvertimeList,
+    },
+    {
       path: '/dailyreport',  //企业日报
       component: DailyReport,
+    },
+    {
+      path: '/materieldaily',  //消耗日报
+      component: MaterielDaily,
+    },
+    {
+      path: '/materielcount',  //消耗统计
+      component: MaterielCount,
+    },
+    {
+      path: '/qualitydaily',  //良率日报
+      component: QualityDaily,
+    },
+    {
+      path: '/qualitycount',  //良率日报
+      component: QualityCount,
+    },
+    {
+      path: '/power',  //电耗分析
+      component: Power,
+    },
+    {
+      path: '/water',  //水耗分析
+      component: Water,
+    },
+    {
+      path: '/oee',  //OEE分析
+      component: OEE,
+    },
+    {
+      path: '/warning',  //预警报警
+      component: Warning,
+    },
+    {
+      path: '/devicedetails',  //设备详情列表
+      component: DeviceDetails,
+    },
+    {
+      path: '/detailsinfo',  //设备详情信息
+      component: DetailsInfo,
+    },
+    {
+      path: '/runhistory',  //设备运行历史
+      component: RunHistory,
+    },
+    {
+      path: '/machinelist',  //设备列表
+      component: MachineList,
+    },
+    {
+      path: '/detailslist',  //详情列表
+      component: DetailsList,
+    },
+    {
+      path: '/energymonitoring',  //能源监控
+      component: EnergyMonitoring,
+    },
+    {
+      path: '/trendmonitoring',  //趋势监控
+      component: TrendMonitoring,
     },
   ]
 })
