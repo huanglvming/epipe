@@ -59,6 +59,7 @@ const VerificationLogin = r => require.ensure([], () => r(require('@/page/mall/l
 const ForgetPassword = r => require.ensure([], () => r(require('@/page/mall/login/ForgetPassword.vue')), 'group-mall')
 const Register = r => require.ensure([], () => r(require('@/page/mall/login/Register.vue')), 'group-mall')
 const MallAgreement = r => require.ensure([], () => r(require('@/page/mall/login/MallAgreement.vue')), 'group-mall')
+const MallHome = r => require.ensure([], () => r(require('@/page/mall/home/MallHome.vue')), 'group-mall')
 
 
 export default new Router({
@@ -291,6 +292,10 @@ export default new Router({
     {
       path: '/mallagreement',  //注册协议
       component: MallAgreement,
+    },
+    {
+      path: '/mallhome',  //商城首页
+      component: MallHome,
     },
   ]
 })
