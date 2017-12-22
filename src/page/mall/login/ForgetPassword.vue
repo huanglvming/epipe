@@ -1,19 +1,101 @@
 <template>
   <div class="account-login">
     <div class="phone-div">
-      <input type="text" class="inputpart" id="phone" placeholder="请输入手机号">
-      <div class="verifi-code">获取验证码</div>
+      <input type="text" @input="handleInput" class="inputpart"  placeholder="请输入手机号" v-model="phone">
+      <button class="verifi-code" :class="btnclass" :disabled="btndisabled" @click="sendcode">{{btntxt}}</button>
     </div>
-    <input type="text" class="inputpart" id="password" placeholder="请输入收到的验证码">
-    <input type="text" class="inputpart" id="password" placeholder="请输入新的登录密码">
-    <input type="text" class="inputpart" id="password" placeholder="请再次输入新的登录密码">
-    <div class="warn-tip">请输入正确的手机号</div>
-    <input type="button" value="确认修改并登录" id="sub">
+    <input type="text" class="inputpart"  placeholder="请输入收到的验证码" v-model="verCode">
+    <input type="password" class="inputpart"  placeholder="请输入新的登录密码"  minlength="6" maxlength="20"  @focus="pwFocus" @blur="pwBlur" @input="pwInput" v-model="password">
+    <input type="password" class="inputpart"  placeholder="请再次输入新的登录密码"  minlength="6" maxlength="20" v-model="repassword">
+    <div class="warn-tip">{{tips}}</div>
+    <input type="button" value="确认修改并登录" id="sub" @click="confimSub">
   </div>
 </template>
 <script>
   export default{
-    name: "ForgetPassword"
+    data: function () {
+      return {
+        btndisabled:false,
+        btntxt:"获取验证码",
+        tips:'',
+        btnclass:"verifi-code-false",
+        formMess:{
+          phone:this.phone,
+          verCode:this.verCode,
+          password:this.password,
+          repassword:this.repassword
+        
+        }
+      }
+    },
+    methods:{
+      sendcode(){
+        var reg=11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        //var url="/nptOfficialWebsite/apply/sendSms?mobile="+this.ruleForm.phone;
+        if(this.phone==''||this.phone==undefined){
+          this.tips="请输入手机号码";
+        }else if(!reg.test(this.phone)){
+          this.tips="手机格式不正确";
+        }else{
+          this.time=60;
+          this.disabled=true;
+          this.btnclass="verifi-code-true";
+          this.timer();
+          /*axios.post(url).then(
+              res=>{
+              this.phonedata=res.data;
+          })*/
+        }
+      },
+      handleInput(e){
+        e.target.value=e.target.value.replace(/[^\d]/g,'');
+      },
+      pwFocus(){
+        this.tips="密码规则：6-20个字符，包含字母、数字及标点符号至少两种";
+      },
+      pwBlur(){
+        this.tips="";
+      },
+      pwInput(){
+        this.tips="";
+        console.log(this.password);
+      },
+      timer() {
+        if (this.time > 0) {
+          this.time--;
+          this.btntxt=this.time+"s后重新获取";
+          setTimeout(this.timer, 1000);
+          this.tips="";
+        } else{
+          this.time=0;
+          this.btntxt="获取验证码";
+          this.disabled=false;
+          this.btnclass="verifi-code-false";
+        }
+      },
+      confimSub(){
+        let mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+        if(this.phone==undefined||this.phone.trim()==''){
+          this.tips="手机号不能为空";
+          return false;
+        }else if(this.verCode==undefined||this.verCode.trim()==''){
+          this.tips="验证码不能为空";
+          return false;
+        }else if(this.password==undefined||this.password.trim()==''){
+          this.tips="密码不能为空";
+          return false;
+        }else if(this.password.length<6){
+          this.tips="密码长度不能小于6个字符";
+          return false;
+        }else if(this.password != this.repassword) {
+          this.tips="两次输入的密码不一致";
+          return false;
+        }else if(!mediumRegex.test(this.password)){
+          this.tips="密码应为字母、数字、标点符号至少包含2种组合";
+          return false;
+        }
+      }
+    }
   }
 </script>
 <style lang="stylus" scoped>
@@ -29,10 +111,17 @@
     line-height .29rem;
     text-align center;
     font-size .13rem;
-    color #333;
     padding 0 .06rem;
     border-radius .04rem;
+    background none;
+  }
+  .verifi-code-true{
+    border .01rem solid #ccc;
+    color #999;
+  }
+  .verifi-code-false{
     border .01rem solid #999;
+    color #333;
   }
   .account-login {
     width 100%;
@@ -48,7 +137,7 @@
     border-bottom: .01rem solid #ccc;
     font-size: .16rem;
     width: 100%;
-    color: #999;
+    color: #333;
   }
   .inputpart:focus{
     outline none;
