@@ -286,7 +286,7 @@ export default new Router({
       component: ForgetPassword,
     },
     {
-      path: '/register',  //忘记密码
+      path: '/register',  //注册
       component: Register,
     },
     {

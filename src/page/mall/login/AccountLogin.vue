@@ -1,9 +1,9 @@
 <template>
   <div class="account-login">
-    <input type="text" class="inputpart" id="phone" placeholder="请输入手机号">
-    <input type="text" class="inputpart" id="password" placeholder="请输入密码">
-    <div class="warn-tip">请输入正确的手机号</div>
-    <input type="button" value="确认登录" id="sub">
+    <input type="text"  @input="handleInput" class="inputpart"  placeholder="请输入手机号" v-model="phone">
+    <input type="password" class="inputpart"  placeholder="请输入密码" v-model="password">
+    <div class="warn-tip">{{tips}}</div>
+    <input type="button" value="确认登录" id="sub" @click="confimSubmit">
     <div class="operate">
       <span>忘记密码</span>
       <span>|</span>
@@ -13,7 +13,40 @@
 </template>
 <script>
   export default{
-    name: "AccountLogin"
+    data:function () {
+      return{
+        tips:'',
+        formMess:{
+          phone:this.phone,
+          password:this.password
+        }
+      }
+    },
+    methods:{
+      handleInput(e){
+        e.target.value=e.target.value.replace(/[^\d]/g,'');
+      },
+      confimSubmit(){
+        var reg=11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
+        //var url="/nptOfficialWebsite/apply/sendSms?mobile="+this.ruleForm.phone;
+        if(this.phone==''||this.phone==undefined){
+          this.tips="请输入手机号码";
+          return false;
+        }else if(this.password==undefined||this.password.trim()==''){
+          this.tips="请输入密码";
+          return false;
+        }else if(!reg.test(this.phone)){
+          this.tips="手机格式不正确";
+          return false;
+        }else{
+          this.tips="";
+          /*axios.post(url).then(
+              res=>{
+              this.phonedata=res.data;
+          })*/
+        }
+      }
+    }
   }
 </script>
 <style lang="stylus" scoped>
@@ -30,7 +63,7 @@
     border-bottom: .01rem solid #ccc;
     font-size: .16rem;
     width: 100%;
-    color: #999;
+    color: #333;
   }
   .inputpart:focus{
     outline none;
