@@ -40,7 +40,7 @@
           return false;
         }else{
           this.tips="";
-          /*axios.post(url).then(
+          /*this.axios.post(url).then(
               res=>{
               this.phonedata=res.data;
           })*/
