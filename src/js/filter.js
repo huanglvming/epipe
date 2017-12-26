@@ -24,3 +24,9 @@ Vue.filter("journal_img", function (value) {  //上传照片
 Vue.filter("home_time_format", function (value) {  //首页头条那边时间戳转换成日期
   return new Date(value).getFullYear() + '-' + (new Date(value).getMonth() + 1) + '-' + new Date(value).getDate()
 });
+
+Vue.filter("escape2Html", function (str) {  //解码html标签
+  var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"','ldquo':'"','rdquo':'"','mdash':'_'};
+  return str.replace(/&(lt|gt|nbsp|amp|quot|ldquo|rdquo|mdash);/ig,function(all,t){
+    return arrEntities[t]});
+});

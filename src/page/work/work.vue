@@ -495,13 +495,16 @@
       },
       /*获取用户信息*/
       getUserInfo(){
-        const userToken = getCookie("auth_token") ? getCookie("auth_token") : "bc0b43b3-c9b2-49a5-b1c9-72c029580437";
-        this.axios.get('/user/info/by/token',{params: {token: userToken}}).then(res =>{
-          console.log("用户信息",res);
-          if(res.data.h.code === 200){
-            this.getFactory(res.data.b.centerGroupId);
-          }
-        })
+        //const userToken = getCookie("auth_token") ? getCookie("auth_token") : "bc0b43b3-c9b2-49a5-b1c9-72c029580437";
+        const userToken = getCookie("auth_token");
+        if(userToken){
+          this.axios.get('/user/info/by/token',{params: {token: userToken}}).then(res =>{
+            console.log("用户信息",res);
+            if(res.data.h.code === 200 && res.data.b.centerGroupId){
+              this.getFactory(res.data.b.centerGroupId);
+            }
+          });
+        }
       },
       /*获取工厂ID*/
       getFactory(id){
