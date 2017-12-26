@@ -12,6 +12,7 @@
   </div>
 </template>
 <script>
+  import {baseURL} from "../../../js/IPconfig";
   export default{
     data:function () {
       return{
@@ -39,7 +40,7 @@
           return false;
         }else{
           this.tips="";
-          this.axios.post("http://192.168.3.111/epmall-front/m/user/login",{
+          this.axios.post(baseURL+"/m/user/login",{
             account: this.phone,
             password: this.password
           }).then(res =>{
