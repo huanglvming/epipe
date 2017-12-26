@@ -28,7 +28,6 @@
       },
       confimSubmit(){
         var reg=11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        //var url="/nptOfficialWebsite/apply/sendSms?mobile="+this.ruleForm.phone;
         if(this.phone==''||this.phone==undefined){
           this.tips="请输入手机号码";
           return false;
@@ -40,10 +39,12 @@
           return false;
         }else{
           this.tips="";
-          /*this.axios.post(url).then(
-              res=>{
-              this.phonedata=res.data;
-          })*/
+          this.axios.post("http://192.168.3.111/epmall-front/m/user/login",{
+            account: this.phone,
+            password: this.password
+          }).then(res =>{
+            console.log(res);
+          });
         }
       }
     }
