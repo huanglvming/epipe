@@ -175,7 +175,7 @@
 </template>
 <script>
   import {baseURL} from '../../../js/IPconfig';
-  console.log("baseURL",baseURL);
+  console.log("baseURL",baseURL.mall);
   export default{
     name: "MallHome"
   }
