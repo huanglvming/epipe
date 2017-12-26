@@ -174,6 +174,8 @@
   </div>
 </template>
 <script>
+  import {baseURL} from '../../../js/IPconfig';
+  console.log("baseURL",baseURL);
   export default{
     name: "MallHome"
   }
