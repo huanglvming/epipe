@@ -1,20 +1,86 @@
 <template>
   <div class="goods-con">
-    <div class="detail-tab">
+    <div class="detail-tab" ref="header">
       <ul>
         <li><span>商品</span></li>
         <li><span>详情</span></li>
         <li><span>评价</span></li>
       </ul>
     </div>
-    <div class="tab-con">
+    <!--商品-->
+    <div class="tab-con" ref="conpart">
       <div class="goods-banner"></div>
       <div class="goods-des">
         <p>Google 的免费翻译服务可提供简体中文和另外多种语言之间的互译功能,可让您即时翻译字。</p>
         <div><span>￥</span><span>8888</span></div>
       </div>
+      <div class="goods-spec">
+        <ul>
+          <li>
+            <div class="spec-name">颜色</div>
+            <div class="con-spec"><span>金色</span><span>深空灰</span></div>
+          </li>
+          <li>
+            <div class="spec-name">颜色的</div>
+            <div class="con-spec"><span>金色</span><span>深空灰</span><span>金色</span><span>深空灰</span><span>金色</span><span>深空灰</span></div>
+          </li>
+          <li>
+            <div class="spec-name">颜色的</div>
+            <div class="con-spec"><span>金色</span><span>深空灰</span><span>金色</span><span>深空灰</span><span>金色</span><span>深空灰</span></div>
+          </li>
+          <li>
+            <div class="spec-name">数量</div>
+            <div class="con-spec">
+              <span><input type="button" value="-" disabled="disabled"></span><span><input type="text" value="1"></span><span><input
+              type="button" value="+"></span>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="goods-type">
+        <ul>
+          <li>
+            <div>
+              <p class="p1">123</p>
+              <p class="p2">商品销量</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <p class="p1">534</p>
+              <p class="p2">商品评价</p>
+            </div>
+          </li>
+          <li>
+            <div>
+              <p class="p1">545</p>
+              <p class="p2">商品收藏</p>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-    <div class="add-buy">
+    <!--详情-->
+    <div class="tab-con" ref="conpart">
+      <div class="goods-spcpic"><img src="../../../assets/pic3.png" alt=""></div>
+    </div>
+    <!--评价-->
+    <div class="tab-con" ref="conpart">
+      <div class="comment">
+        <div class="user-info">
+          <div><img src="../../../assets/tou.png" alt=""></div>
+          <div>134****4589</div>
+          <div>
+            <svg class="icon" aria-hidden="true">
+              <use xlink:href="#icon-star"></use>
+            </svg>
+          </div>
+        </div>
+        <div class="comment-con"></div>
+        <div class="time"></div>
+      </div>
+    </div>
+    <div class="add-buy" ref="footer">
       <ul>
         <li>
           <div>收藏</div>
@@ -26,7 +92,25 @@
     </div>
   </div>
 </template>
+<script>
+  export  default {
+    mounted () {
+      let headerH=window.getComputedStyle(this.$refs.header).height.replace("px","");
+      console.log(headerH);
+      let footerH=window.getComputedStyle(this.$refs.footer).height.replace("px","");
+      console.log(footerH);
+      let winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+      console.log(winH);
+      let conH=winH-headerH-footerH;
+      this.$refs.conpart.style.height = conH +'px';
+    }
+  }
+</script>
 <style lang="stylus" scoped>
+  ::-webkit-scrollbar {/*隐藏滚轮*/
+    display: none;
+    width: 0px;
+  }
   .detail-tab{
     width 100%;
     height .45rem;
@@ -94,7 +178,8 @@
     }
   }
   .tab-con{
-    overflow hidden;
+    margin-top .45rem;
+    overflow-y scroll;
     .goods-banner{
       height 3.75rem;
       background #fff;
@@ -108,6 +193,128 @@
         color #333;
         line-height .24rem;
         text-align justify;
+      }
+      div{
+        margin-top .36rem;
+        span{
+          color #d74a45;
+          font-size .16rem;
+        }
+        span:first-child{
+          font-size .12rem;
+        }
+      }
+    }
+    .goods-spec{
+      margin-top .1rem;
+      padding .15rem;
+      background #fff;
+      ul{
+        overflow hidden;
+        li{
+          margin-top .05rem;
+          overflow hidden;
+          div{
+            float left;
+          }
+          .spec-name{
+            width .4rem;
+            height .3rem;
+            line-height .3rem;
+            text-align right;
+            font-size .12rem;
+            color #999;
+            margin .1rem .1rem 0 0;
+          }
+          .con-spec{
+            width calc(100% - .5rem);
+            float left;
+            span{
+              display inline-block;
+              height .28rem;
+              line-height .28rem;
+              border 1px solid #999;
+              padding 0 .1rem;
+              margin .1rem .1rem 0 0;
+              font-size .14rem;
+              color #333;
+              border-radius 2px;
+            }
+          }
+        }
+        li:first-child{
+          margin-top 0;
+          .spec-name{
+            margin-top 0;
+          }
+          span{
+            margin-top 0;
+          }
+        }
+        li:last-child{
+          span{
+            margin-right 0;
+            border-radius 0;
+            padding 0;
+            input{
+              background none;
+              width .3rem;
+            }
+          }
+          span:nth-child(2){
+            border-left none;
+            border-right none;
+            input{
+              width .5rem;
+              text-align center;
+            }
+          }
+        }
+      }
+    }
+    .goods-type{
+      height .9rem;
+      margin .1rem 0;
+      background #fff;
+      ul{
+        height 100%;
+        overflow hidden;
+        li{
+          width 33.33%;
+          height 100%;
+          float left;
+          display flex;
+          justify-content center;
+          align-items center;
+          div{
+            text-align center;
+            width 100%;
+            border-right 1px solid #e5e5e5;
+            p{
+              line-height 1.27;
+            }
+            .p1{
+              font-size .16rem;
+              color #333;
+            }
+            .p2{
+              font-size .12rem;
+              color #999;
+              margin-top .06rem;
+            }
+          }
+        }
+        li:last-child{
+          div{
+            border-right none;
+          }
+        }
+      }
+    }
+    .goods-spcpic{
+      padding 0 .1rem;
+      img{
+        width 100%;
       }
     }
   }

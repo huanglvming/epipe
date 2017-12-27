@@ -14,6 +14,7 @@
   </div>
 </template>
 <script>
+  import {baseURL} from "../../../js/IPconfig";
   export default{
     data: function () {
       return {
@@ -33,7 +34,6 @@
     methods:{
       sendcode(){
         var reg=11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        //var url="/nptOfficialWebsite/apply/sendSms?mobile="+this.ruleForm.phone;
         if(this.phone==''||this.phone==undefined){
           this.tips="请输入手机号码";
         }else if(!reg.test(this.phone)){
@@ -43,10 +43,12 @@
           this.disabled=true;
           this.btnclass="verifi-code-true";
           this.timer();
-          /*axios.post(url).then(
-              res=>{
-              this.phonedata=res.data;
-          })*/
+          this.axios.post(baseURL.mall+"/m/user/sendMessage",{
+            mobile:this.phone,
+            type:1
+          }).then(res=>{
+              console.log(res);
+          })
         }
       },
       handleInput(e){
@@ -96,6 +98,14 @@
           this.tips="密码应为字母、数字、标点符号至少包含2种组合";
           return false;
         }
+        this.axios.post(baseURL.mall+"/m/user/registry",{
+          mobile:this.phone,
+          code:this.verCode,
+          password:this.password,
+          chkagreement:true
+        }).then(res=>{
+          console.log(res);
+        })
       }
     }
   }

@@ -40,11 +40,18 @@
           return false;
         }else{
           this.tips="";
-          this.axios.post(baseURL+"/m/user/login",{
-            account: this.phone,
-            password: this.password
-          }).then(res =>{
+          this.axios.post(baseURL.mall+"/m/user/login",
+            {
+              account: this.phone,
+              password: this.password
+            }).then(res =>{
             console.log(res);
+            let dataMes=res.data.h;
+            if(dataMes.code==200){
+              window.location.href="";
+            }else{
+              this.tips=dataMes.msg;
+            }
           });
         }
       }
