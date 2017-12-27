@@ -54,6 +54,14 @@ const MachineList = r => require.ensure([], () => r(require('@/page/work/MES/equ
 const DetailsList = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/DetailsList.vue')), 'group-mes')
 const EnergyMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/EnergyMonitoring.vue')), 'group-mes')
 const TrendMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/TrendMonitoring.vue')), 'group-mes')
+const AccountLogin = r => require.ensure([], () => r(require('@/page/mall/login/AccountLogin.vue')), 'group-mall')
+const VerificationLogin = r => require.ensure([], () => r(require('@/page/mall/login/VerificationLogin.vue')), 'group-mall')
+const ForgetPassword = r => require.ensure([], () => r(require('@/page/mall/login/ForgetPassword.vue')), 'group-mall')
+const Register = r => require.ensure([], () => r(require('@/page/mall/login/Register.vue')), 'group-mall')
+const MallAgreement = r => require.ensure([], () => r(require('@/page/mall/login/MallAgreement.vue')), 'group-mall')
+const MallHome = r => require.ensure([], () => r(require('@/page/mall/home/MallHome.vue')), 'group-mall')
+const GoodsClassification = r => require.ensure([], () => r(require('@/page/mall/class/GoodsClassification.vue')), 'group-mall')
+const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
 
 
 export default new Router({
@@ -265,6 +273,39 @@ export default new Router({
     {
       path: '/trendmonitoring',  //趋势监控
       component: TrendMonitoring,
+    },
+    //下面为商城部分
+    {
+      path: '/accountlogin',  //账号密码登录
+      component: AccountLogin,
+    },
+    {
+      path: '/verificationlogin',  //动态密码登录
+      component: VerificationLogin,
+    },
+    {
+      path: '/forgetpassword',  //忘记密码
+      component: ForgetPassword,
+    },
+    {
+      path: '/register',  //注册
+      component: Register,
+    },
+    {
+      path: '/mallagreement',  //注册协议
+      component: MallAgreement,
+    },
+    {
+      path: '/mallhome',  //商城首页
+      component: MallHome,
+    },
+    {
+      path: '/goodsclassification',  //分类
+      component: GoodsClassification,
+    },
+    {
+      path: '/mallsearch',  //商城搜索
+      component: MallSearch
     },
   ]
 })
