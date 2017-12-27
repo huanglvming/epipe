@@ -61,6 +61,7 @@ const Register = r => require.ensure([], () => r(require('@/page/mall/login/Regi
 const MallAgreement = r => require.ensure([], () => r(require('@/page/mall/login/MallAgreement.vue')), 'group-mall')
 const MallHome = r => require.ensure([], () => r(require('@/page/mall/home/MallHome.vue')), 'group-mall')
 const GoodsClassification = r => require.ensure([], () => r(require('@/page/mall/class/GoodsClassification.vue')), 'group-mall')
+const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
 
 
 export default new Router({
@@ -301,6 +302,10 @@ export default new Router({
     {
       path: '/goodsclassification',  //分类
       component: GoodsClassification,
+    },
+    {
+      path: '/mallsearch',  //商城搜索
+      component: MallSearch
     },
   ]
 })
