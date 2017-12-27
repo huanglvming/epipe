@@ -290,7 +290,7 @@
       <div class="tab_work_con" v-show="showMES">
         <ul class="tab_work_2con">
           <li></li>
-          <li>移动制造</li>
+          <li>移动制造ssssssssssss</li>
         </ul>
         <ul class="tab_work_3con">
           <li @click="go_output">
