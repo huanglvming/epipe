@@ -8,7 +8,7 @@
       </ul>
     </div>
     <!--商品-->
-    <div class="tab-con" ref="conpart">
+    <div class="tab-con" ref="conpart1">
       <div class="goods-banner"></div>
       <div class="goods-des">
         <p>Google 的免费翻译服务可提供简体中文和另外多种语言之间的互译功能,可让您即时翻译字。</p>
@@ -61,23 +61,64 @@
       </div>
     </div>
     <!--详情-->
-    <div class="tab-con" ref="conpart">
+    <div class="tab-con" ref="conpart2" style="display: none;">
       <div class="goods-spcpic"><img src="../../../assets/pic3.png" alt=""></div>
     </div>
     <!--评价-->
-    <div class="tab-con" ref="conpart">
+    <div class="tab-con" ref="conpart3" style="display: none;">
       <div class="comment">
         <div class="user-info">
-          <div><img src="../../../assets/tou.png" alt=""></div>
-          <div>134****4589</div>
-          <div>
-            <svg class="icon" aria-hidden="true">
-              <use xlink:href="#icon-star"></use>
-            </svg>
+          <div class="pic"><img src="../../../assets/tou.png" alt=""></div>
+          <div class="pho">134****4589</div>
+          <div class="star">
+            <i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i>
           </div>
         </div>
-        <div class="comment-con"></div>
-        <div class="time"></div>
+        <div class="comment-con">
+          非常好 店家客服服务态度很好 超级棒 送给各位小仙女 眼见我的淘气值就涨了 以前在天猫淘宝上买东西 都是系统自动好评 花了有好多好多钱
+          后来才知道淘宝评论得积分可以涨淘气值时 才知道评论的重要性 所以以后无论买什么东西，我都先把这段话复制粘贴下来，然后再写宝贝评论。
+          没错，评论80个字以上就可以获得50个积分
+        </div>
+        <div class="time">
+          <div class="time-con">2017-12-23 15:36:58</div>
+          <div class="thumps"><i class="iconfont icon-dianzan1"></i><i>12</i></div>
+        </div>
+      </div>
+      <div class="comment">
+        <div class="user-info">
+          <div class="pic"><img src="../../../assets/tou.png" alt=""></div>
+          <div class="pho">134****4589</div>
+          <div class="star">
+            <i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i>
+          </div>
+        </div>
+        <div class="comment-con">
+          非常好 店家客服服务态度很好 超级棒 送给各位小仙女 眼见我的淘气值就涨了 以前在天猫淘宝上买东西 都是系统自动好评 花了有好多好多钱
+          后来才知道淘宝评论得积分可以涨淘气值时 才知道评论的重要性 所以以后无论买什么东西，我都先把这段话复制粘贴下来，然后再写宝贝评论。
+          没错，评论80个字以上就可以获得50个积分
+        </div>
+        <div class="time">
+          <div class="time-con">2017-12-23 15:36:58</div>
+          <div class="thumps"><i class="iconfont icon-dianzan1"></i><i>12</i></div>
+        </div>
+      </div>
+      <div class="comment">
+        <div class="user-info">
+          <div class="pic"><img src="../../../assets/tou.png" alt=""></div>
+          <div class="pho">134****4589</div>
+          <div class="star">
+            <i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i>
+          </div>
+        </div>
+        <div class="comment-con">
+          非常好 店家客服服务态度很好 超级棒 送给各位小仙女 眼见我的淘气值就涨了 以前在天猫淘宝上买东西 都是系统自动好评 花了有好多好多钱
+          后来才知道淘宝评论得积分可以涨淘气值时 才知道评论的重要性 所以以后无论买什么东西，我都先把这段话复制粘贴下来，然后再写宝贝评论。
+          没错，评论80个字以上就可以获得50个积分
+        </div>
+        <div class="time">
+          <div class="time-con">2017-12-23 15:36:58</div>
+          <div class="thumps"><i class="iconfont icon-dianzan1"></i><i>12</i></div>
+        </div>
       </div>
     </div>
     <div class="add-buy" ref="footer">
@@ -102,7 +143,9 @@
       let winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
       console.log(winH);
       let conH=winH-headerH-footerH;
-      this.$refs.conpart.style.height = conH +'px';
+      this.$refs.conpart1.style.height = conH +'px';
+      this.$refs.conpart2.style.height = conH +'px';
+      this.$refs.conpart3.style.height = conH +'px';
     }
   }
 </script>
@@ -315,6 +358,69 @@
       padding 0 .1rem;
       img{
         width 100%;
+      }
+    }
+    .comment{
+      overflow hidden;
+      padding .15rem .15rem .12rem .15rem;
+      border-bottom 1px solid #e5e5e5;
+      .user-info{
+        overflow hidden;
+        div{
+          float left;
+          height .4rem;
+          line-height .4rem;
+        }
+        .pic{
+          width .4rem;
+          border-radius 50%;
+          margin-right .1rem;
+          overflow hidden;
+          img{
+            width 100%;
+          }
+        }
+        .pho{
+          font-size .12rem;
+          color #999;
+          margin-right .15rem;
+        }
+        .star{
+          i{
+            color #ff8800;
+            margin-right .04rem;
+          }
+        }
+      }
+      .comment-con{
+        font-size .14rem;
+        color #333;
+        text-align justify;
+        line-height .24rem;
+        margin-top .08rem;
+      }
+      .time{
+        margin-top .15rem;
+        .time-con{
+          float left;
+          font-size .12rem;
+          color #999;
+        }
+        .thumps{
+          float right;
+          i{
+            font-style normal;
+          }
+          i:nth-child(1){
+            font-size .14rem;
+            //color #4c88ff;
+          }
+          i:nth-child(2){
+            font-size .12rem;
+            //color #4c88ff;
+            margin-left .06rem;
+          }
+        }
       }
     }
   }

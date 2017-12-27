@@ -9,7 +9,6 @@ import "./js/rem";
 import "./js/filter"; //过滤器
 import "./js/http"; //axios请求配置
 import "./assets/iconfont"; //字体图标库
-import "./assets/mallfont"; //字体图标库
 import "./style/reset.styl";
 import "./style/style.styl";
 
