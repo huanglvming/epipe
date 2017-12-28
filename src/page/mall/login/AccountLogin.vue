@@ -12,6 +12,7 @@
   </div>
 </template>
 <script>
+  import {baseURL} from "../../../js/IPconfig";
   export default{
     data:function () {
       return{
@@ -28,7 +29,6 @@
       },
       confimSubmit(){
         var reg=11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
-        //var url="/nptOfficialWebsite/apply/sendSms?mobile="+this.ruleForm.phone;
         if(this.phone==''||this.phone==undefined){
           this.tips="请输入手机号码";
           return false;
@@ -40,10 +40,19 @@
           return false;
         }else{
           this.tips="";
-          /*this.axios.post(url).then(
-              res=>{
-              this.phonedata=res.data;
-          })*/
+          this.axios.post(baseURL.mall+"/m/user/login",
+            {
+              account: this.phone,
+              password: this.password
+            }).then(res =>{
+            console.log(res);
+            let dataMes=res.data.h;
+            if(dataMes.code==200){
+              window.location.href="";
+            }else{
+              this.tips=dataMes.msg;
+            }
+          });
         }
       }
     }
