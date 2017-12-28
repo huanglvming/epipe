@@ -1,7 +1,7 @@
 
 <template>
     <div class="affairs_box">
-        <div :class='flag?"header unfinish_head":"header finish_head"' v-bind:style="{ background: bg_color}" >
+        <div :class='flag?"header myfinish_head":"header finish_head"' v-bind:style="{ background: bg_color}" >
             <div class="back" @click="goback()">
             <svg class="icon icon-back" aria-hidden="false">
                 <use xlink:href="#icon-zuoyoujiantou"></use>
@@ -10,7 +10,7 @@
             待办事宜
         </div>
         <div class="affairs_content">
-            <div :class='flag?"affairs_item unfinish_shadow":"affairs_item finish_shadow"' v-for="item in 5">
+            <div :class='flag?"affairs_item myfinish_shadow":"affairs_item finish_shadow"' v-for="item in 5">
                 <div class="affirs_child">
                     <div class="affairs_title">
                         <img src="../../assets/tou.png"/>
@@ -30,8 +30,16 @@
                 </div>
             </div>
         </div>
-        <div class="foot">
+        <div class="footLine">
             <span>我是有底线的</span>
+        </div>
+        <div class="footer">
+            <div class="tab">
+                <span>我的申请</span>
+            </div>
+            <div class="tab">
+                <span>草稿箱</span>                
+            </div>
         </div>
     </div>
 </template>
@@ -40,11 +48,7 @@
     export default{
         data(){
             return{
-                
                 flag :true
-
-
-
             }
         },
         methods : {
@@ -53,7 +57,7 @@
             }
         },
         mounted : {
-            
+
         }
     }
 
@@ -63,7 +67,7 @@
 <style scoped lang="stylus">
 
     .affairs_box{
-        overflow none;
+        overflow-y hidden;
     }
 
     .header{
@@ -100,6 +104,10 @@
         background #0fc37c;
     }
 
+    .myfinish_head{
+        background: #f80;        
+    }
+
     .finish_shadow{
         -webkit-box-shadow: 0 0 0.2rem rgba(15,195,124,.1);        
          box-shadow 0 0 0.2rem rgba(15,195,124,.1);
@@ -109,6 +117,13 @@
         -webkit-box-shadow: 0 0 0.2rem rgba(238,65,54,.1);    
         box-shadow 0 0 0.2rem rgba(238,65,54,.1);
     }
+
+    .myfinish_shadow{
+        -webkit-box-shadow: 0 0 0.2rem rgba(255,136,0,.1);    
+        box-shadow 0 0 0.2rem rgba(255,136,0,.1);
+    }
+
+
 
     .affairs_content{
         margin-top: 0.59rem;
@@ -182,7 +197,7 @@
         border-top: 0.01rem solid  #e6e6e6;
     }
 
-    .foot{
+    .footLine{
        height 0.13rem;
        font-size:0.13rem;
        position relative;
@@ -203,7 +218,7 @@
        }
     }
 
-    .foot:after{
+    .footLine:after{
         position absolute;         
         content '';
         z-index 8;
@@ -215,6 +230,18 @@
         bottom 0;
         margin auto;
         background-color #e6e6e6;       
+    }
+
+    .footer{
+        height 0.5rem;
+        border-top:0.01rem solid #ccc;
+
+        // .tab{
+        //     float left;
+        //     text-align center;
+        //     height 100%;
+        //     width 50%;
+        // }
     }
 
 </style>
