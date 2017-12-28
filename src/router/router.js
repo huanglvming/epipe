@@ -309,7 +309,7 @@ export default new Router({
     },
     {
       path: '/mallsearch',  //商城搜索
-      component: MallSearch
+      component: MallSearch,
     },
   ]
 })

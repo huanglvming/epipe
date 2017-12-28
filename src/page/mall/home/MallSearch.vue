@@ -7,7 +7,7 @@
           <input type="text" class="search-input-vice" maxlength="20" v-model="searchKey">
           <i class="iconfont icon-guanbiicon" @click="clearInput" v-show="!showSuggestion"></i>
         </div>
-        <div class="search-btn">搜索</div>
+        <div class="search-btn" @click="handleSearch">搜索</div>
       </div>
       <div class="no-search" v-if="!hasSearch">
         <div class="suggestion-content" v-if="showSuggestion">
@@ -163,7 +163,7 @@
     },
     watch:{
       searchKey(){
-        this.handleSearch();
+        this.handleSearchKey();
       }
     },
     filters:{
@@ -172,7 +172,7 @@
       }
     },
     methods:{
-      handleSearch(){
+      handleSearchKey(){
         clearTimeout(this.t);
         this.t = setTimeout(() =>{
           if(this.searchKey){
@@ -185,7 +185,10 @@
       },
       clearInput(){
         this.searchKey = "";
-      }
+      },
+      handleSearch(){
+        this.hasSearch = true;
+      },
     },
   }
 </script>
