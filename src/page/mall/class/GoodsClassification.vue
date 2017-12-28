@@ -53,69 +53,6 @@
             <li>商务手机</li>
             <li>儿童手机</li>
           </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
         </div>
       </div>
     </div>
@@ -125,6 +62,9 @@
 <script>
   export  default {
     mounted () {
+      this.axios.get(this.baseURL.mall+"/m/search/goodsClass",).then(res =>{
+        console.log(res);
+      });
       let searchH=window.getComputedStyle(this.$refs.search).height.replace("px","");
       console.log(searchH);
       let winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
