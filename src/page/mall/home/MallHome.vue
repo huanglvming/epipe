@@ -1,182 +1,185 @@
 <template>
   <div class="mall-index">
-    <div class="goods-wrapper">
-      <div class="search-container" :class="{'search-container-active':searchContainerActive}">
-        <div class="search-bar" @click="linkSearch">
-          <i class="iconfont icon-sousuoicon"></i>
-          <input type="text" class="search-input">
-        </div>
+    <div class="search-container" :class="{'search-container-active':searchContainerActive}">
+      <div class="search-bar" @click="linkSearch">
+        <i class="iconfont icon-sousuoicon"></i>
+        <input type="text" class="search-input">
       </div>
-      <div class="banner"></div>
-      <div class="floor-container">
-        <div class="floor">
-          <div class="floor-title"></div>
-          <div class="floor-1-view">
-            <div class="floor-1-container">
-              <div class="item">
-                <div class="item-img-container">
-                  <div class="item-img"></div>
-                </div>
-                <div class="item-title">iphonex</div>
-                <div class="item-price">￥8588</div>
-              </div>
-              <div class="item">
-                <div class="item-img-container">
-                  <div class="item-img"></div>
-                </div>
-                <div class="item-title">iphonex</div>
-                <div class="item-price">￥8588</div>
-              </div>
-              <div class="item">
-                <div class="item-img-container">
-                  <div class="item-img"></div>
-                </div>
-                <div class="item-title">iphonex</div>
-                <div class="item-price">￥8588</div>
-              </div>
-              <div class="item">
-                <div class="item-img-container">
-                  <div class="item-img"></div>
-                </div>
-                <div class="item-title">iphonex</div>
-                <div class="item-price">￥8588</div>
-              </div>
-              <div class="item">
-                <div class="item-img-container">
-                  <div class="item-img"></div>
-                </div>
-                <div class="item-title">iphonex</div>
-                <div class="item-price">￥8588</div>
-              </div>
-            </div>
-          </div>
-          <div class="floor-banner"></div>
-        </div>
-        <div class="floor">
-          <div class="floor-title"></div>
-          <div class="floor-2-view">
-            <div class="item item-sm">
-              <div class="item-des">
-                <p class="des-title">小米手机</p>
-                <p class="des-sub">优惠券</p>
-              </div>
-              <div class="item-img"></div>
-            </div>
-            <div class="item item-sm">
-              <div class="item-des">
-                <p class="des-title">小米手机</p>
-                <p class="des-sub">优惠券</p>
-              </div>
-              <div class="item-img"></div>
-            </div>
-            <div class="item item-sm">
-              <div class="item-des">
-                <p class="des-title">小米手机</p>
-                <p class="des-sub">优惠券</p>
-              </div>
-              <div class="item-img"></div>
-            </div>
-            <div class="item item-sm">
-              <div class="item-des">
-                <p class="des-title">小米手机</p>
-                <p class="des-sub">优惠券</p>
-              </div>
-              <div class="item-img"></div>
-            </div>
-            <div class="item item-lg">
-              <p class="des-title">小米手机</p>
-              <p class="des-sub">优惠券</p>
-              <div class="item-img"></div>
-            </div>
-            <div class="item item-lg">
-              <p class="des-title">小米手机</p>
-              <p class="des-sub">优惠券</p>
-              <div class="item-img"></div>
-            </div>
-          </div>
-          <div class="floor-banner"></div>
-        </div>
-        <div class="floor">
-          <div class="floor-title"></div>
-          <div class="floor-3-view">
+    </div>
+    <div class="banner"></div>
+    <div class="floor-container">
+      <div class="floor">
+        <div class="floor-title"></div>
+        <div class="floor-1-view">
+          <div class="floor-1-container">
             <div class="item">
-              <p class="item-title">小米手机</p>
-              <p class="item-des">优惠券</p>
-              <div class="item-img"></div>
-            </div>
-            <div class="item">
-              <p class="item-title">小米手机</p>
-              <p class="item-des">优惠券</p>
-              <div class="item-img"></div>
-            </div>
-            <div class="item">
-              <p class="item-title">小米手机</p>
-              <p class="item-des">优惠券</p>
-              <div class="item-img"></div>
-            </div>
-            <div class="item">
-              <p class="item-title">小米手机</p>
-              <p class="item-des">优惠券</p>
-              <div class="item-img"></div>
-            </div>
-            <div class="item">
-              <p class="item-title">小米手机</p>
-              <p class="item-des">优惠券</p>
-              <div class="item-img"></div>
-            </div>
-            <div class="item">
-              <p class="item-title">小米手机</p>
-              <p class="item-des">优惠券</p>
-              <div class="item-img"></div>
-            </div>
-          </div>
-          <div class="floor-banner"></div>
-        </div>
-        <div class="floor">
-          <div class="floor-title"></div>
-          <div class="floor-4-view">
-            <div class="item">
-              <div class="item-content">
+              <div class="item-img-container">
                 <div class="item-img"></div>
-                <div class="item-title">美的智能电饭煲家庭年预约XLM450</div>
-                <div class="item-sub">
-                  <div class="item-price">￥339</div>
-                  <div class="buy">
-                    <svg class="icon icon-car" aria-hidden="false">
-                      <use xlink:href="#icon-gouwuche-xuanzhongicon"></use>
-                    </svg>
-                  </div>
+              </div>
+              <div class="item-title">iphonex</div>
+              <div class="item-price">￥8588</div>
+            </div>
+            <div class="item">
+              <div class="item-img-container">
+                <div class="item-img"></div>
+              </div>
+              <div class="item-title">iphonex</div>
+              <div class="item-price">￥8588</div>
+            </div>
+            <div class="item">
+              <div class="item-img-container">
+                <div class="item-img"></div>
+              </div>
+              <div class="item-title">iphonex</div>
+              <div class="item-price">￥8588</div>
+            </div>
+            <div class="item">
+              <div class="item-img-container">
+                <div class="item-img"></div>
+              </div>
+              <div class="item-title">iphonex</div>
+              <div class="item-price">￥8588</div>
+            </div>
+            <div class="item">
+              <div class="item-img-container">
+                <div class="item-img"></div>
+              </div>
+              <div class="item-title">iphonex</div>
+              <div class="item-price">￥8588</div>
+            </div>
+          </div>
+        </div>
+        <div class="floor-banner"></div>
+      </div>
+      <div class="floor">
+        <div class="floor-title"></div>
+        <div class="floor-2-view">
+          <div class="item item-sm">
+            <div class="item-des">
+              <p class="des-title">小米手机</p>
+              <p class="des-sub">优惠券</p>
+            </div>
+            <div class="item-img"></div>
+          </div>
+          <div class="item item-sm">
+            <div class="item-des">
+              <p class="des-title">小米手机</p>
+              <p class="des-sub">优惠券</p>
+            </div>
+            <div class="item-img"></div>
+          </div>
+          <div class="item item-sm">
+            <div class="item-des">
+              <p class="des-title">小米手机</p>
+              <p class="des-sub">优惠券</p>
+            </div>
+            <div class="item-img"></div>
+          </div>
+          <div class="item item-sm">
+            <div class="item-des">
+              <p class="des-title">小米手机</p>
+              <p class="des-sub">优惠券</p>
+            </div>
+            <div class="item-img"></div>
+          </div>
+          <div class="item item-lg">
+            <p class="des-title">小米手机</p>
+            <p class="des-sub">优惠券</p>
+            <div class="item-img"></div>
+          </div>
+          <div class="item item-lg">
+            <p class="des-title">小米手机</p>
+            <p class="des-sub">优惠券</p>
+            <div class="item-img"></div>
+          </div>
+        </div>
+        <div class="floor-banner"></div>
+      </div>
+      <div class="floor">
+        <div class="floor-title"></div>
+        <div class="floor-3-view">
+          <div class="item">
+            <p class="item-title">小米手机</p>
+            <p class="item-des">优惠券</p>
+            <div class="item-img"></div>
+          </div>
+          <div class="item">
+            <p class="item-title">小米手机</p>
+            <p class="item-des">优惠券</p>
+            <div class="item-img"></div>
+          </div>
+          <div class="item">
+            <p class="item-title">小米手机</p>
+            <p class="item-des">优惠券</p>
+            <div class="item-img"></div>
+          </div>
+          <div class="item">
+            <p class="item-title">小米手机</p>
+            <p class="item-des">优惠券</p>
+            <div class="item-img"></div>
+          </div>
+          <div class="item">
+            <p class="item-title">小米手机</p>
+            <p class="item-des">优惠券</p>
+            <div class="item-img"></div>
+          </div>
+          <div class="item">
+            <p class="item-title">小米手机</p>
+            <p class="item-des">优惠券</p>
+            <div class="item-img"></div>
+          </div>
+        </div>
+        <div class="floor-banner"></div>
+      </div>
+      <div class="floor">
+        <div class="floor-title"></div>
+        <div class="floor-4-view">
+          <div class="item">
+            <div class="item-content">
+              <div class="item-img"></div>
+              <div class="item-title">美的智能电饭煲家庭年预约XLM450</div>
+              <div class="item-sub">
+                <div class="item-price">￥339</div>
+                <div class="buy">
+                  <svg class="icon icon-car" aria-hidden="false">
+                    <use xlink:href="#icon-gouwuche-xuanzhongicon"></use>
+                  </svg>
                 </div>
               </div>
             </div>
-            <div class="item">
-              <div class="item-menu">
-                <div class="menu-tab">海尔</div>
-                <div class="menu-tab">海尔</div>
-                <div class="menu-tab">海尔</div>
-                <div class="menu-tab">海尔</div>
-                <div class="menu-tab">海尔</div>
-                <div class="menu-tab">海尔</div>
-                <div class="menu-tab">海尔</div>
-                <div class="menu-tab">海尔</div>
-              </div>
+          </div>
+          <div class="item">
+            <div class="item-menu">
+              <div class="menu-tab">海尔</div>
+              <div class="menu-tab">海尔</div>
+              <div class="menu-tab">海尔</div>
+              <div class="menu-tab">海尔</div>
+              <div class="menu-tab">海尔</div>
+              <div class="menu-tab">海尔</div>
+              <div class="menu-tab">海尔</div>
+              <div class="menu-tab">海尔</div>
             </div>
-            <div class="item">
-              <div class="item-content"></div>
-            </div>
-            <div class="item">
-              <div class="item-content"></div>
-            </div>
+          </div>
+          <div class="item">
+            <div class="item-content"></div>
+          </div>
+          <div class="item">
+            <div class="item-content"></div>
           </div>
         </div>
       </div>
     </div>
+    <footer-tab :category="0"></footer-tab>
   </div>
 </template>
 <script>
-  import {baseURL} from '../../../js/IPconfig';
+  import FooterTab from "../../../components/mall/FooterTab.vue";
+  document.title = '优优商城';
   export default{
     name: "MallHome",
+    components:{
+      FooterTab
+    },
     data(){
       return{
         searchContainerActive: false,
@@ -265,6 +268,7 @@
   }
   .floor-container{
     padding 0 0.15rem;
+    padding-bottom 50px;
   }
   .floor{
     width 3.45rem;
