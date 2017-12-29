@@ -1,13 +1,13 @@
 
 <template>
     <div class="affairs_box">
-        <div :class='flag?"header myfinish_head":"header finish_head"' v-bind:style="{ background: bg_color}" >
+        <div :class='flag? typeClass :"header finish_head"' v-bind:style="{ background: bg_color}" >
             <div class="back" @click="goback()">
             <svg class="icon icon-back" aria-hidden="false">
-                <use xlink:href="#icon-zuoyoujiantou"></use>
+                <use href="#icon-zuoyoujiantou"></use>
             </svg>
             </div>
-            待办事宜
+            {{title}}
         </div>
         <div class="affairs_content">
             <div :class='flag?"affairs_item myfinish_shadow":"affairs_item finish_shadow"' v-for="item in 5">
@@ -15,7 +15,7 @@
                     <div class="affairs_title">
                         <img src="../../assets/tou.png"/>
                         <h2>Forward的请假审批</h2>
-                        <time>09:35</time>
+                        <time>2017-6-6</time>
                     </div>
                     <div class="affairs_infor">
                         <p>请假类型:<span style="color:#609ef6">事假</span></p>
@@ -34,10 +34,19 @@
             <span>我是有底线的</span>
         </div>
         <div class="footer">
-            <div class="tab">
+            <div class="tab tab_user active">
+
+                <svg class="icon icon-user" aria-hidden="false">
+                    <!-- <use xlink:href="#icon-wodeshenqing-line"></use> -->
+                    <use href="#icon-wodeshenqing-mian"></use>
+                </svg>
                 <span>我的申请</span>
             </div>
-            <div class="tab">
+            <div class="tab tab_drafts">
+                <svg class="icon icon-drafts" aria-hidden="false">
+                    <use  href="#icon-caogaoxiang-line"></use>
+                    <!-- <use xlink:href="#icon-caogaoxiang-mian"></use> -->
+                </svg>
                 <span>草稿箱</span>                
             </div>
         </div>
@@ -48,7 +57,15 @@
     export default{
         data(){
             return{
-                flag :true
+                title : '待办事宜',
+                flag :true,
+                typeClass : 'header unfinish_head'
+            }
+        },
+        mounted(){
+            // this.title = location.href.slice(location.href.indexOf('?')+1)
+            if(this.title){
+
             }
         },
         methods : {
@@ -56,9 +73,11 @@
                 window.history.back(-1);
             }
         },
-        mounted : {
+
+        computer : {
 
         }
+        
     }
 
 </script>
@@ -66,8 +85,12 @@
 
 <style scoped lang="stylus">
 
+    body{
+        overflow hidden;
+    }
+
     .affairs_box{
-        overflow-y hidden;
+        overflow hidden;
     }
 
     .header{
@@ -127,7 +150,9 @@
 
     .affairs_content{
         margin-top: 0.59rem;
+        margin-bottom:0.5rem;
         padding 0 0.15rem;
+        overflow hidden;
     }
 
     .affairs_item{
@@ -209,7 +234,7 @@
        span{
            position absolute;
            width:0.91rem;
-           z-index 9;
+           z-index 2;
            line-height 1em;
            left 0;
            right 0;
@@ -221,7 +246,7 @@
     .footLine:after{
         position absolute;         
         content '';
-        z-index 8;
+        z-index 1;
         height 0.01rem;
         width calc(100% - 0.3rem)
         left 0;
@@ -233,15 +258,38 @@
     }
 
     .footer{
+        position fixed;
+        width 100%;
         height 0.5rem;
+        bottom 0;
+        left 0;
+        font-size:0.11rem;
         border-top:0.01rem solid #ccc;
+        background-color #fff;
+        z-index 3;
 
-        // .tab{
-        //     float left;
-        //     text-align center;
-        //     height 100%;
-        //     width 50%;
-        // }
+        .tab{
+            float left;
+            text-align center;
+            height 100%;
+            width 50%;
+            padding-top:0.05rem;
+        }
+
+        .icon-user,.icon-drafts{
+            display block;
+            width 0.22rem;
+            height 0.22rem;
+            margin 0 auto;
+            margin-bottom 0.03rem;
+        }
+        .active{
+            color #f80;
+        }
+
+        .tab_user:hover{
+            
+        }
     }
 
 </style>
