@@ -71,8 +71,14 @@
     <div class="add-buy" ref="footer">
       <ul>
         <li>
-          <div>收藏</div>
-          <div>购物车</div>
+          <div>
+            <p><i class="iconfont icon-shoucang"></i></p>
+            <p>收藏</p>
+          </div>
+          <div>
+            <p><i class="iconfont icon-gouwucheicon"></i></p>
+            <p>购物车</p>
+          </div>
         </li>
         <li>加入购物车</li>
         <li>立即购买</li>
@@ -81,6 +87,7 @@
   </div>
 </template>
 <script>
+  document.title="商品详情";
   export  default {
     data:function () {
       return{
@@ -175,8 +182,8 @@
   }
   .add-buy{
     width 100%;
-    height .49rem;
-    line-height .49rem;
+    height 49px;
+    line-height 49px;
     position fixed;
     bottom 0;
     ul{
@@ -184,22 +191,37 @@
         width 33.333%;
         text-align center;
         float left;
-        font-size .15rem;
+        font-size 15px;
         color #fff;
       }
       li:nth-child(1){
-        height .48rem;
-        line-height .48rem;
+        height 48px;
+        line-height 48px;
         border-top 1px solid #e5e5e5;
         background #fff;
         div{
           width 50%;
+          height 100%;
           float left;
-          display flex;
+/*          display flex;
           justify-content center;
-          align-items center;
-          font-size .12rem;
-          color #666;
+          align-items center;*/
+          p{
+            line-height normal;
+            font-size 12px;
+            color #666;
+          }
+          p:first-child{
+            margin-top 9px;
+          }
+        }
+        div:last-child{
+          p:first-child{
+            margin-top 6px;
+            i{
+              font-size 18px;
+            }
+          }
         }
       }
       li:nth-child(2){

@@ -7,7 +7,7 @@
     <input type="text" class="inputpart" placeholder="请输入收到的验证码" v-model="verCode">
     <div class="warn-tip">{{tips}}</div>
     <input type="button" value="确认登录" id="sub" @click="confimSubmit">
-    <div class="operate">账号密码登录</div>
+    <div class="operate"><a href="#/AccountLogin">账号密码登录</a></div>
   </div>
 </template>
 <script>
@@ -134,8 +134,10 @@
   }
   .operate{
     font-size .14rem;
-    color #6699ff;
     float right;
     margin-top .15rem;
+    a{
+      color #6699ff;
+    }
   }
 </style>

@@ -2,9 +2,7 @@
   <div class="goods-class">
     <div class="search-container" ref="search">
       <div class="search-bar">
-        <svg class="icon icon-search" aria-hidden="false">
-          <use xlink:href="#icon-sousuoicon"></use>
-        </svg>
+        <i class="iconfont icon-sousuoicon"></i>
         <input type="text" class="search-input">
       </div>
     </div>

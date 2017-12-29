@@ -5,13 +5,14 @@
     <div class="warn-tip">{{tips}}</div>
     <input type="button" value="确认登录" id="sub" @click="confimSubmit">
     <div class="operate">
-      <span>忘记密码</span>
+      <span><a href="#/ForgetPassword">忘记密码</a></span>
       <span>|</span>
-      <span>验证登录</span>
+      <span><a href="#/VerificationLogin">验证登录</a></span>
     </div>
   </div>
 </template>
 <script>
+  document.title="登录";
   export default{
     data:function () {
       return{
@@ -100,7 +101,9 @@
     span{
       margin-right .05rem;
       font-size .14rem;
-      color #6699ff;
+      a{
+        color #6699ff;
+      }
     }
     span:last-child{
       margin-right 0;
