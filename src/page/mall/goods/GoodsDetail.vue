@@ -2,130 +2,83 @@
   <div class="goods-con">
     <div class="detail-tab" ref="header">
       <ul>
-        <li><span>商品</span></li>
-        <li><span>详情</span></li>
-        <li><span>评价</span></li>
+        <li v-for="(item, index) in list" :class="{tabActive:selected==index}" @click="change(index)"><span>{{item.title}}</span></li>
       </ul>
     </div>
-    <!--商品-->
-    <div class="tab-con" ref="conpart1">
-      <div class="goods-banner"></div>
-      <div class="goods-des">
-        <p>Google 的免费翻译服务可提供简体中文和另外多种语言之间的互译功能,可让您即时翻译字。</p>
-        <div><span>￥</span><span>8888</span></div>
+    <div class="tab-con" ref="conpart1"  v-if="showIndex === 0">
+        <div class="goods-banner"></div>
+        <div class="goods-des">
+          <p>Google 的免费翻译服务可提供简体中文和另外多种语言之间的互译功能,可让您即时翻译字。</p>
+          <div><span>￥</span><span>8888</span></div>
+        </div>
+        <div class="goods-spec">
+          <ul>
+            <li>
+              <div class="spec-name">颜色</div>
+              <div class="con-spec"><span>金色</span><span>深空灰</span></div>
+            </li>
+            <li>
+              <div class="spec-name">数量</div>
+              <div class="con-spec">
+                <span><input type="button" value="-" disabled="disabled"></span><span><input type="text" value="1"></span><span><input
+                type="button" value="+"></span>
+              </div>
+            </li>
+          </ul>
+        </div>
+        <div class="goods-type">
+          <ul>
+            <li>
+              <div>
+                <p class="p1">123</p>
+                <p class="p2">商品销量</p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <p class="p1">534</p>
+                <p class="p2">商品评价</p>
+              </div>
+            </li>
+            <li>
+              <div>
+                <p class="p1">545</p>
+                <p class="p2">商品收藏</p>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="goods-spec">
-        <ul>
-          <li>
-            <div class="spec-name">颜色</div>
-            <div class="con-spec"><span>金色</span><span>深空灰</span></div>
-          </li>
-          <li>
-            <div class="spec-name">颜色的</div>
-            <div class="con-spec"><span>金色</span><span>深空灰</span><span>金色</span><span>深空灰</span><span>金色</span><span>深空灰</span></div>
-          </li>
-          <li>
-            <div class="spec-name">颜色的</div>
-            <div class="con-spec"><span>金色</span><span>深空灰</span><span>金色</span><span>深空灰</span><span>金色</span><span>深空灰</span></div>
-          </li>
-          <li>
-            <div class="spec-name">数量</div>
-            <div class="con-spec">
-              <span><input type="button" value="-" disabled="disabled"></span><span><input type="text" value="1"></span><span><input
-              type="button" value="+"></span>
-            </div>
-          </li>
-        </ul>
-      </div>
-      <div class="goods-type">
-        <ul>
-          <li>
-            <div>
-              <p class="p1">123</p>
-              <p class="p2">商品销量</p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <p class="p1">534</p>
-              <p class="p2">商品评价</p>
-            </div>
-          </li>
-          <li>
-            <div>
-              <p class="p1">545</p>
-              <p class="p2">商品收藏</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-    <!--详情-->
-    <div class="tab-con" ref="conpart2" style="display: none;">
+    <div class="tab-con" ref="conpart2" v-if="showIndex === 1">
       <div class="goods-spcpic"><img src="../../../assets/pic3.png" alt=""></div>
     </div>
-    <!--评价-->
-    <div class="tab-con" ref="conpart3" style="display: none;">
-      <div class="comment">
-        <div class="user-info">
-          <div class="pic"><img src="../../../assets/tou.png" alt=""></div>
-          <div class="pho">134****4589</div>
-          <div class="star">
-            <i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i>
+    <div class="tab-con" ref="conpart3" v-if="showIndex === 2">
+        <div class="comment" v-for="(item,index) in commentList" :key="index">
+          <div class="user-info">
+            <div class="pic"><img :src="item.avatar" alt=""></div>
+            <div class="pho">{{item.phone}}</div>
+            <div class="star">
+              <i class="iconfont icon-star" v-for="(i,k) in item.stars" :key="k" />
+            </div>
+          </div>
+          <div class="comment-con">{{item.comment}}</div>
+          <div class="time">
+            <div class="time-con">2017-12-23 15:36:58</div>
+            <div class="thumps"><i class="iconfont icon-dianzan1"></i><i>12</i></div>
           </div>
         </div>
-        <div class="comment-con">
-          非常好 店家客服服务态度很好 超级棒 送给各位小仙女 眼见我的淘气值就涨了 以前在天猫淘宝上买东西 都是系统自动好评 花了有好多好多钱
-          后来才知道淘宝评论得积分可以涨淘气值时 才知道评论的重要性 所以以后无论买什么东西，我都先把这段话复制粘贴下来，然后再写宝贝评论。
-          没错，评论80个字以上就可以获得50个积分
-        </div>
-        <div class="time">
-          <div class="time-con">2017-12-23 15:36:58</div>
-          <div class="thumps"><i class="iconfont icon-dianzan1"></i><i>12</i></div>
-        </div>
       </div>
-      <div class="comment">
-        <div class="user-info">
-          <div class="pic"><img src="../../../assets/tou.png" alt=""></div>
-          <div class="pho">134****4589</div>
-          <div class="star">
-            <i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i>
-          </div>
-        </div>
-        <div class="comment-con">
-          非常好 店家客服服务态度很好 超级棒 送给各位小仙女 眼见我的淘气值就涨了 以前在天猫淘宝上买东西 都是系统自动好评 花了有好多好多钱
-          后来才知道淘宝评论得积分可以涨淘气值时 才知道评论的重要性 所以以后无论买什么东西，我都先把这段话复制粘贴下来，然后再写宝贝评论。
-          没错，评论80个字以上就可以获得50个积分
-        </div>
-        <div class="time">
-          <div class="time-con">2017-12-23 15:36:58</div>
-          <div class="thumps"><i class="iconfont icon-dianzan1"></i><i>12</i></div>
-        </div>
-      </div>
-      <div class="comment">
-        <div class="user-info">
-          <div class="pic"><img src="../../../assets/tou.png" alt=""></div>
-          <div class="pho">134****4589</div>
-          <div class="star">
-            <i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i><i class="iconfont icon-star"></i>
-          </div>
-        </div>
-        <div class="comment-con">
-          非常好 店家客服服务态度很好 超级棒 送给各位小仙女 眼见我的淘气值就涨了 以前在天猫淘宝上买东西 都是系统自动好评 花了有好多好多钱
-          后来才知道淘宝评论得积分可以涨淘气值时 才知道评论的重要性 所以以后无论买什么东西，我都先把这段话复制粘贴下来，然后再写宝贝评论。
-          没错，评论80个字以上就可以获得50个积分
-        </div>
-        <div class="time">
-          <div class="time-con">2017-12-23 15:36:58</div>
-          <div class="thumps"><i class="iconfont icon-dianzan1"></i><i>12</i></div>
-        </div>
-      </div>
-    </div>
     <div class="add-buy" ref="footer">
       <ul>
         <li>
-          <div>收藏</div>
-          <div>购物车</div>
+          <div>
+            <p><i class="iconfont icon-shoucang"></i></p>
+            <p>收藏</p>
+          </div>
+          <div>
+            <p><i class="iconfont icon-gouwucheicon"></i></p>
+            <p>购物车</p>
+          </div>
         </li>
         <li>加入购物车</li>
         <li>立即购买</li>
@@ -134,7 +87,45 @@
   </div>
 </template>
 <script>
+  document.title="商品详情";
   export  default {
+    data:function () {
+      return{
+        selected: 0,
+        showIndex: 0,
+        commentList:[
+          {
+              avatar: "../../../assets/tou.png",
+              phone: "13333333333",
+              stars: 5,
+              comment: "不错啊！！！"
+          },
+          {
+            avatar: "../../../assets/tou.png",
+            phone: "13333333333",
+            stars: 4,
+            comment: "不错啊！！！"
+          },
+          {
+            avatar: "../../../assets/tou.png",
+            phone: "13333333333",
+            stars: 3,
+            comment: "不错啊！！！"
+          },
+        ],
+        list: [
+          {
+            title: '商品',
+          },
+          {
+            title: '详情',
+          },
+          {
+            title: '评价',
+          }
+        ]
+      }
+    },
     mounted () {
       let headerH=window.getComputedStyle(this.$refs.header).height.replace("px","");
       console.log(headerH);
@@ -146,6 +137,12 @@
       this.$refs.conpart1.style.height = conH +'px';
       this.$refs.conpart2.style.height = conH +'px';
       this.$refs.conpart3.style.height = conH +'px';
+    },
+    methods: {
+      change(index) {
+        this.selected = index;
+        this.showIndex = index;
+      }
     }
   }
 </script>
@@ -174,7 +171,7 @@
           color #333;
         }
       }
-      li:first-child{
+      li.tabActive{
         span{
           height .44rem;
           color #ff8800;
@@ -185,8 +182,8 @@
   }
   .add-buy{
     width 100%;
-    height .49rem;
-    line-height .49rem;
+    height 49px;
+    line-height 49px;
     position fixed;
     bottom 0;
     ul{
@@ -194,22 +191,37 @@
         width 33.333%;
         text-align center;
         float left;
-        font-size .15rem;
+        font-size 15px;
         color #fff;
       }
       li:nth-child(1){
-        height .48rem;
-        line-height .48rem;
+        height 48px;
+        line-height 48px;
         border-top 1px solid #e5e5e5;
         background #fff;
         div{
           width 50%;
+          height 100%;
           float left;
-          display flex;
+/*          display flex;
           justify-content center;
-          align-items center;
-          font-size .12rem;
-          color #666;
+          align-items center;*/
+          p{
+            line-height normal;
+            font-size 12px;
+            color #666;
+          }
+          p:first-child{
+            margin-top 9px;
+          }
+        }
+        div:last-child{
+          p:first-child{
+            margin-top 6px;
+            i{
+              font-size 18px;
+            }
+          }
         }
       }
       li:nth-child(2){
@@ -219,6 +231,12 @@
         background #d74a45;
       }
     }
+  }
+  .conNoActive{
+    display none;
+  }
+  .conActive{
+    display block;
   }
   .tab-con{
     margin-top .45rem;

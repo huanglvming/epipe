@@ -63,6 +63,7 @@ const MallHome = r => require.ensure([], () => r(require('@/page/mall/home/MallH
 const GoodsClassification = r => require.ensure([], () => r(require('@/page/mall/class/GoodsClassification.vue')), 'group-mall')
 const GoodsDetail = r => require.ensure([], () => r(require('@/page/mall/goods/GoodsDetail.vue')), 'group-mall')
 const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
+const ShopList = r => require.ensure([], () => r(require('@/page/mall/shop/ShopList.vue')), 'group-mall')
 
 export default new Router({
   routes: [
@@ -310,6 +311,10 @@ export default new Router({
     {
       path: '/mallsearch',  //商城搜索
       component: MallSearch,
+    },
+    {
+      path: '/shoplist',  //购物车列表
+      component: ShopList,
     },
   ]
 })
