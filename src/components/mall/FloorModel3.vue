@@ -1,0 +1,112 @@
+<template>
+  <div class="floor">
+    <div class="floor-title">
+      <img :src="imgPrefix + floorObj.floorTitleImg" alt="">
+    </div>
+    <div class="floor-3-view">
+      <div class="item" v-for="(item,index) in floorObj.floorAdvs" :key="index">
+        <p class="item-title">{{item.advTitle}}</p>
+        <p class="item-des">{{item.advDescribe}}</p>
+        <div class="item-img">
+          <img :src="imgPrefix + item.advImg" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="floor-banner">
+      <swiper :options="swiperOption">
+        <swiper-slide v-for="(slide,index) in floorObj.floorBanners" :key="index">
+          <img :src="imgPrefix + slide.advImg" alt="">
+        </swiper-slide>
+        <div class="swiper-pagination" slot="pagination" v-if="floorObj.floorBanners.length>1"></div>
+      </swiper>
+    </div>
+  </div>
+</template>
+<script>
+  import 'swiper/dist/css/swiper.css'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
+  export default {
+    name: "FloorModel3",
+    props: ["floorObj","imgPrefix"],
+    components:{
+      swiper,
+      swiperSlide,
+    },
+    data(){
+      return{
+        searchContainerActive: false,
+        showSearch: false,
+        swiperOption: {
+          autoplay:true,
+          pagination: {
+            el: '.swiper-pagination'
+          }
+        },
+        swiperSlides: [1, 2, 3],
+      }
+    },
+  }
+</script>
+<style lang="stylus" scoped="true">
+  .floor{
+    width 3.45rem;
+  }
+  .floor-title{
+    height: 0.6rem;
+    line-height 0.6rem;
+    img{
+      width 100%;
+      vertical-align: middle;
+    }
+  }
+  .floor-banner{
+    width 3.45rem;
+    height: 0.8625rem;
+    border-radius 0.08rem;
+    background: white;
+  }
+  .floor-3-view{
+    display flex;
+    justify-content space-between;
+    flex-wrap wrap;
+    .item{
+      width: 1.07rem;
+      height: 1.55rem;
+      padding-top 0.15rem;
+      padding-bottom 0.1rem;
+      margin-bottom 0.12rem;
+      background: white;
+      line-height 1;
+      text-align center;
+    }
+    .item-title{
+      margin-bottom 0.1rem;
+      font-size: 0.14rem;
+      font-weight bold;
+      color: #333;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .item-des{
+      font-size: 0.12rem;
+      color: #99;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .item-img{
+      width: 0.9rem;
+      height: 0.9rem;
+      margin: 0 auto;
+      margin-top: 0.24rem;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+  }
+  .swiper-slide img{
+    width: 100%;
+  }
+</style>
