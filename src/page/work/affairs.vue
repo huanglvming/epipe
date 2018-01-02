@@ -1,7 +1,7 @@
 
 <template>
     <div class="affairs_box">
-        <div :class='flag? typeClass :"header finish_head"' v-bind:style="{ background: bg_color}" >
+        <div :class='typeClass' v-bind:style="{ background: bg_color}" >
             <div class="back" @click="goback()">
             <svg class="icon icon-back" aria-hidden="false">
                 <use href="#icon-zuoyoujiantou"></use>
@@ -10,7 +10,7 @@
             {{title}}
         </div>
         <div class="affairs_content">
-            <div :class='flag?"affairs_item myfinish_shadow":"affairs_item finish_shadow"' v-for="item in 5">
+            <div :class='boxShadow' v-for="item in 5">
                 <div class="affirs_child">
                     <div class="affairs_title">
                         <img src="../../assets/tou.png"/>
@@ -33,44 +33,72 @@
         <div class="footLine">
             <span>我是有底线的</span>
         </div>
-        <div class="footer">
-            <div class="tab tab_user active">
+        <div class="footer" v-if='types = "myaffairs"'>
+            <div :class='btnShow?"tab tab_user":"tab tab_user active"' @click="tabEven()">
 
                 <svg class="icon icon-user" aria-hidden="false">
-                    <!-- <use xlink:href="#icon-wodeshenqing-line"></use> -->
-                    <use href="#icon-wodeshenqing-mian"></use>
+                    <use v-show="btnShow" xlink:href="#icon-wodeshenqing-line"></use>
+                    <use v-show="!btnShow" xlink:href="#icon-wodeshenqing-mian"></use>
                 </svg>
                 <span>我的申请</span>
             </div>
-            <div class="tab tab_drafts">
+            <div :class='!btnShow?"tab tab_drafts":"tab tab_drafts active"' @click="tabEven()">
                 <svg class="icon icon-drafts" aria-hidden="false">
-                    <use  href="#icon-caogaoxiang-line"></use>
-                    <!-- <use xlink:href="#icon-caogaoxiang-mian"></use> -->
+                    <use v-show="!btnShow"  xlink:href="#icon-caogaoxiang-line"></use>
+                    <use v-show="btnShow" xlink:href="#icon-caogaoxiang-mian"></use>
                 </svg>
                 <span>草稿箱</span>                
             </div>
         </div>
     </div>
-</template>
-
+</template>】
 <script>
     export default{
         data(){
             return{
-                title : '待办事宜',
-                flag :true,
-                typeClass : 'header unfinish_head'
+                title : '',
+                types :'',
+                typeClass : '',
+                boxShadow : '',
+                btnShow : false,
             }
         },
         mounted(){
+            this.types = 'unfinish'
             // this.title = location.href.slice(location.href.indexOf('?')+1)
-            if(this.title){
-
+            if(this.types == 'finish'){
+                this.title = '已办事宜';
+                this.typeClass = 'header finish_head';
+                this.boxShadow = 'affairs_item finish_shadow';
+                return
             }
+
+            if(this.types == 'unfinish'){
+                this.title = '待办事宜';
+                this.typeClass = 'header unfinish_head';
+                this.boxShadow = 'affairs_item unfinish_shadow';
+                return
+            }
+
+            if(this.types == 'myaffairs'){
+                this.title = '我的申请';
+                this.typeClass = 'header myaffairs_head';
+                this.boxShadow = 'affairs_item myaffairs_shadow'
+                return
+            }
+
         },
         methods : {
             goback(){
                 window.history.back(-1);
+            },
+            tabEven(flag){
+                this.btnShow = !this.btnShow
+                if(this.btnShow){
+                    this.title = '草稿箱'
+                    return
+                }
+                this.title = '我的申请'
             }
         },
 
@@ -127,7 +155,7 @@
         background #0fc37c;
     }
 
-    .myfinish_head{
+    .myaffairs_head{
         background: #f80;        
     }
 
@@ -141,7 +169,7 @@
         box-shadow 0 0 0.2rem rgba(238,65,54,.1);
     }
 
-    .myfinish_shadow{
+    .myaffairs_shadow{
         -webkit-box-shadow: 0 0 0.2rem rgba(255,136,0,.1);    
         box-shadow 0 0 0.2rem rgba(255,136,0,.1);
     }
@@ -150,7 +178,6 @@
 
     .affairs_content{
         margin-top: 0.59rem;
-        margin-bottom:0.5rem;
         padding 0 0.15rem;
         overflow hidden;
     }
@@ -228,8 +255,9 @@
        position relative;
        text-align center;
        color #999;
-       margin 0.3rem 0;
        padding 0 0.15rem;
+       margin-bottom:0.8rem;
+       margin-top:0.15rem;
 
        span{
            position absolute;
