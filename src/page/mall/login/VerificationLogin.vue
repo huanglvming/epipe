@@ -33,14 +33,25 @@
         } else if (!reg.test(this.phone)) {
           this.tips = "手机格式不正确";
         } else {
-          this.time = 60;
-          this.disabled = true;
-          this.btnclass = "verifi-code-true";
-          this.timer();
-          /*axios.post(url).then(
-              res=>{
-              this.phonedata=res.data;
-          })*/
+          this.axios.post(this.baseURL.mall+"/m/user/checkUser",{
+            mobile:this.phone
+          }).then(res=>{
+            console.log(res);
+            if(res.data.h.code!=200){
+              this.time=60;
+              this.disabled=true;
+              this.btnclass="verifi-code-true";
+              this.timer();
+              this.axios.post(this.baseURL.mall+"/m/user/sendMessage",{
+                mobile:this.phone,
+                type:5
+              }).then(res=>{
+                console.log(res);
+              })
+            }else{
+              this.tips="该用户尚未注册";
+            }
+          })
         }
       },
       handleInput(e){
@@ -68,6 +79,19 @@
           return false;
         }else{
           this.tips="";
+          this.axios.post(this.baseURL.mall+"/m/user/codeLogin",
+            {
+              mobile: this.phone,
+              code: this.verCode
+            }).then(res =>{
+            console.log(res);
+            let dataMes=res.data.h;
+            if(dataMes.code==200){
+              window.location.href="";
+            }else{
+              this.tips=dataMes.msg;
+            }
+          });
         }
       }
     }
