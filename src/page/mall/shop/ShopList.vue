@@ -4,7 +4,7 @@
     <div class="one-shop">
       <div class="seller-shop-name"><i class="iconfont icon-weixuan"></i>优管自营</div>
       <div class="shop-goods">
-        <div class="goods-ope"><i class="iconfont icon-weixuan"></i></div>
+        <div class="goods-ope"><i class="iconfont icon-xuanzhong1"></i></div>
         <div class="goods-pho"><img src="../../../assets/tou.png" alt=""></div>
         <div class="goods-class">
           <P class="p1">苹果 iPhone X 64G 银色 公开版4G手机 公开版4G手机</P>
