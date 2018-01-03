@@ -1,29 +1,29 @@
 <template>
   <footer class="footer-tab">
-    <div class="footer-tab-item" :class="{'tab-active': category===0}">
+    <router-link to="mallhome" tag="div" class="footer-tab-item" :class="{'tab-active': category===0}">
       <div class="icon-container">
-        <i class="iconfont icon-shouyeicon"></i>
+        <i class="iconfont" :class="category===0 ? 'icon-shouye-xuanzhongicon':'icon-shouyeicon'"></i>
       </div>
       <p class="tab-title">首页</p>
-    </div>
-    <div class="footer-tab-item" :class="{'tab-active': category===1}">
+    </router-link>
+    <router-link to="goodsclassification" tag="div" class="footer-tab-item" :class="{'tab-active': category===1}">
       <div class="icon-container">
-        <i class="iconfont icon-fenleiicon"></i>
+        <i class="iconfont" :class="category===1 ? 'icon-fenlei-xuanzhongicon':'icon-fenleiicon'"></i>
       </div>
       <p class="tab-title">分类</p>
-    </div>
-    <div class="footer-tab-item" :class="{'tab-active': category===2}">
+    </router-link>
+    <router-link to="shoplist" tag="div" class="footer-tab-item" :class="{'tab-active': category===2}">
       <div class="icon-container">
-        <i class="iconfont icon-gouwucheicon"></i>
+        <i class="iconfont" :class="category===2 ? 'icon-gouwuche-xuanzhongicon':'icon-gouwucheicon'"></i>
       </div>
       <p class="tab-title">购物车</p>
-    </div>
-    <div class="footer-tab-item" :class="{'tab-active': category===3}">
+    </router-link>
+    <router-link to="malluser" tag="div" class="footer-tab-item" :class="{'tab-active': category===3}">
       <div class="icon-container">
-        <i class="iconfont icon-gerenzhongxinicon"></i>
+        <i class="iconfont" :class="category===3 ? 'icon-gerenzhongxin-xuanzhongicon':'icon-gerenzhongxinicon'"></i>
       </div>
       <p class="tab-title">个人中心</p>
-    </div>
+    </router-link>
   </footer>
 </template>
 
@@ -34,7 +34,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .footer-tab{
     display flex;
     z-index 99;

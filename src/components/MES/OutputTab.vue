@@ -48,6 +48,7 @@
 
 <style lang="stylus" scoped>
   .output-tab{
+    z-index 19;
     display flex;
     position fixed;
     left 0;

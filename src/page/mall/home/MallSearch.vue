@@ -54,89 +54,14 @@
           <div class="selection-item">价格优先</div>
         </div>
         <div class="search-result">
-          <div class="result-item">
+          <div class="result-item" v-for="(item,index) in resultList" :key="index">
             <div class="goods-picture">
-              <img src="#" alt="商品">
+              <img :src="imgPrefix + item.goodsImage" alt="商品">
             </div>
             <div class="goods-details">
-              <div class="goods-desc">Apple Mackbook pro 2017新款苹果电脑真的很好快来买吧哈哈哈哈啊哈哈哈啊哈哈</div>
+              <div class="goods-desc">{{item.goodsName}}</div>
               <div class="goods-opr">
-                <div class="price">￥3888.00</div>
-                <div class="buy">
-                  <i class="iconfont icon-xiaogouwucheicon"></i>
-                  <span class="btn-buy">立即购买</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="result-item">
-            <div class="goods-picture">
-              <img src="#" alt="商品">
-            </div>
-            <div class="goods-details">
-              <div class="goods-desc">Apple Mackbook pro 2017新款苹果电脑真的很好快来买吧哈哈哈哈啊哈哈哈啊哈哈</div>
-              <div class="goods-opr">
-                <div class="price">￥3888.00</div>
-                <div class="buy">
-                  <i class="iconfont icon-xiaogouwucheicon"></i>
-                  <span class="btn-buy">立即购买</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="result-item">
-            <div class="goods-picture">
-              <img src="#" alt="商品">
-            </div>
-            <div class="goods-details">
-              <div class="goods-desc">Apple Mackbook pro 2017新款苹果电脑真的很好快来买吧哈哈哈哈啊哈哈哈啊哈哈</div>
-              <div class="goods-opr">
-                <div class="price">￥3888.00</div>
-                <div class="buy">
-                  <i class="iconfont icon-xiaogouwucheicon"></i>
-                  <span class="btn-buy">立即购买</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="result-item">
-            <div class="goods-picture">
-              <img src="#" alt="商品">
-            </div>
-            <div class="goods-details">
-              <div class="goods-desc">Apple Mackbook pro 2017新款苹果电脑真的很好快来买吧哈哈哈哈啊哈哈哈啊哈哈</div>
-              <div class="goods-opr">
-                <div class="price">￥3888.00</div>
-                <div class="buy">
-                  <i class="iconfont icon-xiaogouwucheicon"></i>
-                  <span class="btn-buy">立即购买</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="result-item">
-            <div class="goods-picture">
-              <img src="#" alt="商品">
-            </div>
-            <div class="goods-details">
-              <div class="goods-desc">Apple Mackbook pro 2017新款苹果电脑真的很好快来买吧哈哈哈哈啊哈哈哈啊哈哈</div>
-              <div class="goods-opr">
-                <div class="price">￥3888.00</div>
-                <div class="buy">
-                  <i class="iconfont icon-xiaogouwucheicon"></i>
-                  <span class="btn-buy">立即购买</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="result-item">
-            <div class="goods-picture">
-              <img src="#" alt="商品">
-            </div>
-            <div class="goods-details">
-              <div class="goods-desc">Apple Mackbook pro 2017新款苹果电脑真的很好快来买吧哈哈哈哈啊哈哈哈啊哈哈</div>
-              <div class="goods-opr">
-                <div class="price">￥3888.00</div>
+                <div class="price">￥{{item.goodsStorePrice}}</div>
                 <div class="buy">
                   <i class="iconfont icon-xiaogouwucheicon"></i>
                   <span class="btn-buy">立即购买</span>
@@ -159,6 +84,8 @@
         searchKey: "",
         t: null,
         hasSearch: false,
+        resultList: [],
+        imgPrefix: ""
       }
     },
     watch:{
@@ -187,7 +114,16 @@
         this.searchKey = "";
       },
       handleSearch(){
-        this.hasSearch = true;
+        if(this.searchKey){
+          this.hasSearch = true;
+          this.axios.get(this.baseURL.mall+"/m/search/goodsKeywordSearch?keyword="+this.searchKey).then(res =>{
+            console.log("搜索结果",res);
+            if(res.data.h.code === 200){
+              this.resultList = res.data.b.goods;
+              this.imgPrefix = res.data.b.imgPrefix;
+            }
+          });
+        }
       },
     },
   }
