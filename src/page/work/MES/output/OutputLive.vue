@@ -182,7 +182,9 @@
       },
       /*选择日期*/
       pickDate(index){
-        let dateString = this.dateObj.year+""+this.dateObj.month+""+this.days[index];
+        let month = this.dateObj.month>9 ? this.dateObj.month : '0'+this.dateObj.month;
+        let day = this.days[index]>9 ? this.days[index] : '0'+this.days[index];
+        let dateString = this.dateObj.year+""+month+""+day;
         let ms = Date.parse(dateString.substr(4,2)+"/"+dateString.substr(6,2)+"/"+dateString.substr(0,4));
         this.ms = ms;
         this.dateObj = DateFormat(ms);
@@ -401,5 +403,10 @@
   .content-bg{
     background: white;
     padding: 0.2rem 0;
+  }
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3){
+    .my-echarts{
+      height: 5.4rem;
+    }
   }
 </style>

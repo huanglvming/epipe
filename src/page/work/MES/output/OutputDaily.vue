@@ -405,4 +405,9 @@ const SelectionBar = () => import("../../../../components/MES/SelectionBar.vue")
     top: 1.15rem;
     max-height: 4.9rem;
   }
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3){
+    .result-wrapper{
+      height: 5.7rem;
+    }
+  }
 </style>

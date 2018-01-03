@@ -33,7 +33,6 @@
   const FloorModel2 = () => import("../../../components/mall/FloorModel2.vue");
   const FloorModel3 = () => import("../../../components/mall/FloorModel3.vue");
   const FloorModel4 = () => import("../../../components/mall/FloorModel4.vue");
-  document.title = '优优商城';
   export default{
     name: "MallHome",
     components:{
@@ -105,6 +104,7 @@
       }
     },
     created(){
+      document.title = '优优商城';
       this.getBanner();
       this.getFloor();
     },

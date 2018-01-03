@@ -5,7 +5,7 @@ Vue.use(Router)
 const Home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'group-foo')
 const Work = r => require.ensure([], () => r(require('@/page/work/work.vue')), 'group-foo')
 const Find = r => require.ensure([], () => r(require('@/page/find/find.vue')), 'group-foo')
-const User = r => require.ensure([], () => r(require('@/page/user/user.vue')), 'group-foo')
+const User = r => require.ensure([], () => r(require('@/page/user/User.vue')), 'group-foo')
 const Record = r => require.ensure([], () => r(require('@/page/work/record.vue')), 'group-foo')
 const Total = r => require.ensure([], () => r(require('@/page/work/total.vue')), 'group-foo')
 const Exhibition = r => require.ensure([], () => r(require('@/page/home/exhibition.vue')), 'group-foo')
@@ -64,6 +64,13 @@ const GoodsClassification = r => require.ensure([], () => r(require('@/page/mall
 const GoodsDetail = r => require.ensure([], () => r(require('@/page/mall/goods/GoodsDetail.vue')), 'group-mall')
 const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
 const ShopList = r => require.ensure([], () => r(require('@/page/mall/shop/ShopList.vue')), 'group-mall')
+const MallUser = r => require.ensure([], () => r(require('@/page/mall/user/User.vue')), 'group-mall')
+const MallSetting = r => require.ensure([], () => r(require('@/page/mall/user/Setting.vue')), 'group-mall')
+const MallAddress = r => require.ensure([], () => r(require('@/page/mall/user/Address.vue')), 'group-mall')
+const MallPassword = r => require.ensure([], () => r(require('@/page/mall/user/Password.vue')), 'group-mall')
+const MallUserInfo = r => require.ensure([], () => r(require('@/page/mall/user/Info.vue')), 'group-mall')
+const MallAddressList = r => require.ensure([], () => r(require('@/page/mall/user/AddressList.vue')), 'group-mall')
+const MallCollection = r => require.ensure([], () => r(require('@/page/mall/user/Collection.vue')), 'group-mall')
 
 export default new Router({
   routes: [
@@ -315,6 +322,34 @@ export default new Router({
     {
       path: '/shoplist',  //购物车列表
       component: ShopList,
+    },
+    {
+      path: '/malluser',  //商城个人中心
+      component: MallUser,
+    },
+    {
+      path: '/mallsetting',  //商城设置
+      component: MallSetting,
+    },
+    {
+      path: '/malladdress',  //商城收货地址设置
+      component: MallAddress,
+    },
+    {
+      path: '/mallpassword',  //商城修改密码
+      component: MallPassword,
+    },
+    {
+      path: '/malluserinfo',  //商城个人信息
+      component: MallUserInfo,
+    },
+    {
+      path: '/malladdresslist',  //商城地址列表
+      component: MallAddressList,
+    },
+    {
+      path: '/mallcollection',  //商城商品收藏
+      component: MallCollection,
     },
   ]
 })
