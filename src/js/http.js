@@ -30,8 +30,8 @@ axios.interceptors.request.use(
       window.localStorage.setItem("auth_token",getCookie("auth_token"));
     }else{
       if(!config.headers.auth_token){
-        config.headers.auth_token = window.localStorage.auth_token;
-        // config.headers.auth_token = "bc0b43b3-c9b2-49a5-b1c9-72c029580437";
+        // config.headers.auth_token = window.localStorage.auth_token;
+        config.headers.auth_token = "5c0c7123-fd76-4656-aebe-a9050ce3f1ab";
       }
     }
     return config;

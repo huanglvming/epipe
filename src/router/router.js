@@ -64,6 +64,7 @@ const GoodsClassification = r => require.ensure([], () => r(require('@/page/mall
 const GoodsDetail = r => require.ensure([], () => r(require('@/page/mall/goods/GoodsDetail.vue')), 'group-mall')
 const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
 const Affairs = r => require.ensure([], () => r(require('@/page/work/affairs.vue')), 'group-work')
+const Leave = r => require.ensure([], () => r(require('@/page/work/leave.vue')), 'group-work')
 
 export default new Router({
   routes: [
@@ -315,6 +316,10 @@ export default new Router({
     {
       path: '/affairs',  //OA事宜
       component: Affairs
+    },
+    {
+      path: '/leave',  //请假详情
+      component: Leave
     },
   ]
 })

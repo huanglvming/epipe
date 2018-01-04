@@ -64,23 +64,23 @@
             }
         },
         mounted(){
-            this.types = 'unfinish'
+            this.types = 'myApply'
             // this.title = location.href.slice(location.href.indexOf('?')+1)
-            if(this.types == 'finish'){
+            if(this.types == 'finishAffairs'){
                 this.title = '已办事宜';
                 this.typeClass = 'header finish_head';
                 this.boxShadow = 'affairs_item finish_shadow';
                 return
             }
 
-            if(this.types == 'unfinish'){
+            if(this.types == 'unfinishAffairs'){
                 this.title = '待办事宜';
                 this.typeClass = 'header unfinish_head';
                 this.boxShadow = 'affairs_item unfinish_shadow';
                 return
             }
 
-            if(this.types == 'myaffairs'){
+            if(this.types == 'myApply'){
                 this.title = '我的申请';
                 this.typeClass = 'header myaffairs_head';
                 this.boxShadow = 'affairs_item myaffairs_shadow'

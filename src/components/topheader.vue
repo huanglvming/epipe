@@ -11,6 +11,7 @@
     letter-spacing: 0.012rem;
     background-color: #609ef7;
     display: flex;
+    z-index:2;
   }
 
   .header_top > li {
@@ -22,7 +23,7 @@
   }
 </style>
 <template>
-  <div>
+  <div v-if="show!='pro'">
     <div class="header_top" :style="{background:bgcolor}">
       <li @click="history_back">
         <svg style="font-size: 0.17rem;margin-left: -0.2rem" class="icon"
@@ -45,7 +46,7 @@
     data () {
       return {}
     },
-    props: ["title", "native", "mark", "bgcolor", "is_button"],
+    props: ["title", "native", "mark", "bgcolor", "is_button",'show'],
     methods: {
       history_back: function () {
         if (this.mark == "mark") {
@@ -65,7 +66,7 @@
       }
     },
     mounted(){
-
+      console.log(this.show)
     }
   }
 </script>
