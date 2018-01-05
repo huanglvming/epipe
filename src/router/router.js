@@ -64,6 +64,9 @@ const GoodsClassification = r => require.ensure([], () => r(require('@/page/mall
 const GoodsDetail = r => require.ensure([], () => r(require('@/page/mall/goods/GoodsDetail.vue')), 'group-mall')
 const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
 const ShopList = r => require.ensure([], () => r(require('@/page/mall/shop/ShopList.vue')), 'group-mall')
+const ConfirmOrder = r => require.ensure([], () => r(require('@/page/mall/shop/ConfirmOrder.vue')), 'group-mall')
+const ReceivingAdress = r => require.ensure([], () => r(require('@/page/mall/shop/ReceivingAdress.vue')), 'group-mall')
+const Invoice = r => require.ensure([], () => r(require('@/page/mall/shop/Invoice.vue')), 'group-mall')
 const MallUser = r => require.ensure([], () => r(require('@/page/mall/user/User.vue')), 'group-mall')
 const MallSetting = r => require.ensure([], () => r(require('@/page/mall/user/Setting.vue')), 'group-mall')
 const MallAddress = r => require.ensure([], () => r(require('@/page/mall/user/Address.vue')), 'group-mall')
@@ -350,6 +353,18 @@ export default new Router({
     {
       path: '/mallcollection',  //商城商品收藏
       component: MallCollection,
+    },
+    {
+      path: '/confirmorder',  //确认订单
+      component: ConfirmOrder,
+    },
+    {
+      path: '/receivingadress',  //收货地址
+      component: ReceivingAdress,
+    },
+    {
+      path: '/invoice',  //收货地址
+      component: Invoice,
     },
   ]
 })

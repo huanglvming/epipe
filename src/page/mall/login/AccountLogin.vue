@@ -48,7 +48,7 @@
             console.log(res);
             let dataMes=res.data.h;
             if(dataMes.code==200){
-              window.location.href="";
+              this.$router.push({path:'/mallhome'});
             }else{
               this.tips=dataMes.msg;
             }

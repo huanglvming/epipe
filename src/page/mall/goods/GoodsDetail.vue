@@ -30,8 +30,8 @@
             <li>
               <div class="spec-name">数量</div>
               <div class="con-spec">
-                <span><input type="button" value="-"  @click="reduce()"></span><span><input type="text" v-model="buyValue"></span><span><input
-                type="button" value="+" @click="add()"></span>
+                <span><input type="button" value="-"  @click="reduce"></span><span><input type="text" v-model="buyValue"></span><span><input
+                type="button" value="+" @click="add"></span>
               </div>
             </li>
           </ul>
@@ -90,17 +90,19 @@
     <div class="add-buy" ref="footer">
       <ul>
         <li>
-          <div>
+          <div @click="collection">
             <p><i class="iconfont icon-shoucang"></i></p>
             <p>收藏</p>
           </div>
           <div>
-            <p><i class="iconfont icon-gouwucheicon"></i></p>
-            <p>购物车</p>
+            <a href="#/ShopList">
+              <p><i class="iconfont icon-gouwucheicon"></i></p>
+              <p>购物车</p>
+            </a>
           </div>
         </li>
-        <li>加入购物车</li>
-        <li>立即购买</li>
+        <li @click="addToCart">加入购物车</li>
+        <li @click="buyNow">立即购买</li>
       </ul>
     </div>
   </div>
@@ -131,7 +133,8 @@
             el: '.swiper-pagination'
           }
         },
-        buyValue:1
+        buyValue:1,   //购买数量
+        goodsId:'',   //商品ID
       }
     },
     components: {
@@ -169,19 +172,55 @@
           this.buyValue--;
         }
       },
+      //收藏商品
+      collection(){
+        console.log(this.goodsId);
+        this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods",{
+          goodsId:this.goodsId
+        }).then(res=>{
+          console.log(res);
+          if(res.data.h.code===200){
+            this.$toast("收藏成功");
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
+      },
+      //加入购物车
+      addToCart(){
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems",{
+          goodsId:this.goodsId,
+          count:this.buyValue,
+          specId:''
+        }).then(res=>{
+          console.log(res);
+        })
+      },
+      //立即购买
+      buyNow(){
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now",{
+          goodsId:this.goodsId,
+          count:this.buyValue,
+          specId:''
+        }).then(res=>{
+          console.log(res);
+        })
+      },
       //获取商品信息与详情
       getGoodsDetail(){
         this.axios.get(this.baseURL.mall + '/m/goods/goodsInfo?goodsId='+this.$route.query.goodsId).then(res =>{
           console.log("商品详情",res);
           if(res.data.h.code === 200){
-            this.goodsList=res.data.b.goods;
-            this.specnameList=res.data.b.goodsSpecObj.specname;
-            this.sepcvalveList=res.data.b.goodsSpecObj.specvalue;
-            this.bannerPrefix=res.data.b.imgPrefix;
-            this.banner=res.data.b.goods[0].goodsImageMore;
-            let detailImg= res.data.b.detail[0].replace(/&lt;/g,"<");
+            let goodsData=res.data.b;
+            this.goodsList=goodsData.goods;
+            this.specnameList=goodsData.goodsSpecObj.specname;
+            this.sepcvalveList=goodsData.goodsSpecObj.specvalue;
+            this.bannerPrefix=goodsData.imgPrefix;
+            this.banner=goodsData.goods[0].goodsImageMore;
+            let detailImg= goodsData.detail[0].replace(/&lt;/g,"<");
             detailImg= detailImg.replace(/&gt;/g,">");
-            this.detailList.push(detailImg)
+            this.detailList.push(detailImg);
+            this.goodsId=goodsData.goods[0].goodsId;
           }
         })
       },
@@ -454,6 +493,7 @@
       p{
         width 100%;
         overflow hidden;
+        color: red;
       }
       img{
         width 100%;

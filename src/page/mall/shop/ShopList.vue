@@ -1,24 +1,8 @@
 <template>
   <div class="shop-cart">
-    <div class="hea-ope">编辑商品</div>
+    <div class="hea-ope" @click="listOperate">{{operate}}</div>
     <div class="one-shop">
       <div class="seller-shop-name"><i class="iconfont icon-weixuan"></i>优管自营</div>
-      <div class="shop-goods">
-        <div class="goods-ope"><i class="iconfont icon-xuanzhong1"></i></div>
-        <div class="goods-pho"><img src="../../../assets/tou.png" alt=""></div>
-        <div class="goods-class">
-          <P class="p1">苹果 iPhone X 64G 银色 公开版4G手机 公开版4G手机</P>
-          <P class="p2"> 银色，公开版，64G</P>
-          <section class="price-num">
-            <section class="price"><i>￥</i>8488</section>
-            <section class="num">
-              <span><i class="iconfont icon-jian"></i></span>
-              <span><input type="text" value="1"></span>
-              <span><i class="iconfont icon-jia1"></i></span>
-            </section>
-          </section>
-        </div>
-      </div>
       <div class="shop-goods">
         <div class="goods-ope"><i class="iconfont icon-weixuan"></i></div>
         <div class="goods-pho"><img src="../../../assets/tou.png" alt=""></div>
@@ -63,8 +47,29 @@
     },
     data: function () {
       return {
+        operate:'编辑商品',
         showIndex:0
       }
+    },
+    methods:{
+      listOperate(){
+        if(this.showIndex===0){
+          this.operate='完成';
+          this.showIndex=1;
+        }else{
+          this.operate='编辑商品';
+          this.showIndex=0;
+        }
+      },
+      //获取购物车列表信息
+      getCartList(){
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/myCart").then(res=>{
+          console.log('购物车信息',res);
+        })
+      }
+    },
+    created(){
+      this.getCartList();
     }
   }
 </script>
