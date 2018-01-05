@@ -39,19 +39,19 @@
         }else if(!reg.test(this.phone)){
           this.tips="手机格式不正确";
         }else{
-          this.axios.post(this.baseURL.mall+"/m/user/checkUser",{
+          this.axios.post(this.baseURL.mall+"/m/user/checkUser"+this.Service.queryString({
             mobile:this.phone
-          }).then(res=>{
+          })).then(res=>{
             console.log(res);
             if(res.data.h.code==200){
               this.time=60;
               this.disabled=true;
               this.btnclass="verifi-code-true";
               this.timer();
-              this.axios.post(this.baseURL.mall+"/m/user/sendMessage",{
+              this.axios.post(this.baseURL.mall+"/m/user/sendMessage"+this.Service.queryString({
                 mobile:this.phone,
                 type:1
-              }).then(res=>{
+              })).then(res=>{
                 console.log(res);
               })
             }else{
@@ -110,11 +110,11 @@
           this.tips="密码应为字母、数字、标点符号至少包含2种组合";
           return false;
         }
-        this.axios.post(this.baseURL.mall+"/m/user/register",{
+        this.axios.post(this.baseURL.mall+"/m/user/register"+this.Service.queryString({
           mobile:this.phone,
           code:this.verCode,
           password:this.password
-        }).then(res=>{
+        })).then(res=>{
           console.log(res);
           let data=res.data;
           if(data.h.code==200){

@@ -175,9 +175,9 @@
       //收藏商品
       collection(){
         console.log(this.goodsId);
-        this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods",{
+        this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
           goodsId:this.goodsId
-        }).then(res=>{
+        })).then(res=>{
           console.log(res);
           if(res.data.h.code===200){
             this.$toast("收藏成功");
@@ -188,21 +188,21 @@
       },
       //加入购物车
       addToCart(){
-        this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems",{
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems"+this.Service.queryString({
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:''
-        }).then(res=>{
+        })).then(res=>{
           console.log(res);
         })
       },
       //立即购买
       buyNow(){
-        this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now",{
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now"+this.Service.queryString({
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:''
-        }).then(res=>{
+        })).then(res=>{
           console.log(res);
         })
       },
@@ -226,7 +226,7 @@
       },
       //获取商品评论
       onInfinite(){
-        this.axios.get(this.baseURL.mall + '/m/goods/goodsComment', {
+        this.axios.get(this.baseURL.mall + '/m/goods/goodsComment',{
           params: {
             pageNo:this.commentList.length/10+1,
             pageSize: 10,

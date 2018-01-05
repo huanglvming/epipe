@@ -1,19 +1,20 @@
 <template>
   <div class="shop-cart">
     <div class="hea-ope" @click="listOperate">{{operate}}</div>
-    <div class="one-shop">
-      <div class="seller-shop-name"><i class="iconfont icon-weixuan"></i>优管自营</div>
-      <div class="shop-goods">
-        <div class="goods-ope"><i class="iconfont icon-weixuan"></i></div>
-        <div class="goods-pho"><img src="../../../assets/tou.png" alt=""></div>
+    <div class="one-shop" v-for="(obj,index) in shopList" :key="index">
+      <div class="seller-shop-name"><i class="iconfont" :class="selectAll || thisStroeAll ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' " @click="selectOneStroe"></i>{{obj.storeName}}</div>
+      <div class="shop-goods" v-for="(item,index) in obj.list" :key="index">
+        <div class="goods-ope"><i class="iconfont" :class="selectAll || thisStroeAll? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' "></i></div>
+        <div class="goods-pho"><img :src="item.goodsImages" alt=""></div>
         <div class="goods-class">
-          <P class="p1">苹果 iPhone X 64G 银色 公开版4G手机 公开版4G手机</P>
-          <P class="p2"> 银色，公开版，64G</P>
+          <P class="p1">{{item.goodsName}}</P>
+          <P class="p2" v-if="item.specInfo!==''">{{item.specInfo}}</P>
+          <P class="p2" v-if="item.specInfo===''">无具体规格</P>
           <section class="price-num">
-            <section class="price"><i>￥</i>8488</section>
+            <section class="price"><i>￥</i>{{item.goodsPrice}}</section>
             <section class="num">
               <span><i class="iconfont icon-jian"></i></span>
-              <span><input type="text" value="1"></span>
+              <span><input type="text" :value="item.goodsNum"></span>
               <span><i class="iconfont icon-jia1"></i></span>
             </section>
           </section>
@@ -21,13 +22,13 @@
       </div>
     </div>
     <div class="settlement">
-      <div class="sel-all">
-        <div><i class="iconfont icon-weixuan"></i></div>
+      <div class="sel-all" @click="selectAllFunc">
+        <div><i class="iconfont" :class="selectAll ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' "></i></div>
         <div>全选</div>
       </div>
       <div class="tot-price" v-if="showIndex==0">
-        <div class="tot-price-btn">去结算<i>(2件)</i></div>
-        <div class="tot-price-num">总计：<i>￥8888.00</i></div>
+        <div class="tot-price-btn">去结算<i>(0件)</i></div>
+        <div class="tot-price-num">总计：<i>￥0.00</i></div>
       </div>
       <div class="tot-price" v-if="showIndex==1">
         <div class="manage-shops">删除</div>
@@ -47,8 +48,11 @@
     },
     data: function () {
       return {
+        thisStroeAll:false,
+        selectAll:false,
         operate:'编辑商品',
-        showIndex:0
+        showIndex:0,
+        shopList:[],    // 购物车列表
       }
     },
     methods:{
@@ -65,8 +69,28 @@
       getCartList(){
         this.axios.post(this.baseURL.mall + "/m/authc/cart/myCart").then(res=>{
           console.log('购物车信息',res);
+          if(res.data.h.code==200){
+            let shopList=res.data.b.cartVoList;
+            this.shopList=shopList;
+          }
         })
-      }
+      },
+      //同一个店铺全选
+      selectOneStroe(){
+        if(this.thisStroeAll==false){
+          this.thisStroeAll=true;
+        }else{
+          this.thisStroeAll=false;
+        }
+      },
+      //所有店铺全选
+      selectAllFunc(){
+        if(this.selectAll==false){
+          this.selectAll=true;
+        }else{
+          this.selectAll=false;
+        }
+      },
     },
     created(){
       this.getCartList();
@@ -135,6 +159,9 @@
             font-size .14rem;
             color #333;
             line-height .2rem;
+            height .4rem;
+            overflow hidden;
+            word-break break-all;
           }
           .p2{
             font-size .14rem;
@@ -270,5 +297,11 @@
         }
       }
     }
+  }
+  .select-ccc{
+    color #ccc;
+  }
+  .select-d74a45{
+    color #d74a45;
   }
 </style>

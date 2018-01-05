@@ -33,19 +33,19 @@
         } else if (!reg.test(this.phone)) {
           this.tips = "手机格式不正确";
         } else {
-          this.axios.post(this.baseURL.mall+"/m/user/checkUser",{
+          this.axios.post(this.baseURL.mall+"/m/user/checkUser"+this.Service.queryString({
             mobile:this.phone
-          }).then(res=>{
+          })).then(res=>{
             console.log(res);
             if(res.data.h.code!=200){
               this.time=60;
               this.disabled=true;
               this.btnclass="verifi-code-true";
               this.timer();
-              this.axios.post(this.baseURL.mall+"/m/user/sendMessage",{
+              this.axios.post(this.baseURL.mall+"/m/user/sendMessage"+this.Service.queryString({
                 mobile:this.phone,
                 type:5
-              }).then(res=>{
+              })).then(res=>{
                 console.log(res);
               })
             }else{
@@ -79,11 +79,10 @@
           return false;
         }else{
           this.tips="";
-          this.axios.post(this.baseURL.mall+"/m/user/codeLogin",
-            {
+          this.axios.post(this.baseURL.mall+"/m/user/codeLogin"+this.Service.queryString({
               mobile: this.phone,
               code: this.verCode
-            }).then(res =>{
+            })).then(res =>{
             console.log(res);
             let dataMes=res.data.h;
             if(dataMes.code==200){
