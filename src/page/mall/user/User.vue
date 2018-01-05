@@ -1,7 +1,7 @@
 <template>
   <div class="user-wrapper">
     <div class="user-info">
-      <div class="user-info-content">
+      <router-link to="mallsetting" tag="div" class="user-info-content">
         <div class="user">
           <div class="avatar"></div>
           <div class="info-content">
@@ -12,13 +12,13 @@
           <i class="iconfont icon-zhanghushezhi"></i>
           账号管理
         </div>
-      </div>
+      </router-link>
     </div>
     <div class="menu-tab">
-      <div class="menu-item">
+      <router-link to="mallcollection" tag="div" class="menu-item">
         <div class="number">23</div>
         <div class="title">商品收藏</div>
-      </div>
+      </router-link>
       <div class="menu-item">
         <div class="number">23</div>
         <div class="title">店铺收藏</div>
@@ -30,7 +30,7 @@
     </div>
     <div class="orders">
       <div class="link-item">
-        <div class="link-title">我的退货单</div>
+        <div class="link-title">我的订单</div>
         <div class="link-icon">
           <i class="iconfont icon-jinru"></i>
         </div>
@@ -135,7 +135,7 @@
       margin-top 0.1rem;
       color: #ffcccc;
       line-height 1;
-      font-size 0.11rem;
+      font-size 0.12rem;
     }
   }
   .link-account{
@@ -163,6 +163,7 @@
     .number{
       color: #d74a45;
       font-size 0.16rem;
+      font-weight bold;
       line-height 1;
     }
     .title{
@@ -186,7 +187,7 @@
     flex: 1;
     text-align center;
     .iconfont{
-      font-size 0.2rem;
+      font-size 0.25rem;
       color: #d4a163;
     }
   }
@@ -195,6 +196,7 @@
     background white;
   }
   .link-item{
+    position relative;
     display flex;
     justify-content space-between;
     align-items center;
@@ -203,8 +205,18 @@
     font-size: 0.14rem;
     color: #666;
   }
-  .link-item:not(:last-child){
-    border-bottom 1px solid #E9E9E9;
+  .link-item:not(:last-child)::after{
+    content: "";
+    position absolute;
+    left 0;
+    bottom: 0;
+    width 100%;
+    height: 1px;
+    background #E9E9E9;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
   }
   .icon-jinru{
     color: #ccc;

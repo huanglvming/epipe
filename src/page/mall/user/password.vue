@@ -45,10 +45,13 @@
     color #666;
   }
   input{
-    width: 2.7rem;
+    width: 2.5rem;
     height: inherit;
-    border: 1px solid #e5e5e5;
+    padding 0 0.1rem;
     border-radius: 2px;
+    background-color:transparent;
+    border: 1px solid #e5e5e5;
+    -webkit-appearance: none;
   }
   .btn-confirm{
     width: 3.55rem;

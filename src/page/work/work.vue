@@ -13,7 +13,9 @@
   }
   .tab_work_2con {
     display: flex;
+    display: -webkit-flex;
     flex-direction: row;
+    -webkit-flex-direction: row;
     height: 0.53rem;
     align-items: center;
   }
@@ -30,20 +32,20 @@
   }
   .tab_work_3con {
     display: flex;
+    display: -webkit-flex;
     flex-direction: row;
+    -webkit-flex-direction: row;
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     width: 100%;
   }
   .tab_work_3con li{
     width: 25%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding-bottom 0.2rem;
     padding-top 0.1rem;
     margin-top -0.15rem;
     -webkit-tap-highlight-color: transpranet;
+    text-align center;
   }
   .tab_work_3con li:nth-child(n + 5){
     margin-top 0;
@@ -84,7 +86,9 @@
   }
   .broadcast{
     display: flex;
+    display: -webkit-flex;
     align-items center;
+    -webkit-align-items center;
     padding: 0.15rem;
     margin-top: -0.3rem;
     box-shadow: 0 0 20px rgba(0,143,87,0.15);
@@ -180,25 +184,6 @@
           </div>
         </div>
       </div>
-      <!--<div class="tab_work_con">-->
-        <!--<ul class="tab_work_2con">-->
-          <!--<li></li>-->
-          <!--<li>智能报表</li>-->
-        <!--</ul>-->
-        <!--<ul class="tab_work_3con">-->
-          <!--<li @click="go_daily">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-qiyeribao"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div>企业日报</div>-->
-          <!--</li>-->
-          <!--<li></li>-->
-          <!--<li></li>-->
-          <!--<li></li>-->
-        <!--</ul>-->
-      <!--</div>-->
       <div class="tab_work_con">
         <ul class="tab_work_2con">
           <li></li>

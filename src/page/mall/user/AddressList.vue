@@ -1,7 +1,7 @@
 <template>
   <div class="address-list-wrapper">
     <div class="address-list">
-      <div class="list-item">
+      <div class="list-item" v-for="i in 3">
         <div class="consignee list-line">
           <span class="name">黄律铭</span>
           <span class="tel">185******555</span>
@@ -14,40 +14,6 @@
           </div>
           <div class="right">
             <router-link to="malladdress" tag="span" class="edit">编辑</router-link>
-            <span class="delete">删除</span>
-          </div>
-        </div>
-      </div>
-      <div class="list-item">
-        <div class="consignee list-line">
-          <span class="name">黄律铭</span>
-          <span class="tel">185******555</span>
-        </div>
-        <div class="address list-line">广东省深圳市南山区白石洲下白石</div>
-        <div class="operation">
-          <div class="left">
-            <i class="iconfont icon-xuanzhong"></i>
-            <span>设为默认地址</span>
-          </div>
-          <div class="right">
-            <span class="edit">编辑</span>
-            <span class="delete">删除</span>
-          </div>
-        </div>
-      </div>
-      <div class="list-item">
-        <div class="consignee list-line">
-          <span class="name">黄律铭</span>
-          <span class="tel">185******555</span>
-        </div>
-        <div class="address list-line">广东省深圳市南山区白石洲下白石</div>
-        <div class="operation">
-          <div class="left">
-            <i class="iconfont icon-weixuan"></i>
-            <span>设为默认地址</span>
-          </div>
-          <div class="right">
-            <span class="edit">编辑</span>
             <span class="delete">删除</span>
           </div>
         </div>
@@ -98,10 +64,21 @@
     padding 0 0.1rem;
   }
   .list-item{
+    position relative;
     box-sizing border-box;
     height: 0.8rem;
     padding: 0.15rem 0.1rem 0.1rem 0.1rem;
-    border-bottom 1px solid #E9E9E9;
+  }
+  .list-item::after{
+    content: "";
+    position absolute;
+    left 0;
+    bottom 0;
+    width 100%;
+    height: 1px;
+    background #e9e9e9;
+    transform scaleY(0.5);
+    transform-origin center;
   }
   .list-line{
     font-size 0.14rem;

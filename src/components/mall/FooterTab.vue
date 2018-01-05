@@ -44,7 +44,20 @@
     width: 100%;
     height: 49px;
     background: white;
-    border-top: 1px solid #e5e5e5;
+
+  }
+  .footer-tab::before{
+    content: "";
+    position absolute;
+    left 0;
+    top 0;
+    width 100%;
+    height: 1px;
+    background #e5e5e5;
+    -webkit-transform-origin: 0 0;
+    transform-origin: 0 0;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
   }
   .footer-tab-item{
     flex: 1;
