@@ -1,13 +1,13 @@
 <template>
   <div class="setting-wrapper">
-    <div class="setting-item user-info">
+    <router-link to="malluserinfo" tag="div" class="setting-item user-info">
       <div class="user-content">
         <img src="#" alt="" width="40px" height="40px">
         <span class="name">张小惠（18655555555）</span>
       </div>
       <i class="iconfont icon-jinru"></i>
-    </div>
-    <router-link to="malladdress" tag="div" class="setting-item">
+    </router-link>
+    <router-link to="malladdresslist" tag="div" class="setting-item">
       <div class="setting-title">收货地址管理</div>
       <i class="iconfont icon-jinru"></i>
     </router-link>
@@ -35,6 +35,7 @@
     background: white;
   }
   .setting-item{
+    position relative;
     display flex;
     justify-content space-between;
     align-items center;
@@ -46,14 +47,27 @@
   .user-content img{
     width 0.4rem;
     height 0.4rem;
+    vertical-align middle;
     margin-right 0.06rem;
     border-radius 50%;
     border none;
   }
-  .setting-item:not(:last-child){
+  .setting-item:not(:last-child)::after{
+    content: "";
+    position absolute;
+    left 0;
+    bottom 0;
+    width 100%;
+    height: 1px;
     border-bottom 1px solid #E9E9E9;
+    transform scaleY(0.5);
+    transform-origin center;
   }
   .user-info{
     height: 0.65rem;
+  }
+  .icon-jinru{
+    font-size 0.12rem;
+    color: #ccc;
   }
 </style>

@@ -4,10 +4,10 @@
       <span v-if="!edit">商品管理</span>
       <span v-else>完成</span>
     </div>
-    <div class="collection-list" :class="{'padding-bottom':edit}">
-      <div class="list-item">
+    <div class="collection-list" :class="{'padding-bottom':edit&&len>4}">
+      <div class="list-item" v-for="(item,index) in len" :key="index">
         <div class="left">
-          <i class="iconfont icon-xuanzhong1" v-if="edit"></i>
+          <i class="iconfont" :class="checkedList[index] ? 'icon-xuanzhong1' : 'icon-weixuan'" v-if="edit" @click="singleCheck(index)"></i>
           <img src="#" alt="">
         </div>
         <div class="right">
@@ -40,13 +40,36 @@
       return{
         edit: false,
         selectAll: false,
+        len: 0,
+        checkedList: [],
       }
     },
     components:{
       FooterTab
     },
     created(){
-      document.title = "商品管理";
+      document.title = "商品收藏";
+      let vm = this;
+      setTimeout(() =>{
+        vm.len = 8;
+        vm.checkedList = new Array(vm.len);
+      },200);
+    },
+    watch:{
+      'checkedList':{
+        handler: function(arr){
+          for(var i=0; i<arr.length; i++){
+            if(!arr[i]){
+              this.selectAll = false;
+              return;
+            }
+            if(i === arr.length-1){
+              this.selectAll = true;
+            }
+          }
+        },
+        deep: true
+      }
     },
     methods:{
       handleEdit(){
@@ -54,11 +77,17 @@
       },
       handleSelectAll(){
         this.selectAll = !this.selectAll;
+        for(var i=0; i<this.len; i++){
+          this.$set(this.checkedList,i,this.selectAll);
+        }
+      },
+      singleCheck(index){
+        this.$set(this.checkedList,index,!this.checkedList[index]);
       }
     }
   }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
   .collection-wrapper{
     background white;
   }
@@ -98,7 +127,7 @@
     align-items center;
     .iconfont{
       margin-right 0.1rem;
-      font-size 0.15rem;
+      font-size 0.2rem;
     }
     img{
       width 1.1rem;
@@ -168,6 +197,9 @@
     background white;
     .select-all{
       text-align center;
+      .iconfont{
+        font-size 0.2rem;
+      }
       p{
         font-size: 0.12rem;
         line-height: 1;
