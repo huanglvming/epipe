@@ -2,26 +2,36 @@
   <div class="goods-con">
     <div class="detail-tab" ref="header">
       <ul>
-        <li v-for="(item, index) in list" :class="{tabActive:selected==index}" @click="change(index)"><span>{{item.title}}</span></li>
+        <li v-for="(item, index) in tabList" :class="{tabActive:selected==index}" @click="change(index)"><span>{{item}}</span></li>
       </ul>
     </div>
-    <div class="tab-con" ref="conpart1"  v-if="showIndex === 0">
-        <div class="goods-banner"></div>
+    <div class="tab-con" ref="conpart"  v-if="showIndex === 0" >
+      <div v-for="(item,index) in goodsList" :key="index">
+        <div class="goods-banner">
+          <swiper :options="swiperOption">
+            <swiper-slide v-for="(slide,index) in banner" :key="index">
+              <img :src="bannerPrefix + slide" v-if="slide">
+            </swiper-slide>
+            <div class="swiper-pagination" slot="pagination"></div>
+          </swiper>
+        </div>
         <div class="goods-des">
-          <p>Google 的免费翻译服务可提供简体中文和另外多种语言之间的互译功能,可让您即时翻译字。</p>
-          <div><span>￥</span><span>8888</span></div>
+          <p>{{item.goodsName}}</p>
+          <div><span>￥</span><span>{{item.goodsStorePrice}}</span></div>
         </div>
         <div class="goods-spec">
           <ul>
-            <li>
-              <div class="spec-name">颜色</div>
-              <div class="con-spec"><span>金色</span><span>深空灰</span></div>
+            <li  v-for="(item,index1) in specnameList" :key="index1" >
+              <div class="spec-name">{{item}}</div>
+              <div class="con-spec">
+                <span  v-for="(obj,index2) in sepcvalveList[index1]" :key="index2"  :class="{specActive:clicked===index2 }" @click="specClick(index2)">{{obj.spValueName}}</span>
+              </div>
             </li>
             <li>
               <div class="spec-name">数量</div>
               <div class="con-spec">
-                <span><input type="button" value="-" disabled="disabled"></span><span><input type="text" value="1"></span><span><input
-                type="button" value="+"></span>
+                <span><input type="button" value="-"  @click="reduce"></span><span><input type="text" v-model="buyValue"></span><span><input
+                type="button" value="+" @click="add"></span>
               </div>
             </li>
           </ul>
@@ -30,103 +40,111 @@
           <ul>
             <li>
               <div>
-                <p class="p1">123</p>
+                <p class="p1">{{item.salenum}}</p>
                 <p class="p2">商品销量</p>
               </div>
             </li>
             <li>
               <div>
-                <p class="p1">534</p>
+                <p class="p1">{{item.commentnum}}</p>
                 <p class="p2">商品评价</p>
               </div>
             </li>
             <li>
               <div>
-                <p class="p1">545</p>
+                <p class="p1">{{item.collect}}</p>
                 <p class="p2">商品收藏</p>
               </div>
             </li>
           </ul>
         </div>
       </div>
-    <div class="tab-con" ref="conpart2" v-if="showIndex === 1">
-      <div class="goods-spcpic"><img src="../../../assets/pic3.png" alt=""></div>
+      </div>
+    <div class="tab-con" ref="conpart" v-if="showIndex === 1">
+      <div class="goods-spcpic" v-for="(item,index) in detailList" :key="index" v-html="item"></div>
     </div>
-    <div class="tab-con" ref="conpart3" v-if="showIndex === 2">
+    <div class="tab-con" ref="conpart" v-if="showIndex === 2">
         <div class="comment" v-for="(item,index) in commentList" :key="index">
           <div class="user-info">
-            <div class="pic"><img :src="item.avatar" alt=""></div>
-            <div class="pho">{{item.phone}}</div>
+            <div class="pic"><img src="../../../assets/tou.png" alt=""></div>
+            <div class="pho">{{item.gevalFrommembername}}</div>
             <div class="star">
-              <i class="iconfont icon-star" v-for="(i,k) in item.stars" :key="k" />
+              <i class="iconfont icon-star" v-for="(i,k) in item.gevalScore" :key="k" /><i class="iconfont icon-star" style="color:#cdcdcd;" v-for="(i,k) in (5-item.gevalScore)" :key="k" />
             </div>
           </div>
-          <div class="comment-con">{{item.comment}}</div>
+          <div class="comment-con">{{item.gevalContent}}</div>
           <div class="time">
-            <div class="time-con">2017-12-23 15:36:58</div>
+            <div class="time-con">{{item.gevalAddTimeStr}}</div>
             <div class="thumps"><i class="iconfont icon-dianzan1"></i><i>12</i></div>
           </div>
         </div>
+        <infinite-loading spinner="bubbles" :on-infinite="onInfinite" ref="infiniteLoading">
+          <span slot="no-more">
+            暂无更多加载
+          </span>
+          <span slot="no-results">
+            暂无结果
+          </span>
+        </infinite-loading>
       </div>
     <div class="add-buy" ref="footer">
       <ul>
         <li>
-          <div>
+          <div @click="collection">
             <p><i class="iconfont icon-shoucang"></i></p>
             <p>收藏</p>
           </div>
           <div>
-            <p><i class="iconfont icon-gouwucheicon"></i></p>
-            <p>购物车</p>
+            <a href="#/ShopList">
+              <p><i class="iconfont icon-gouwucheicon"></i></p>
+              <p>购物车</p>
+            </a>
           </div>
         </li>
-        <li>加入购物车</li>
-        <li>立即购买</li>
+        <li @click="addToCart">加入购物车</li>
+        <li @click="buyNow">立即购买</li>
       </ul>
     </div>
   </div>
 </template>
 <script>
+  import 'swiper/dist/css/swiper.css'
+  import { swiper, swiperSlide } from 'vue-awesome-swiper'
+  import InfiniteLoading from 'vue-infinite-loading';
+  import Pagination from '../../../components/Pagination.vue';
   document.title="商品详情";
   export  default {
     data:function () {
       return{
+        clicked:'',
         selected: 0,
         showIndex: 0,
-        commentList:[
-          {
-              avatar: "../../../assets/tou.png",
-              phone: "13333333333",
-              stars: 5,
-              comment: "不错啊！！！"
-          },
-          {
-            avatar: "../../../assets/tou.png",
-            phone: "13333333333",
-            stars: 4,
-            comment: "不错啊！！！"
-          },
-          {
-            avatar: "../../../assets/tou.png",
-            phone: "13333333333",
-            stars: 3,
-            comment: "不错啊！！！"
-          },
-        ],
-        list: [
-          {
-            title: '商品',
-          },
-          {
-            title: '详情',
-          },
-          {
-            title: '评价',
+        tabList:['商品','详情','评价'],
+        commentList:[],   //评论
+        goodsList:[],     //商品
+        detailList:[],    //详情
+        specnameList:[],  //规格名称
+        sepcvalveList:[], //具体规格
+        bannerPrefix:'',  //图片地址
+        banner:[],        //商品图片
+        swiperOption: {
+          autoplay:true,
+          pagination: {
+            el: '.swiper-pagination'
           }
-        ]
+        },
+        buyValue:1,   //购买数量
+        goodsId:'',   //商品ID
       }
     },
+    components: {
+      InfiniteLoading,
+      Pagination,
+      swiper,
+      swiperSlide
+    },
     mounted () {
+      
       let headerH=window.getComputedStyle(this.$refs.header).height.replace("px","");
       console.log(headerH);
       let footerH=window.getComputedStyle(this.$refs.footer).height.replace("px","");
@@ -134,15 +152,106 @@
       let winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
       console.log(winH);
       let conH=winH-headerH-footerH;
-      this.$refs.conpart1.style.height = conH +'px';
-      this.$refs.conpart2.style.height = conH +'px';
-      this.$refs.conpart3.style.height = conH +'px';
+      this.$refs.conpart.style.height = conH +'px';
     },
     methods: {
+      //tab切换
       change(index) {
         this.selected = index;
         this.showIndex = index;
+      },
+      specClick(index,spId){
+        this.clicked=index;
+      },
+      //购买商品加减
+      add(){
+        this.buyValue++;
+      },
+      reduce(){
+        if(this.buyValue!==1){
+          this.buyValue--;
+        }
+      },
+      //收藏商品
+      collection(){
+        console.log(this.goodsId);
+        this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods",{
+          goodsId:this.goodsId
+        }).then(res=>{
+          console.log(res);
+          if(res.data.h.code===200){
+            this.$toast("收藏成功");
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
+      },
+      //加入购物车
+      addToCart(){
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems",{
+          goodsId:this.goodsId,
+          count:this.buyValue,
+          specId:''
+        }).then(res=>{
+          console.log(res);
+        })
+      },
+      //立即购买
+      buyNow(){
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now",{
+          goodsId:this.goodsId,
+          count:this.buyValue,
+          specId:''
+        }).then(res=>{
+          console.log(res);
+        })
+      },
+      //获取商品信息与详情
+      getGoodsDetail(){
+        this.axios.get(this.baseURL.mall + '/m/goods/goodsInfo?goodsId='+this.$route.query.goodsId).then(res =>{
+          console.log("商品详情",res);
+          if(res.data.h.code === 200){
+            let goodsData=res.data.b;
+            this.goodsList=goodsData.goods;
+            this.specnameList=goodsData.goodsSpecObj.specname;
+            this.sepcvalveList=goodsData.goodsSpecObj.specvalue;
+            this.bannerPrefix=goodsData.imgPrefix;
+            this.banner=goodsData.goods[0].goodsImageMore;
+            let detailImg= goodsData.detail[0].replace(/&lt;/g,"<");
+            detailImg= detailImg.replace(/&gt;/g,">");
+            this.detailList.push(detailImg);
+            this.goodsId=goodsData.goods[0].goodsId;
+          }
+        })
+      },
+      //获取商品评论
+      onInfinite(){
+        this.axios.get(this.baseURL.mall + '/m/goods/goodsComment', {
+          params: {
+            pageNo:this.commentList.length/10+1,
+            pageSize: 10,
+            goodsId: this.$route.query.goodsId
+          }
+        }).then(res =>{
+          console.log("商品评论",res);
+          if(res.data.h.code === 200){
+            if (res.data.b.comment.length == 0) {
+              console.log("加载完了")
+              this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+            } else if (res.data.b.comment) {
+              this.commentList = this.commentList.concat(res.data.b.comment)
+              this.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+            }
+          }else{
+            console.log("加载完了")
+            this.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+          }
+        })
       }
+    },
+    created(){
+      this.getGoodsDetail();
+      //this.getComment();
     }
   }
 </script>
@@ -245,6 +354,12 @@
       height 3.75rem;
       background #fff;
       border-bottom 1px solid #e5e5e5;
+      .swiper-container{
+        height 100%;
+        img{
+          height 100%;
+        }
+      }
     }
     .goods-des{
       padding .15rem;
@@ -279,16 +394,17 @@
             float left;
           }
           .spec-name{
-            width .4rem;
+            width .5rem;
             height .3rem;
             line-height .3rem;
             text-align right;
             font-size .12rem;
             color #999;
             margin .1rem .1rem 0 0;
+            overflow hidden;
           }
           .con-spec{
-            width calc(100% - .5rem);
+            width calc(100% - .6rem);
             float left;
             span{
               display inline-block;
@@ -301,16 +417,13 @@
               color #333;
               border-radius 2px;
             }
+            .specActive{
+              color #d74a45;
+              border-color #d74a45;}
           }
         }
         li:first-child{
           margin-top 0;
-          .spec-name{
-            margin-top 0;
-          }
-          span{
-            margin-top 0;
-          }
         }
         li:last-child{
           span{
@@ -373,7 +486,15 @@
       }
     }
     .goods-spcpic{
+      width 100%;
       padding 0 .1rem;
+      box-sizing border-box;
+      overflow hidden;
+      p{
+        width 100%;
+        overflow hidden;
+        color: red;
+      }
       img{
         width 100%;
       }

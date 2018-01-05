@@ -12,6 +12,7 @@
   </div>
 </template>
 <script>
+  document.title="忘记密码";
   export default{
     data: function () {
       return {
@@ -37,14 +38,25 @@
         }else if(!reg.test(this.phone)){
           this.tips="手机格式不正确";
         }else{
-          this.time=60;
-          this.disabled=true;
-          this.btnclass="verifi-code-true";
-          this.timer();
-          /*axios.post(url).then(
-              res=>{
-              this.phonedata=res.data;
-          })*/
+          this.axios.post(this.baseURL.mall+"/m/user/checkUser",{
+            mobile:this.phone
+          }).then(res=>{
+            console.log(res);
+            if(res.data.h.code!=200){
+              this.time=60;
+              this.disabled=true;
+              this.btnclass="verifi-code-true";
+              this.timer();
+              this.axios.post(this.baseURL.mall+"/m/user/sendMessage",{
+                mobile:this.phone,
+                type:4
+              }).then(res=>{
+                console.log(res);
+              })
+            }else{
+              this.tips="该用户尚未注册";
+            }
+          })
         }
       },
       handleInput(e){
@@ -93,6 +105,15 @@
         }else if(!mediumRegex.test(this.password)){
           this.tips="密码应为字母、数字、标点符号至少包含2种组合";
           return false;
+        }else{
+          this.axios.post(this.baseURL.mall+"/m/user/setNewPassword",
+            {
+              mobile: this.phone,
+              code: this.verCode,
+              password:this.password
+            }).then(res =>{
+            console.log(res);
+          });
         }
       }
     }
