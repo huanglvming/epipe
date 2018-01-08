@@ -24,7 +24,7 @@
             <li  v-for="(item,i) in specList" :key="i" >
               <div class="spec-name">{{item.spName}}</div>
               <div class="con-spec">
-                <span  v-for="(obj,j) in item.specValueList" :key="j"  :class="{specActive:clicked===j }" @click="specClick(i,j)">{{obj.spValueName}}</span>
+                <span  v-for="(obj,j) in item.specValueList" :key="j"  :class="{specActive:clickList[i][j]}"  @click="specClick(i,j)">{{obj.spValueName}}</span>
               </div>
             </li>
             <li>
@@ -116,7 +116,11 @@
   export  default {
     data:function () {
       return{
-        clicked:'',
+        clicked:{
+          parent: null,
+          child: null,
+        },
+        clickList: null,
         selected: 0,
         showIndex: 0,
         tabList:['商品','详情','评价'],
@@ -162,7 +166,10 @@
       specClick(i,j){
         console.log("i",i);
         console.log("j",j);
-        this.clicked=j;
+        this.clicked.parent=i;
+        this.clicked.child=j;
+        this.clickList[i][j] = true;
+        console.log("clickList",this.clickList,this.clickList[i][j]);
       },
       //购买商品加减
       add(){
@@ -221,6 +228,16 @@
             detailImg= detailImg.replace(/&gt;/g,">");
             this.detailList.push(detailImg);
             this.goodsId=goodsData.goods[0].goodsId;
+            this.clickList = new Array(goodsData.specList.length);
+            for(var i=0; i<goodsData.specList.length; i++){
+              this.clickList[i] = new Array(goodsData.specList[i].specValueList.length);
+            }
+            console.log("mylist:",this.clickList);
+//            this.clickList.map(function(item,index){
+//              item = new Array(goodsData.specList[index].specValueList.length);
+//            });
+          
+          
           }
         })
       },
