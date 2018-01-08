@@ -35,8 +35,11 @@
         areaList: [],
         areaObj:{
           provice: "",
+          proviceId: "",
           city: "",
-          area: ""
+          cityId: "",
+          area: "",
+          areaId: ""
         },
         proviceShow: true,
         cityShow: false,
@@ -76,6 +79,7 @@
         this.proviceShow = false;
         this.cityShow = true;
         this.areaObj.provice = this.proviceList[index].areaName;
+        this.areaObj.proviceId = this.proviceList[index].areaId;
         if(specicalList.includes(this.proviceList[index].areaName)){
           this.$emit('selectArea',this.proviceList[index].areaName);
         }else{
@@ -87,6 +91,7 @@
         this.cityShow = false;
         this.areaShow = true;
         this.areaObj.city = this.cityList[index].areaName;
+        this.areaObj.cityId = this.cityList[index].areaId;
         this.getData(2,this.cityList[index].areaId);
       },
       /*选择市区*/
@@ -94,11 +99,9 @@
         this.areaShow = false;
         this.proviceShow = true;
         this.areaObj.area = this.areaList[index].areaName;
-        let str = this.areaObj.provice + this.areaObj.city + this.areaObj.area;
-        this.areaObj.provice = "";
-        this.areaObj.city = "";
-        this.areaObj.area = "";
-        this.$emit('selectArea',str);
+        this.areaObj.areaId = this.cityList[index].areaId;
+        this.$emit('selectArea',this.areaObj);
+        this.areaObj = {};
       },
     }
   }

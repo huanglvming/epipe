@@ -3,11 +3,11 @@
     <div class="setting-wrapper" v-if="!showSelection">
       <div class="setting-item">
         <div class="setting-title">收货人</div>
-        <input class="setting-content" type="text" placeholder="姓名">
+        <input class="setting-content" type="text" placeholder="姓名" v-model="name">
       </div>
       <div class="setting-item">
         <div class="setting-title">联系方式</div>
-        <input class="setting-content" type="tel" placeholder="手机号码">
+        <input class="setting-content" type="tel" placeholder="手机号码" v-model="phone">
       </div>
       <div class="setting-item">
         <div class="setting-title">所在区域</div>
@@ -16,10 +16,10 @@
       </div>
       <div class="setting-item setting-address">
         <div class="setting-title">详细地址</div>
-        <textarea name="address" id="textarea" placeholder="详细地址需填写镇乡路及楼栋楼层房间号信息" maxlength="50"></textarea>
+        <textarea name="address" id="textarea" placeholder="详细地址需填写镇乡路及楼栋楼层房间号信息" maxlength="50" v-model="address"></textarea>
       </div>
       <div class="btn-wrapper">
-        <div class="btn-confirm">确定</div>
+        <div class="btn-confirm" :class="submitActive ? 'btn-confirm-active' : ''" @click="handleConfirm">确定</div>
       </div>
       <footer-tab :category="3"></footer-tab>
     </div>
@@ -40,7 +40,20 @@
     data(){
       return{
         area: "",
+        areaObj: {},
+        name: "",
+        phone: "",
+        address: "",
         showSelection: false,
+      }
+    },
+    computed:{
+      submitActive(){
+        if(this.name && this.phone && this.address && this.area){
+          return true;
+        }else{
+          return false;
+        }
       }
     },
     created(){
@@ -52,11 +65,30 @@
         this.showSelection = true;
       },
       /*监听回调函数*/
-      handleSelection(str){
-        console.log(str);
-        this.area = str;
+      handleSelection(obj){
+        console.log(obj);
+        this.area = obj.provice+obj.city+obj.area;
+        this.areaObj = obj;
         this.showSelection = false;
-      }
+      },
+      /*确定*/
+      handleConfirm(){
+        if(this.submitActive){
+          this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateUserAddress" + this.Service.queryString({
+            token: "38238544643632157582",
+            trueName: this.name,
+            telPhone: this.phone,
+            isDefault: 0,
+            provinceId: this.areaObj.proviceId,
+            cityId: this.areaObj.cityId ? this.areaObj.cityId : "",
+            areaId: this.areaObj.areaId ? this.areaObj.areaId : "",
+            areaInfo: this.area,
+            address: this.address
+          })).then(res =>{
+            console.log("提交结果",res);
+          })
+        }
+      },
     }
   }
 </script>
@@ -132,9 +164,12 @@
     border-radius 4px;
     line-height 0.45rem;
     text-align center;
-    background #d95757;
+    background #ddd;
     color: white;
     font-size 0.15rem;
+  }
+  .btn-confirm-active{
+    background #d95757;
   }
   .icon-jinru{
     font-size 0.12rem;
