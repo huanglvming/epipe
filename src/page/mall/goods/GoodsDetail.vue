@@ -17,14 +17,14 @@
         </div>
         <div class="goods-des">
           <p>{{item.goodsName}}</p>
-          <div><span>￥</span><span>{{item.goodsStorePrice}}</span></div>
+          <div><span>￥</span><span>{{goodsStorePrice}}</span></div>
         </div>
         <div class="goods-spec">
           <ul>
             <li  v-for="(item,i) in specList" :key="i" >
               <div class="spec-name">{{item.spName}}</div>
               <div class="con-spec">
-                <span  v-for="(obj,j) in item.specValueList" :key="j"  :class="{specActive:clickList[i][j]}"  @click="specClick(i,j)">{{obj.spValueName}}</span>
+                <span  v-for="(obj,j) in item.specValueList" :key="j"  :data-value-id=obj.spValueId  :class="{specActive:checkedArr[i]==j}"  @click="selt($event,i,j)">{{obj.spValueName}}</span>
               </div>
             </li>
             <li>
@@ -116,11 +116,7 @@
   export  default {
     data:function () {
       return{
-        clicked:{
-          parent: null,
-          child: null,
-        },
-        clickList: null,
+        checkedArr:[], //规格判断
         selected: 0,
         showIndex: 0,
         tabList:['商品','详情','评价'],
@@ -136,8 +132,12 @@
             el: '.swiper-pagination'
           }
         },
+        goodsStorePrice:'',   //商品价格
         buyValue:1,   //购买数量
         goodsId:'',   //商品ID
+        specId:'',    //规格组合id
+        specIdArr:[],
+        goodsSpecObj:'', //组合
       }
     },
     components: {
@@ -149,11 +149,11 @@
     mounted () {
       
       let headerH=window.getComputedStyle(this.$refs.header).height.replace("px","");
-      console.log(headerH);
+      //console.log(headerH);
       let footerH=window.getComputedStyle(this.$refs.footer).height.replace("px","");
-      console.log(footerH);
+      //console.log(footerH);
       let winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-      console.log(winH);
+      //console.log(winH);
       let conH=winH-headerH-footerH;
       this.$refs.conpart.style.height = conH +'px';
     },
@@ -163,13 +163,24 @@
         this.selected = index;
         this.showIndex = index;
       },
-      specClick(i,j){
-        console.log("i",i);
-        console.log("j",j);
-        this.clicked.parent=i;
-        this.clicked.child=j;
-        this.clickList[i][j] = true;
-        console.log("clickList",this.clickList,this.clickList[i][j]);
+      //选择规格
+      selt(e,i,j){
+
+        this.$set(this.checkedArr,i,j);
+        let valueId=e.target.getAttribute('data-value-id');
+        this.specIdArr.splice(i,1,valueId);
+        let state=false
+        for(let a=0;a<this.specIdArr.length;a++){
+          if(this.specIdArr[a]=='' ||  this.specIdArr[a]==undefined ||  typeof (this.specIdArr[a])==undefined){
+           state=true;
+          }
+        }
+        if(state!==true){
+          let specIdStr=this.specIdArr.join(',');
+          this.specId=this.goodsSpecObj[specIdStr].goodsSpecId;     //匹配组合规格id
+          this.goodsStorePrice=this.goodsSpecObj[specIdStr].specGoodsPrice;   //选择完整规格后价格更新
+          console.log('specId',this.specId);
+        }
       },
       //购买商品加减
       add(){
@@ -196,20 +207,33 @@
       },
       //加入购物车
       addToCart(){
+        if(this.specId==''){
+          this.$toast('请选择规格');
+          return false;
+        }
         this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems"+this.Service.queryString({
           goodsId:this.goodsId,
           count:this.buyValue,
-          specId:''
+          specId:this.specId
         })).then(res=>{
           console.log(res);
+          if(res.data.h.code==200){
+            this.$toast(res.data.b.msg);
+          }else{
+            this.$toast(res.data.h.msg);
+          }
         })
       },
       //立即购买
       buyNow(){
+        if(this.specId==''){
+          this.$toast('请选择规格');
+          return false;
+        }
         this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now"+this.Service.queryString({
           goodsId:this.goodsId,
           count:this.buyValue,
-          specId:''
+          specId:this.specId
         })).then(res=>{
           console.log(res);
         })
@@ -220,24 +244,17 @@
           console.log("商品详情",res);
           if(res.data.h.code === 200){
             let goodsData=res.data.b;
+            this.goodsStorePrice=goodsData.goods[0].goodsStorePrice;
             this.goodsList=goodsData.goods;
             this.specList=goodsData.specList;
+            this.goodsSpecObj=goodsData.goodsSpecObj;
+            this.specIdArr=new Array(goodsData.specList.length);
             this.bannerPrefix=goodsData.imgPrefix;
             this.banner=goodsData.goods[0].goodsImageMore;
             let detailImg= goodsData.detail[0].replace(/&lt;/g,"<");
             detailImg= detailImg.replace(/&gt;/g,">");
             this.detailList.push(detailImg);
             this.goodsId=goodsData.goods[0].goodsId;
-            this.clickList = new Array(goodsData.specList.length);
-            for(var i=0; i<goodsData.specList.length; i++){
-              this.clickList[i] = new Array(goodsData.specList[i].specValueList.length);
-            }
-            console.log("mylist:",this.clickList);
-//            this.clickList.map(function(item,index){
-//              item = new Array(goodsData.specList[index].specValueList.length);
-//            });
-          
-          
           }
         })
       },
