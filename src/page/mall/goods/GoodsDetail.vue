@@ -21,10 +21,10 @@
         </div>
         <div class="goods-spec">
           <ul>
-            <li  v-for="(item,index1) in specnameList" :key="index1" >
-              <div class="spec-name">{{item}}</div>
+            <li  v-for="(item,i) in specList" :key="i" >
+              <div class="spec-name">{{item.spName}}</div>
               <div class="con-spec">
-                <span  v-for="(obj,index2) in sepcvalveList[index1]" :key="index2"  :class="{specActive:clicked===index2 }" @click="specClick(index2)">{{obj.spValueName}}</span>
+                <span  v-for="(obj,j) in item.specValueList" :key="j"  :class="{specActive:clickList[i][j]}"  @click="specClick(i,j)">{{obj.spValueName}}</span>
               </div>
             </li>
             <li>
@@ -116,15 +116,18 @@
   export  default {
     data:function () {
       return{
-        clicked:'',
+        clicked:{
+          parent: null,
+          child: null,
+        },
+        clickList: null,
         selected: 0,
         showIndex: 0,
         tabList:['商品','详情','评价'],
         commentList:[],   //评论
         goodsList:[],     //商品
         detailList:[],    //详情
-        specnameList:[],  //规格名称
-        sepcvalveList:[], //具体规格
+        specList:[],  //规格
         bannerPrefix:'',  //图片地址
         banner:[],        //商品图片
         swiperOption: {
@@ -160,8 +163,13 @@
         this.selected = index;
         this.showIndex = index;
       },
-      specClick(index,spId){
-        this.clicked=index;
+      specClick(i,j){
+        console.log("i",i);
+        console.log("j",j);
+        this.clicked.parent=i;
+        this.clicked.child=j;
+        this.clickList[i][j] = true;
+        console.log("clickList",this.clickList,this.clickList[i][j]);
       },
       //购买商品加减
       add(){
@@ -175,9 +183,9 @@
       //收藏商品
       collection(){
         console.log(this.goodsId);
-        this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods",{
+        this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
           goodsId:this.goodsId
-        }).then(res=>{
+        })).then(res=>{
           console.log(res);
           if(res.data.h.code===200){
             this.$toast("收藏成功");
@@ -188,21 +196,21 @@
       },
       //加入购物车
       addToCart(){
-        this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems",{
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems"+this.Service.queryString({
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:''
-        }).then(res=>{
+        })).then(res=>{
           console.log(res);
         })
       },
       //立即购买
       buyNow(){
-        this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now",{
+        this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now"+this.Service.queryString({
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:''
-        }).then(res=>{
+        })).then(res=>{
           console.log(res);
         })
       },
@@ -213,20 +221,29 @@
           if(res.data.h.code === 200){
             let goodsData=res.data.b;
             this.goodsList=goodsData.goods;
-            this.specnameList=goodsData.goodsSpecObj.specname;
-            this.sepcvalveList=goodsData.goodsSpecObj.specvalue;
+            this.specList=goodsData.specList;
             this.bannerPrefix=goodsData.imgPrefix;
             this.banner=goodsData.goods[0].goodsImageMore;
             let detailImg= goodsData.detail[0].replace(/&lt;/g,"<");
             detailImg= detailImg.replace(/&gt;/g,">");
             this.detailList.push(detailImg);
             this.goodsId=goodsData.goods[0].goodsId;
+            this.clickList = new Array(goodsData.specList.length);
+            for(var i=0; i<goodsData.specList.length; i++){
+              this.clickList[i] = new Array(goodsData.specList[i].specValueList.length);
+            }
+            console.log("mylist:",this.clickList);
+//            this.clickList.map(function(item,index){
+//              item = new Array(goodsData.specList[index].specValueList.length);
+//            });
+          
+          
           }
         })
       },
       //获取商品评论
       onInfinite(){
-        this.axios.get(this.baseURL.mall + '/m/goods/goodsComment', {
+        this.axios.get(this.baseURL.mall + '/m/goods/goodsComment',{
           params: {
             pageNo:this.commentList.length/10+1,
             pageSize: 10,

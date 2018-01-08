@@ -54,6 +54,7 @@ const MachineList = r => require.ensure([], () => r(require('@/page/work/MES/equ
 const DetailsList = r => require.ensure([], () => r(require('@/page/work/MES/equipmentcontrol/DetailsList.vue')), 'group-mes')
 const EnergyMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/EnergyMonitoring.vue')), 'group-mes')
 const TrendMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/TrendMonitoring.vue')), 'group-mes')
+
 const AccountLogin = r => require.ensure([], () => r(require('@/page/mall/login/AccountLogin.vue')), 'group-mall')
 const VerificationLogin = r => require.ensure([], () => r(require('@/page/mall/login/VerificationLogin.vue')), 'group-mall')
 const ForgetPassword = r => require.ensure([], () => r(require('@/page/mall/login/ForgetPassword.vue')), 'group-mall')
@@ -67,6 +68,8 @@ const ShopList = r => require.ensure([], () => r(require('@/page/mall/shop/ShopL
 const ConfirmOrder = r => require.ensure([], () => r(require('@/page/mall/shop/ConfirmOrder.vue')), 'group-mall')
 const ReceivingAdress = r => require.ensure([], () => r(require('@/page/mall/shop/ReceivingAdress.vue')), 'group-mall')
 const Invoice = r => require.ensure([], () => r(require('@/page/mall/shop/Invoice.vue')), 'group-mall')
+const SpecialInvoice = r => require.ensure([], () => r(require('@/page/mall/shop/SpecialInvoice.vue')), 'group-mall')
+
 const MallUser = r => require.ensure([], () => r(require('@/page/mall/user/User.vue')), 'group-mall')
 const MallSetting = r => require.ensure([], () => r(require('@/page/mall/user/Setting.vue')), 'group-mall')
 const MallAddress = r => require.ensure([], () => r(require('@/page/mall/user/Address.vue')), 'group-mall')
@@ -365,6 +368,10 @@ export default new Router({
     {
       path: '/invoice',  //收货地址
       component: Invoice,
+    },
+    {
+      path: '/specialinvoice',  //专用发票
+      component: SpecialInvoice,
     },
   ]
 })
