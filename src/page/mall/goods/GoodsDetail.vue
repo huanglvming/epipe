@@ -21,10 +21,10 @@
         </div>
         <div class="goods-spec">
           <ul>
-            <li  v-for="(item,index1) in specnameList" :key="index1" >
-              <div class="spec-name">{{item}}</div>
+            <li  v-for="(item,i) in specList" :key="i" >
+              <div class="spec-name">{{item.spName}}</div>
               <div class="con-spec">
-                <span  v-for="(obj,index2) in sepcvalveList[index1]" :key="index2"  :class="{specActive:clicked===index2 }" @click="specClick(index2)">{{obj.spValueName}}</span>
+                <span  v-for="(obj,j) in item.specValueList" :key="j"  :class="{specActive:clicked===j }" @click="specClick(i,j)">{{obj.spValueName}}</span>
               </div>
             </li>
             <li>
@@ -123,8 +123,7 @@
         commentList:[],   //评论
         goodsList:[],     //商品
         detailList:[],    //详情
-        specnameList:[],  //规格名称
-        sepcvalveList:[], //具体规格
+        specList:[],  //规格
         bannerPrefix:'',  //图片地址
         banner:[],        //商品图片
         swiperOption: {
@@ -160,8 +159,10 @@
         this.selected = index;
         this.showIndex = index;
       },
-      specClick(index,spId){
-        this.clicked=index;
+      specClick(i,j){
+        console.log("i",i);
+        console.log("j",j);
+        this.clicked=j;
       },
       //购买商品加减
       add(){
@@ -213,8 +214,7 @@
           if(res.data.h.code === 200){
             let goodsData=res.data.b;
             this.goodsList=goodsData.goods;
-            this.specnameList=goodsData.goodsSpecObj.specname;
-            this.sepcvalveList=goodsData.goodsSpecObj.specvalue;
+            this.specList=goodsData.specList;
             this.bannerPrefix=goodsData.imgPrefix;
             this.banner=goodsData.goods[0].goodsImageMore;
             let detailImg= goodsData.detail[0].replace(/&lt;/g,"<");
