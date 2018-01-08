@@ -367,7 +367,7 @@
       history_back: function () {
         if(this.states=='pro'){
             let str = JSON.stringify(this.chose_array)
-
+            console.log(str)
             window.location.href = "epipe://?&data="+str
         }else{
           window.history.back()

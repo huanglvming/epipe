@@ -4,7 +4,7 @@
         <div :class='typeClass' v-bind:style="{ background: bg_color}" >
             <div class="back" @click="goback()">
             <svg class="icon icon-back" aria-hidden="false">
-                <use href="#icon-zuoyoujiantou"></use>
+                <use xlink:href="#icon-zuoyoujiantou"></use>
             </svg>
             </div>
             {{title}}
@@ -51,7 +51,7 @@
             </div>
         </div>
     </div>
-</template>】
+</template>
 <script>
     export default{
         data(){

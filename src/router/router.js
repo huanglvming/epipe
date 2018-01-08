@@ -65,6 +65,9 @@ const GoodsDetail = r => require.ensure([], () => r(require('@/page/mall/goods/G
 const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
 const Affairs = r => require.ensure([], () => r(require('@/page/work/affairs.vue')), 'group-work')
 const Leave = r => require.ensure([], () => r(require('@/page/work/leave.vue')), 'group-work')
+const LeaveDetails = r => require.ensure([], () => r(require('@/page/work/leaveDetails.vue')), 'group-work')
+const Option= r => require.ensure([], () => r(require('@/page/work/option.vue')), 'group-work')
+const Opinion = r => require.ensure([], () => r(require('@/page/work/opinion.vue')), 'group-work')
 
 export default new Router({
   routes: [
@@ -318,8 +321,20 @@ export default new Router({
       component: Affairs
     },
     {
-      path: '/leave',  //请假详情
+      path: '/leave',  //请假
       component: Leave
     },
+    {
+      path: '/leaveDetails',  //请假
+      component: LeaveDetails
+    },
+    {
+      path: '/opinion',  //拒绝理由
+      component: Opinion
+    },
+    {
+      path: '/option',  //请假类型
+      component: Option
+    }
   ]
 })

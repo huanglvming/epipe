@@ -2,15 +2,10 @@
 
 <template>
     <section>
-        <!-- <div class="header" >
-            <div class="back" @click="goback()">
-            <svg class="icon icon-back" aria-hidden="false">
-                <use href="#icon-zuoyoujiantou"></use>
-            </svg>
-            </div>
-            请假
-        </div> -->
-        <TopHead color title="日报"></TopHead>
+        <TopHead
+        bgcolor
+        title="请假" 
+         ></TopHead>
         <div class="content">
         
             <div class="styles">
@@ -18,9 +13,9 @@
                     请假类型
                     <p>
                         <span class="nullValue">请选择</span>
-                        <svg class="icon icon-back" aria-hidden="false">
-                            <use href="#icon-right"></use>
-                        </svg>
+                    <svg class="icon icon-back" aria-hidden="false">
+                            <use xlink:href="#icon-right"></use>
+                    </svg>
                     </p>
                 </div>
             </div>
@@ -30,7 +25,7 @@
                     <p>
                         <span class="nullValue">请选择开始时间</span>
                         <svg class="icon icon-back" aria-hidden="false">
-                            <use href="#icon-right"></use>
+                            <use xlink:href="#icon-right"></use>
                         </svg>
                     </p>
                 </div>
@@ -40,7 +35,7 @@
                     <p>
                         <span class="nullValue">请选择结束时间</span>
                         <svg class="icon icon-back" aria-hidden="false">
-                            <use href="#icon-right"></use>
+                            <use xlink:href="#icon-right"></use>
                         </svg>
                     </p>
                 </div>
@@ -63,7 +58,7 @@
                 <ul class="imgShow">
                     <li>
                         <svg class="icon icon-back" aria-hidden="false" style="width:100%;height:100%">
-                            <use href="#icon-xiangji"></use>
+                            <use xlink:href="#icon-xiangji"></use>
                         </svg>
                     </li>
                 </ul>
@@ -131,32 +126,6 @@ export default {
 </script>
 
 <style scoped lang="stylus">
-     .header{
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 0.44rem;
-        text-align: center;
-        line-height: 0.44rem;
-        color: #fff;
-        font-size: 0.18rem;
-        font-weight bold;
-        letter-spacing: 0.012rem;
-         background: #fd545c;
-        
-        .back{
-            position: absolute;
-            left: 0;
-            width: 0.5rem;
-            text-align: left;
-            .icon-back{
-                font-size: 0.17rem;
-                font-weight:bold;
-                margin-left: 0.1rem;
-            }
-        }
-    }
 
     .content{
         margin-top 0.59rem;
