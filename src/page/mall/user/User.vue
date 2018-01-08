@@ -3,9 +3,11 @@
     <div class="user-info">
       <router-link to="mallsetting" tag="div" class="user-info-content">
         <div class="user">
-          <div class="avatar"></div>
+          <div class="avatar">
+            <img :src="userInfo.imgurl" alt="">
+          </div>
           <div class="info-content">
-            <div class="id">用户名: 18620389989</div>
+            <div class="id">用户名: {{userInfo.phone}}</div>
           </div>
         </div>
         <div class="link-account">
@@ -94,8 +96,29 @@
     components:{
       FooterTab
     },
+    data(){
+      return{
+        userInfo:{},
+      }
+    },
     created(){
       document.title="个人中心";
+      this.getUserInfo();
+    },
+    methods:{
+      getUserInfo(){
+        this.axios.post(this.baseURL.mall + '/m/my/queryPersonalMsg' + this.Service.queryString({
+          token: this.mallToken
+        })).then(res =>{
+          console.log("个人信息",res);
+          if(res.data.h.code === 200){
+            this.userInfo = res.data.b;
+          }
+          if(res.data.h.code === 50){
+            this.$router.push("/accountlogin");
+          }
+        })
+      }
     }
   }
 </script>
@@ -125,6 +148,11 @@
       border: 1px solid #ff9898;
       border-radius 50%;
       box-shadow 0 2px 4px rgba(0,0,0,0.2);
+      img{
+        width: 100%;
+        height: 100%;
+        border-radius 50%;
+      }
     }
     .name{
       font-size: 0.14rem;
@@ -132,10 +160,9 @@
       line-height 1;
     }
     .id{
-      margin-top 0.1rem;
       color: #ffcccc;
       line-height 1;
-      font-size 0.12rem;
+      font-size 0.14rem;
     }
   }
   .link-account{

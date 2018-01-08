@@ -30,8 +30,8 @@ axios.interceptors.request.use(
       window.localStorage.setItem("auth_token",getCookie("auth_token"));
     }else{
       if(!config.headers.auth_token){
-        config.headers.auth_token = window.localStorage.auth_token;
-        // config.headers.auth_token = "bc0b43b3-c9b2-49a5-b1c9-72c029580437";
+        // config.headers.auth_token = window.localStorage.auth_token;
+        config.headers.auth_token = "38238544643632157582";
       }
     }
     return config;
@@ -42,10 +42,15 @@ axios.interceptors.request.use(
 
 // http响应拦截器
 axios.interceptors.response.use(data => {// 如果code是10  就是token过期了
-  if (data.data.h.code == 10) {
-    window.location.href = "epipe://?&mark=login_out"
+  try{
+    if (data.data.h.code == 10) {
+      window.location.href = "epipe://?&mark=login_out"
+    }
+  }catch (err){
+    console.log(err);
+  }finally{
+    return data
   }
-  return data
 }, error => {
   return Promise.reject(error)
 })

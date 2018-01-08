@@ -32,8 +32,9 @@ import MES from "./js/MES";
 Vue.prototype.$mes = MES;
 
 //引入http请求配置
-import {baseURL} from "./js/IPconfig";
+import {baseURL,mallToken} from "./js/IPconfig";
 Vue.prototype.baseURL = baseURL;
+Vue.prototype.mallToken = mallToken;
 
 //  提示框
 import {Alert, Confirm, Prompt, Toast} from "wc-messagebox";

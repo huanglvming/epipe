@@ -2,8 +2,8 @@
   <div class="setting-wrapper">
     <router-link to="malluserinfo" tag="div" class="setting-item user-info">
       <div class="user-content">
-        <img src="#" alt="" width="40px" height="40px">
-        <span class="name">张小惠（18655555555）</span>
+        <img :src="userInfo.imgurl" alt="">
+        <span class="name">{{userInfo.realName}}（{{userInfo.phone}}）</span>
       </div>
       <i class="iconfont icon-jinru"></i>
     </router-link>
@@ -25,9 +25,30 @@
     components:{
       FooterTab
     },
+    data(){
+      return{
+        userInfo:{},
+      }
+    },
     created(){
       document.title = "账号设置";
+      this.getData();
     },
+    methods:{
+      getData(){
+        this.axios.post(this.baseURL.mall + '/m/my/queryPersonalMsg' + this.Service.queryString({
+          token: this.mallToken
+        })).then(res =>{
+          console.log("个人信息",res);
+          if(res.data.h.code === 200){
+            this.userInfo = res.data.b;
+          }
+          if(res.data.h.code === 50){
+            this.$router.push("/accountlogin");
+          }
+        })
+      }
+    }
   }
 </script>
 <style lang="stylus" scoped="true">

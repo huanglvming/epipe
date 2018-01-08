@@ -24,7 +24,7 @@
             <li  v-for="(item,i) in specList" :key="i" >
               <div class="spec-name">{{item.spName}}</div>
               <div class="con-spec">
-                <span  v-for="(obj,j) in item.specValueList" :key="j"  :class="{specActive:clickList[i][j]}"  @click="specClick(i,j)">{{obj.spValueName}}</span>
+                <span  v-for="(obj,j) in item.specValueList" :key="j"   @click="specClick(i,j)" :class="{'specActive': checkedArr[i] === j}">{{obj.spValueName}}</span>
               </div>
             </li>
             <li>
@@ -116,11 +116,7 @@
   export  default {
     data:function () {
       return{
-        clicked:{
-          parent: null,
-          child: null,
-        },
-        clickList: null,
+        checkedArr: [],
         selected: 0,
         showIndex: 0,
         tabList:['商品','详情','评价'],
@@ -147,7 +143,7 @@
       swiperSlide
     },
     mounted () {
-      
+
       let headerH=window.getComputedStyle(this.$refs.header).height.replace("px","");
       console.log(headerH);
       let footerH=window.getComputedStyle(this.$refs.footer).height.replace("px","");
@@ -164,12 +160,7 @@
         this.showIndex = index;
       },
       specClick(i,j){
-        console.log("i",i);
-        console.log("j",j);
-        this.clicked.parent=i;
-        this.clicked.child=j;
-        this.clickList[i][j] = true;
-        console.log("clickList",this.clickList,this.clickList[i][j]);
+        this.$set(this.checkedArr,i,j);
       },
       //购买商品加减
       add(){
@@ -231,13 +222,10 @@
             this.clickList = new Array(goodsData.specList.length);
             for(var i=0; i<goodsData.specList.length; i++){
               this.clickList[i] = new Array(goodsData.specList[i].specValueList.length);
+              this.temp[i] = new Array(goodsData.specList[i].specValueList.length);
             }
             console.log("mylist:",this.clickList);
-//            this.clickList.map(function(item,index){
-//              item = new Array(goodsData.specList[index].specValueList.length);
-//            });
-          
-          
+            console.log("mytemp:",this.temp);
           }
         })
       },
