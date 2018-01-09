@@ -165,7 +165,7 @@
       },
       //选择规格
       selt(e,i,j){
-
+        console.log(i,j);
         this.$set(this.checkedArr,i,j);
         let valueId=e.target.getAttribute('data-value-id');
         this.specIdArr.splice(i,1,valueId);
@@ -195,6 +195,7 @@
       collection(){
         console.log(this.goodsId);
         this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
+          token:this.mallToken,
           goodsId:this.goodsId
         })).then(res=>{
           console.log(res);
@@ -211,7 +212,8 @@
           this.$toast('请选择规格');
           return false;
         }
-        this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems"+this.Service.queryString({
+        this.axios.post(this.baseURL.mall + "/m/cart/addCartItems"+this.Service.queryString({
+          token:this.mallToken,
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:this.specId
@@ -230,7 +232,8 @@
           this.$toast('请选择规格');
           return false;
         }
-        this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now"+this.Service.queryString({
+        this.axios.post(this.baseURL.mall + "/m/cart/buy_now"+this.Service.queryString({
+          token:this.mallToken,
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:this.specId
