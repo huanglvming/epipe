@@ -196,7 +196,7 @@
         console.log(this.goodsId);
         this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
           token:this.mallToken,
-          goodsId:this.goodsId
+          goodsIds:this.goodsId
         })).then(res=>{
           console.log(res);
           if(res.data.h.code===200){

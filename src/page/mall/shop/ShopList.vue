@@ -9,7 +9,7 @@
       <div class="shop-goods" v-for="(item,index) in obj.list" :key="index">
         <div class="goods-ope">
           <i class="iconfont" :class="item.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc'" ></i>
-          <input type="checkbox" name="one" v-model="item.checked" @click="choose(index1,index)"/>
+          <input type="checkbox" name="one" v-model="item.checked" @click="chooseOne(index1,index)"/>
         </div>
         <div class="goods-pho"><img :src="imgPrefix+item.goodsImages" alt=""></div>
         <div class="goods-class">
@@ -36,12 +36,12 @@
         <div>全选</div>
       </div>
       <div class="tot-price" v-if="showIndex==0">
-        <div class="tot-price-btn">去结算<i>(0件)</i></div>
+        <div class="tot-price-btn" @click="settlement">去结算<i>(0件)</i></div>
         <div class="tot-price-num">总计：<i>￥0.00</i></div>
       </div>
       <div class="tot-price" v-if="showIndex==1">
-        <div class="manage-shops">删除</div>
-        <div class="manage-shops">移入收藏</div>
+        <div class="manage-shops" @click="delect">删除</div>
+        <div class="manage-shops" @click="addToCollection">移入收藏</div>
       </div>
     </div>
     <footer-tab :category="2"></footer-tab>
@@ -61,7 +61,9 @@
         operate:'编辑商品',
         showIndex:0,
         shopList:[],    // 购物车列表
-        imgPrefix:''    //图片前缀
+        imgPrefix:'',   //图片前缀
+        cartIds:[],
+        goodsIds:[],
       }
     },
     methods:{
@@ -104,7 +106,7 @@
         })
       },
       // 全部商品全选
-      chooseAllGoods : function() {
+      chooseAllGoods () {
         let flag = true;
         if ( this.allChecked ) {
           flag = false;
@@ -114,41 +116,76 @@
           let list = this.shopList[i].list;
           for ( let k = 0, len1 = list.length; k < len1; k++ ) {
             list[k].checked = flag;
+            if ( this.allChecked ) {
+              this.goodsIds.splice(this.goodsIds.indexOf(list[k].goodsId),1);
+              this.cartIds.splice(this.cartIds.indexOf(list[k].cartId),1);
+            }else{
+              if(this.goodsIds.indexOf(list[k].goodsId)==-1){
+                this.goodsIds.push(list[k].goodsId);
+              }
+              if(this.cartIds.indexOf(list[k].cartId)==-1){
+                this.cartIds.push(list[k].cartId);
+              }
+            }
           }
         }
+        console.log("goodsIds:",this.goodsIds);
+        console.log("cartIds:",this.cartIds);
+        
         this.allChecked = !this.allChecked;
       },
   
       // 每个店铺全选
-      chooseShopGoods : function( index) {
-        let list = this.shopList[index].list,
+      chooseShopGoods ( index1) {
+        let list = this.shopList[index1].list,
           len = list.length;
-        if ( this.shopList[index].checked ) {
+        if ( this.shopList[index1].checked ) {
           for (let i = 0; i < len; i++ ) {
             list[i].checked = false;
+            this.goodsIds.splice(this.goodsIds.indexOf(list[i].goodsId),1);
+            this.cartIds.splice(this.cartIds.indexOf(list[i].cartId),1);
           }
+          console.log("goodsIds:",this.goodsIds);
+          console.log("cartIds:",this.cartIds);
         } else {
           for (let i = 0; i < len; i++ ) {
             list[i].checked = true;
+            if(this.goodsIds.indexOf(list[i].goodsId)==-1){
+              this.goodsIds.push(list[i].goodsId);
+            }
+            if(this.cartIds.indexOf(list[i].cartId)==-1){
+              this.cartIds.push(list[i].cartId);
+            }
           }
+          console.log("goodsIds:",this.goodsIds);
+          console.log("cartIds:",this.cartIds);
         }
-        this.shopList[index].checked = !this.shopList[index].checked;
+        this.shopList[index1].checked = !this.shopList[index1].checked;
     
         // 判断是否选择所有商品的全选
         this.isChooseAll();
       },
   
       // 单个选择
-      choose : function( index1, index) {
+      chooseOne ( index1, index) {
         let list = this.shopList[index1].list,
           len = list.length;
         if ( list[index].checked ) {
           this.shopList[index1].checked = false;
           this.allChecked = false;
           list[index].checked = !list[index].checked;
+          this.goodsIds.splice(this.goodsIds.indexOf(list[index].goodsId),1);
+          console.log("goodsIds:",this.goodsIds);
+          this.cartIds.splice(this.cartIds.indexOf(list[index].cartId),1);
+          console.log("cartIds:",this.cartIds);
         } else {
           list[index].checked = !list[index].checked;
-      
+          if(this.goodsIds.indexOf(list[index].goodsId)==-1){
+            this.goodsIds.push(list[index].goodsId);
+          }
+          console.log("goodsIds:",this.goodsIds);
+          this.cartIds.push(list[index].cartId);
+          console.log("cartIds:",this.cartIds);
           // 判断是否选择当前店铺的全选
           let flag = true;
           for (let i = 0; i < len; i++ ) {
@@ -165,7 +202,7 @@
       },
   
       // 判断是否选择所有商品的全选
-      isChooseAll : function() {
+      isChooseAll () {
         let flag1 = true;
         for ( let i = 0, len = this.shopList.length; i < len; i++ ) {
           if ( this.shopList[i].checked == false ) {
@@ -175,6 +212,45 @@
         }
         flag1 == true ? this.allChecked = true : this.allChecked = false;
       },
+      //删除
+      delect(){
+        this.axios.post(this.baseURL.mall + "/m/cart/deleteCartItems"+this.Service.queryString({
+          token:this.mallToken,
+          cartIds:this.cartIds.join(',')
+        })).then(res=>{
+          console.log(res);
+          if(res.data.h.code==200){
+            this.$toast("删除成功");
+            this.getCartList();
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
+      },
+      //移入收藏夹
+      addToCollection(){
+        this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
+          token:this.mallToken,
+          goodsIds:this.goodsIds.join(',')
+        })).then(res=>{
+          console.log(res);
+          if(res.data.h.code==200){
+            this.$toast("移入收藏夹成功");
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
+      },
+      //结算
+      settlement(){
+        this.axios.post(this.baseURL.mall + "/m/cart/confirmOrder"+this.Service.queryString({
+          token:this.mallToken,
+          cartIds:this.cartIds.join(',')
+        })).then(res=>{
+          console.log(res);
+          
+        })
+      }
     },
     created(){
       this.getCartList();
