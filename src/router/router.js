@@ -371,7 +371,7 @@ export default new Router({
       component: ReceivingAdress,
     },
     {
-      path: '/invoice',  //收货地址
+      path: '/invoice',  //发票
       component: Invoice,
     },
     {

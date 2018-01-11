@@ -36,8 +36,8 @@
         <div>全选</div>
       </div>
       <div class="tot-price" v-if="showIndex==0">
-        <div class="tot-price-btn" @click="settlement">去结算<i>(0件)</i></div>
-        <div class="tot-price-num">总计：<i>￥0.00</i></div>
+        <div class="tot-price-btn" @click="settlement">去结算<i>({{selGoodsNum}}件)</i></div>
+        <div class="tot-price-num">总计：<i>￥{{totalPrice}}.00</i></div>
       </div>
       <div class="tot-price" v-if="showIndex==1">
         <div class="manage-shops" @click="delect">删除</div>
@@ -64,6 +64,8 @@
         imgPrefix:'',   //图片前缀
         cartIds:[],
         goodsIds:[],
+        selGoodsNum:0,
+        totalPrice:0,
       }
     },
     methods:{
@@ -79,10 +81,16 @@
       //购买商品加减
       add(i,j){
         this.shopList[i].list[j].goodsNum++;
+        if(this.shopList[i].list[j].checked){
+          this.totalPrice+=this.shopList[i].list[j].goodsPrice
+        }
       },
       reduce(i,j){
         if(this.shopList[i].list[j].goodsNum!==1){
-          this.shopList[i].list[j].goodsNum--
+          this.shopList[i].list[j].goodsNum--;
+          if(this.shopList[i].list[j].checked){
+            this.totalPrice-=this.shopList[i].list[j].goodsPrice
+          }
         }
       },
       //获取购物车列表信息
@@ -119,12 +127,16 @@
             if ( this.allChecked ) {
               this.goodsIds.splice(this.goodsIds.indexOf(list[k].goodsId),1);
               this.cartIds.splice(this.cartIds.indexOf(list[k].cartId),1);
+              this.selGoodsNum--;
+              this.totalPrice-=list[k].goodsNum*list[k].goodsPrice;
             }else{
               if(this.goodsIds.indexOf(list[k].goodsId)==-1){
                 this.goodsIds.push(list[k].goodsId);
               }
               if(this.cartIds.indexOf(list[k].cartId)==-1){
                 this.cartIds.push(list[k].cartId);
+                this.selGoodsNum++;
+                this.totalPrice+=list[k].goodsNum*list[k].goodsPrice;
               }
             }
           }
@@ -144,6 +156,8 @@
             list[i].checked = false;
             this.goodsIds.splice(this.goodsIds.indexOf(list[i].goodsId),1);
             this.cartIds.splice(this.cartIds.indexOf(list[i].cartId),1);
+            this.selGoodsNum--;
+            this.totalPrice-=list[i].goodsNum*list[i].goodsPrice;
           }
           console.log("goodsIds:",this.goodsIds);
           console.log("cartIds:",this.cartIds);
@@ -155,6 +169,8 @@
             }
             if(this.cartIds.indexOf(list[i].cartId)==-1){
               this.cartIds.push(list[i].cartId);
+              this.selGoodsNum++;
+              this.totalPrice+=list[i].goodsNum*list[i].goodsPrice;
             }
           }
           console.log("goodsIds:",this.goodsIds);
@@ -178,6 +194,8 @@
           console.log("goodsIds:",this.goodsIds);
           this.cartIds.splice(this.cartIds.indexOf(list[index].cartId),1);
           console.log("cartIds:",this.cartIds);
+          this.selGoodsNum--;
+          this.totalPrice-=list[index].goodsNum*list[index].goodsPrice;
         } else {
           list[index].checked = !list[index].checked;
           if(this.goodsIds.indexOf(list[index].goodsId)==-1){
@@ -186,6 +204,8 @@
           console.log("goodsIds:",this.goodsIds);
           this.cartIds.push(list[index].cartId);
           console.log("cartIds:",this.cartIds);
+          this.selGoodsNum++;
+          this.totalPrice+=list[index].goodsNum*list[index].goodsPrice;
           // 判断是否选择当前店铺的全选
           let flag = true;
           for (let i = 0; i < len; i++ ) {
@@ -248,7 +268,14 @@
           cartIds:this.cartIds.join(',')
         })).then(res=>{
           console.log(res);
-          
+          if(res.data.h.code==200){
+            localStorage.setItem("settleOrder",JSON.stringify(res.data.b));
+            if(localStorage.getItem("settleOrder")){
+              this.$router.push({path:'/ConfirmOrder'});
+            }
+          }else{
+            this.$toast(res.data.h.msg);
+          }
         })
       }
     },

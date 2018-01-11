@@ -239,6 +239,10 @@
           specId:this.specId
         })).then(res=>{
           console.log(res);
+          localStorage.setItem("settleOrder",JSON.stringify(res.data.b));
+          if(localStorage.getItem("settleOrder")){
+            this.$router.push({path:'/ConfirmOrder'});
+          }
         })
       },
       //获取商品信息与详情

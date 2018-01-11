@@ -1,18 +1,10 @@
 <template>
   <div class="receiving-adress">
-    <div class="adress">
-      <div><i class="iconfont icon-xuanzhong1 red"></i></div>
+    <div class="adress" v-for="(obj,i) in addressList" :key="i">
+      <div><i class="iconfont icon-xuanzhong1" :class="obj.isDefault==1 ? 'red' : 'gray'"></i></div>
       <div>
-        <p><span>黄先生</span><span>138****8888</span></p>
-        <p>广东省深圳市南山区华瀚科技D座402A</p>
-      </div>
-      <div><i class="iconfont icon-bianji"></i></div>
-    </div>
-    <div class="adress">
-      <div><i class="iconfont icon-weixuan gray"></i></div>
-      <div>
-        <p><span>黄先生</span><span>138****8888</span></p>
-        <p>广东省深圳市南山区华瀚科技D座402A</p>
+        <p><span>{{obj.trueName}}</span><span>{{obj.mobPhone}}</span></p>
+        <p>{{obj.areaInfo}}{{obj.address}}</p>
       </div>
       <div><i class="iconfont icon-bianji"></i></div>
     </div>
@@ -25,7 +17,21 @@
 <script>
   document.title="收货地址";
   export default {
-  
+    data:function () {
+      return{
+        addressList:''
+      }
+    },
+    methods:{
+      getAddressList(){
+        let addressList=JSON.parse(localStorage.getItem("addressList"));
+        console.log(addressList);
+        this.addressList=addressList;
+      }
+    },
+    created(){
+      this.getAddressList();
+    }
   }
 </script>
 <style lang="stylus" scoped>
@@ -46,6 +52,9 @@
         font-size .12rem;
         line-height .18rem;
         color #333;
+        span{
+          margin-right .1rem;
+        }
       }
     }
     div:first-child{

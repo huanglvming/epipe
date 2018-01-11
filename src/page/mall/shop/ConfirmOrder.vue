@@ -1,74 +1,39 @@
 <template>
   <div class="confirm-order">
     <div class="receiving-info">
-       <div>
-         <p class="p1">
-           <span>黄先生</span>
-           <span>138****8888</span>
-         </p>
-         <p class="p2">广东省深圳市南山区华翰科技园D座402A</p>
-       </div>
-       <div>
-         <i class="iconfont icon-jinru"></i>
-       </div>
+      <a href="#/ReceivingAdress">
+        <div v-for="(obj,i) in addressList" :key="i">
+          <p class="p1" v-if="obj.isDefault==1">
+            <span>{{obj.trueName}}</span>
+            <span>{{obj.mobPhone}}</span>
+          </p>
+          <p class="p2">{{obj.areaInfo}}{{obj.address}}</p>
+        </div>
+        <div>
+          <i class="iconfont icon-jinru"></i>
+        </div>
+      </a>
      </div>
     <div class="line"></div>
     <div class="order-list">
-      <div class="shop-name">优管自营</div>
-      <div class="goods-info">
-        <div class="goods-pho">
-          <img src="../../../assets/tou.png" alt="">
-        </div>
-        <div class="goods-coninfo">
-          <div class="info">
-            <p class="p1">苹果 iPhone X 64G 银色 公开版4G手机 公开版4G手机</p>
-            <p class="p2">银色，公开版，64G</p>
+      <div class="settleOneStroe" v-for="(obj,i) in cartList" :key="i">
+        <div class="shop-name">{{obj.storeName}}</div>
+        <div class="goods-info" v-for="(item,j) in obj.list" :key="j">
+          <div class="goods-pho">
+            <img :src="imgPrefix+item.goodsImages" >
           </div>
-          <div class="price-num">
-            <div class="price">
-              <span>￥</span><span>8888</span>
+          <div class="goods-coninfo">
+            <div class="info">
+              <p class="p1">{{item.goodsName}}</p>
+              <p class="p2" v-html="item.specInfo"></p>
             </div>
-            <div class="num">
-              <span>x</span><span>1</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="goods-info">
-        <div class="goods-pho">
-          <img src="../../../assets/tou.png" alt="">
-        </div>
-        <div class="goods-coninfo">
-          <div class="info">
-            <p class="p1">苹果 iPhone X 64G 银色 公开版4G手机 公开版4G手机</p>
-            <p class="p2">银色，公开版，64G</p>
-          </div>
-          <div class="price-num">
-            <div class="price">
-              <span>￥</span><span>8888</span>
-            </div>
-            <div class="num">
-              <span>x</span><span>1</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="shop-name">凯氏集团</div>
-      <div class="goods-info">
-        <div class="goods-pho">
-          <img src="../../../assets/tou.png" alt="">
-        </div>
-        <div class="goods-coninfo">
-          <div class="info">
-            <p class="p1">苹果 iPhone X 64G 银色 公开版4G手机 公开版4G手机</p>
-            <p class="p2">银色，公开版，64G</p>
-          </div>
-          <div class="price-num">
-            <div class="price">
-              <span>￥</span><span>8888</span>
-            </div>
-            <div class="num">
-              <span>x</span><span>1</span>
+            <div class="price-num">
+              <div class="price">
+                <span>￥</span><span>{{item.goodsPrice}}</span>
+              </div>
+              <div class="num">
+                <span>x</span><span>{{item.goodsNum}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -79,13 +44,15 @@
       <div>快递运输</div>
     </div>
     <div class="invoice-info">
-      <div>发票信息</div>
-      <div>不开发票 <i class="iconfont icon-jinru"></i></div>
+      <a href="#/Invoice">
+        <div>发票信息</div>
+        <div>不开发票 <i class="iconfont icon-jinru"></i></div>
+      </a>
     </div>
     <div class="total-price">
-      <div><span>商品金额</span><span>￥8888.00</span></div>
+      <div><span>商品金额</span><span>￥{{goodsTotalPrice}}.00</span></div>
       <div><span>运费</span><span>￥0.00</span></div>
-      <div><span></span><span><i>总价：</i>￥8888.00</span></div>
+      <div><span></span><span><i>总价：</i>￥{{goodsTotalPrice}}.00</span></div>
     </div>
     <div class="wx-pay"><div>微信支付</div></div>
   </div>
@@ -93,7 +60,28 @@
 <script>
   document.title="确认订单";
   export default {
-  
+    data:function () {
+      return{
+        imgPrefix:'',   //图片地址前缀
+        cartList:'',    //结算订单列表
+        addressList:'', //收件地址
+        goodsTotalPrice:'', //结算总额
+      }
+    },
+    methods:{
+      getSettlement(){
+        let settleOrder=JSON.parse(localStorage.getItem("settleOrder"));
+        console.log(settleOrder);
+        this.imgPrefix=settleOrder.imgPrefix;
+        this.cartList=settleOrder.cartVoList;
+        this.addressList=settleOrder.addressList;
+        this.goodsTotalPrice=settleOrder.map.goodsTotalPrice;
+        localStorage.setItem("addressList",JSON.stringify(this.addressList));
+      }
+    },
+    created(){
+      this.getSettlement();
+    }
   }
 </script>
 <style lang="stylus" scoped>
@@ -104,6 +92,11 @@
       padding .15rem .1rem;
       background #fff;
       box-sizing border-box;
+      a{
+        display block;
+        width 100%;
+        height 100%;
+      }
       div{
         height 100%;
       }
@@ -139,6 +132,9 @@
       background-color #fff;
     }
     .order-list{
+      .settleOneStroe{
+        overflow hidden;
+      }
       .shop-name{
         height .45rem;
         line-height .45rem;
@@ -218,6 +214,12 @@
       background #fff;
       overflow hidden;
       border-bottom 1px solid #e5e5e5;
+      height .45rem;
+      a{
+        display block;
+        width 100%;
+        height 100%;
+      }
       div{
         height .45rem;
         line-height .45rem;
