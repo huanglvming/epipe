@@ -70,6 +70,7 @@ const ConfirmOrder = r => require.ensure([], () => r(require('@/page/mall/shop/C
 const ReceivingAdress = r => require.ensure([], () => r(require('@/page/mall/shop/ReceivingAdress.vue')), 'group-mall')
 const Invoice = r => require.ensure([], () => r(require('@/page/mall/shop/Invoice.vue')), 'group-mall')
 const SpecialInvoice = r => require.ensure([], () => r(require('@/page/mall/shop/SpecialInvoice.vue')), 'group-mall')
+const ManageAddress = r => require.ensure([], () => r(require('@/page/mall/shop/ManageAddress.vue')), 'group-mall')
 
 const MallUser = r => require.ensure([], () => r(require('@/page/mall/user/User.vue')), 'group-mall')
 const MallSetting = r => require.ensure([], () => r(require('@/page/mall/user/Setting.vue')), 'group-mall')
@@ -372,7 +373,7 @@ export default new Router({
       component: ReceivingAdress,
     },
     {
-      path: '/invoice',  //收货地址
+      path: '/invoice',  //发票
       component: Invoice,
     },
     {
@@ -382,6 +383,10 @@ export default new Router({
     {
       path: '/myorder',  //我的订单
       component: MyOrder,
+    },
+    {
+      path: '/manageaddress',  //专用发票
+      component: ManageAddress,
     },
   ]
 })

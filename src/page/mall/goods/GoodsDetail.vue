@@ -165,7 +165,7 @@
       },
       //选择规格
       selt(e,i,j){
-
+        console.log(i,j);
         this.$set(this.checkedArr,i,j);
         let valueId=e.target.getAttribute('data-value-id');
         this.specIdArr.splice(i,1,valueId);
@@ -195,7 +195,8 @@
       collection(){
         console.log(this.goodsId);
         this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
-          goodsId:this.goodsId
+          token:this.mallToken,
+          goodsIds:this.goodsId
         })).then(res=>{
           console.log(res);
           if(res.data.h.code===200){
@@ -211,7 +212,8 @@
           this.$toast('请选择规格');
           return false;
         }
-        this.axios.post(this.baseURL.mall + "/m/authc/cart/addCartItems"+this.Service.queryString({
+        this.axios.post(this.baseURL.mall + "/m/cart/addCartItems"+this.Service.queryString({
+          token:this.mallToken,
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:this.specId
@@ -230,12 +232,17 @@
           this.$toast('请选择规格');
           return false;
         }
-        this.axios.post(this.baseURL.mall + "/m/authc/cart/buy_now"+this.Service.queryString({
+        this.axios.post(this.baseURL.mall + "/m/cart/buy_now"+this.Service.queryString({
+          token:this.mallToken,
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:this.specId
         })).then(res=>{
           console.log(res);
+          localStorage.setItem("settleOrder",JSON.stringify(res.data.b));
+          if(localStorage.getItem("settleOrder")){
+            this.$router.push({path:'/ConfirmOrder'});
+          }
         })
       },
       //获取商品信息与详情
