@@ -2,8 +2,8 @@
   <div class="confirm-order">
     <div class="receiving-info">
       <a href="#/ReceivingAdress">
-        <div v-for="(obj,i) in addressList" :key="i">
-          <p class="p1" v-if="obj.isDefault==1">
+        <div v-for="(obj,i) in addressList" :key="i" v-if="obj.isDefault==1">
+          <p class="p1">
             <span>{{obj.trueName}}</span>
             <span>{{obj.mobPhone}}</span>
           </p>
@@ -74,9 +74,17 @@
         console.log(settleOrder);
         this.imgPrefix=settleOrder.imgPrefix;
         this.cartList=settleOrder.cartVoList;
-        this.addressList=settleOrder.addressList;
         this.goodsTotalPrice=settleOrder.map.goodsTotalPrice;
-        localStorage.setItem("addressList",JSON.stringify(this.addressList));
+        this.axios.post(this.baseURL.mall + "/m/my/queryUserAddress"+this.Service.queryString({
+          token:this.mallToken,
+        })).then(res=>{
+          console.log(res);
+          if(res.data.h.code==200){
+            this.addressList=res.data.b;
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
       }
     },
     created(){
