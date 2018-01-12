@@ -19,7 +19,7 @@
         <swiper-slide v-for="(slide,index) in floorObj.floorBanners" :key="index">
           <img :src="imgPrefix + slide.advImg" alt="">
         </swiper-slide>
-        <div class="swiper-pagination" slot="pagination" v-if="floorObj.floorBanners.length>1"></div>
+        <div class="swiper-pagination-2" slot="pagination" v-if="floorObj.floorBanners.length>1"></div>
       </swiper>
     </div>
   </div>
@@ -41,10 +41,9 @@
         swiperOption: {
           autoplay:true,
           pagination: {
-            el: '.swiper-pagination'
+            el: '.swiper-pagination-2'
           }
         },
-        swiperSlides: [1, 2, 3],
       }
     }
   }

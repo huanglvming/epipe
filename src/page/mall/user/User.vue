@@ -118,7 +118,7 @@
             this.$router.push("/accountlogin");
           }
         })
-      }
+      },
     }
   }
 </script>

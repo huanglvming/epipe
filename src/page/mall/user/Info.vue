@@ -3,13 +3,13 @@
     <div class="info-item info-avatar">
       <div class="setting-title">头像</div>
       <div class="avatar-wrapper">
-        <img src="" alt="">
-        <i class="iconfont icon-jinru"></i>
+        <img :src="userInfo.imgurl" alt="">
+        <!--<i class="iconfont icon-jinru"></i>-->
       </div>
     </div>
     <div class="info-item info-name">
       <div class="setting-title">用户名</div>
-      <div class="user-id">15888888888</div>
+      <div class="user-id">{{userInfo.phone}}</div>
     </div>
     <footer-tab :category="3"></footer-tab>
   </div>
@@ -21,9 +21,30 @@
     components:{
       FooterTab
     },
+    data(){
+      return{
+        userInfo: {},
+      }
+    },
     created(){
       document.title = "个人资料";
+      this.getUserInfo();
     },
+    methods:{
+      getUserInfo(){
+        this.axios.post(this.baseURL.mall + '/m/my/queryPersonalMsg' + this.Service.queryString({
+          token: this.mallToken
+        })).then(res =>{
+          console.log("个人信息",res);
+          if(res.data.h.code === 200){
+            this.userInfo = res.data.b;
+          }
+          if(res.data.h.code === 50){
+            this.$router.push("/accountlogin");
+          }
+        })
+      }
+    }
   }
 </script>
 <style lang="stylus" scoped>

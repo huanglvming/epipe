@@ -11,34 +11,16 @@
       </div>
       <div class="no-search" v-if="!hasSearch">
         <div class="suggestion-content" v-if="showSuggestion">
-          <div class="history">
+          <div class="history" v-if="historyList.length>0">
             <p class="sub-title">最近搜索</p>
             <div class="suggestions">
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">手表</div>
-              <div class="suggestion-item">儿童</div>
-              <div class="suggestion-item">儿</div>
-              <div class="suggestion-item">童手表</div>
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">儿童手表</div>
+              <div class="suggestion-item" v-for="(item,index) in historyList" :key="index" @click="handleSuggestion(item)">{{item}}</div>
             </div>
           </div>
           <div class="hot">
             <p class="sub-title">热门搜索</p>
             <div class="suggestions">
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">手表</div>
-              <div class="suggestion-item">儿童</div>
-              <div class="suggestion-item">儿</div>
-              <div class="suggestion-item">童手表</div>
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">儿童手表</div>
-              <div class="suggestion-item">儿童手表</div>
+              <div class="suggestion-item" v-for="(item,index) in hotList" :key="index" @click="handleSuggestion(item.name)">{{item.name}}</div>
             </div>
           </div>
         </div>
@@ -54,7 +36,7 @@
           <div class="selection-item">价格优先</div>
         </div>
         <div class="search-result">
-          <div class="result-item" v-for="(item,index) in resultList" :key="index">
+          <div class="result-item" v-for="(item,index) in resultList" :key="index" v-if="resultList.length>0">
             <div class="goods-picture">
               <img :src="imgPrefix + item.goodsImage" alt="商品">
             </div>
@@ -69,6 +51,7 @@
               </div>
             </div>
           </div>
+          <div class="no-result">暂无搜索结果</div>
         </div>
       </div>
     </div>
@@ -85,11 +68,16 @@
         t: null,
         hasSearch: false,
         resultList: [],
-        imgPrefix: ""
+        imgPrefix: "",
+        historyList: localStorage.getItem("historySearch") ? localStorage.getItem("historySearch").split(',') : [],
+        hotList: [],
       }
     },
     watch:{
       searchKey(){
+        if(!this.searchKey){
+          this.hasSearch = false;
+        }
         this.handleSearchKey();
       }
     },
@@ -98,13 +86,15 @@
         return str.trim();
       }
     },
+    created(){
+      this.getHotKey();
+    },
     methods:{
       handleSearchKey(){
         clearTimeout(this.t);
         this.t = setTimeout(() =>{
           if(this.searchKey){
             this.showSuggestion = false;
-            console.log(this.searchKey);
           }else{
             this.showSuggestion = true;
           }
@@ -116,6 +106,15 @@
       handleSearch(){
         if(this.searchKey){
           this.hasSearch = true;
+          let arr = localStorage.getItem("historySearch") ? localStorage.getItem("historySearch").split(",") : [];
+          if(arr.indexOf(this.searchKey)<0){
+            arr.unshift(this.searchKey);
+          }
+          if(arr.length > 10){
+            arr = arr.slice(0,10);
+          }
+          this.historyList = arr;
+          localStorage.setItem("historySearch",arr);
           this.axios.get(this.baseURL.mall+"/m/search/goodsKeywordSearch?keyword="+this.searchKey).then(res =>{
             console.log("搜索结果",res);
             if(res.data.h.code === 200){
@@ -125,6 +124,19 @@
           });
         }
       },
+      handleSuggestion(key){
+        this.searchKey = key;
+        this.handleSearch();
+      },
+      /*请求热门搜索关键字*/
+      getHotKey(){
+        this.axios.get(this.baseURL.mall + '/m/search/hotKeywords').then(res =>{
+          console.log("热门搜索关键字",res);
+          if(res.data.h.code === 200){
+            this.hotList = res.data.b;
+          }
+        })
+      }
     },
   }
 </script>
@@ -334,5 +346,11 @@
     overflow scroll;
     -webkit-overflow-scrolling: touch;
     padding-top 40px;
+  }
+  .no-result{
+    text-align: center;
+    height: 1rem;
+    line-height: 1rem;
+    color: #999;
   }
 </style>

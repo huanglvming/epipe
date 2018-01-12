@@ -78,6 +78,7 @@ const MallPassword = r => require.ensure([], () => r(require('@/page/mall/user/P
 const MallUserInfo = r => require.ensure([], () => r(require('@/page/mall/user/Info.vue')), 'group-mall')
 const MallAddressList = r => require.ensure([], () => r(require('@/page/mall/user/AddressList.vue')), 'group-mall')
 const MallCollection = r => require.ensure([], () => r(require('@/page/mall/user/Collection.vue')), 'group-mall')
+const MyOrder = r => require.ensure([], () => r(require('@/page/mall/user/MyOrder.vue')), 'group-mall')
 
 export default new Router({
   routes: [
@@ -377,6 +378,10 @@ export default new Router({
     {
       path: '/specialinvoice',  //专用发票
       component: SpecialInvoice,
+    },
+    {
+      path: '/myorder',  //我的订单
+      component: MyOrder,
     },
   ]
 })

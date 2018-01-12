@@ -1,12 +1,11 @@
 <template>
   <div class="setting-wrapper">
-    <router-link to="malluserinfo" tag="div" class="setting-item user-info">
+    <div class="setting-item user-info">
       <div class="user-content">
         <img :src="userInfo.imgurl" alt="">
         <span class="name">{{userInfo.realName}}（{{userInfo.phone}}）</span>
       </div>
-      <i class="iconfont icon-jinru"></i>
-    </router-link>
+    </div>
     <router-link to="malladdresslist" tag="div" class="setting-item">
       <div class="setting-title">收货地址管理</div>
       <i class="iconfont icon-jinru"></i>
@@ -15,6 +14,9 @@
       <div class="setting-title">修改密码</div>
       <i class="iconfont icon-jinru"></i>
     </router-link>
+    <div class="logout">
+      <div class="btn-logout" @click="logout">退出登录</div>
+    </div>
     <footer-tab :category="3"></footer-tab>
   </div>
 </template>
@@ -47,6 +49,17 @@
             this.$router.push("/accountlogin");
           }
         })
+      },
+      /*退出登录*/
+      logout(){
+        this.axios.post(this.baseURL.mall + '/m/my/loginOut' + this.Service.queryString({
+          token: this.mallToken,
+        })).then(res =>{
+          console.log("退出登录",res);
+          if(res.data.h.code === 200){
+            this.$router.push("/accountlogin");
+          }
+        })
       }
     }
   }
@@ -73,7 +86,7 @@
     border-radius 50%;
     border none;
   }
-  .setting-item:not(:last-child)::after{
+  .setting-item::after{
     content: "";
     position absolute;
     left 0;
@@ -90,5 +103,19 @@
   .icon-jinru{
     font-size 0.12rem;
     color: #ccc;
+  }
+  .logout{
+    padding: 0.45rem 0;
+  }
+  .btn-logout{
+    width: 3.55rem;
+    height: 0.45rem;
+    margin: 0 auto;
+    line-height 0.45rem;
+    text-align center;
+    border-radius 4px;
+    font-size 0.16rem;
+    color: white;
+    background #d74a45;
   }
 </style>

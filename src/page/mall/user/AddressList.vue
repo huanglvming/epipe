@@ -1,20 +1,20 @@
 <template>
   <div class="address-list-wrapper">
     <div class="address-list">
-      <div class="list-item" v-for="i in 3">
+      <div class="list-item" v-for="(item,i) in addressList" :key="i">
         <div class="consignee list-line">
-          <span class="name">黄律铭</span>
-          <span class="tel">185******555</span>
+          <span class="name">{{item.trueName}}</span>
+          <span class="tel">{{item.mobPhone}}</span>
         </div>
-        <div class="address list-line">广东省深圳市南山区白石洲下白石</div>
+        <div class="address">{{item.areaInfo | filterStr}}{{item.address}}</div>
         <div class="operation">
-          <div class="left" @click="select">
-            <i class="iconfont" :class="selected ? 'icon-xuanzhong' : 'icon-weixuan'"></i>
+          <div class="left" @click="select(i)">
+            <i class="iconfont" :class="selected === i ? 'icon-xuanzhong1' : 'icon-weixuan'"></i>
             <span>设为默认地址</span>
           </div>
           <div class="right">
-            <router-link to="malladdress" tag="span" class="edit">编辑</router-link>
-            <span class="delete">删除</span>
+            <router-link :to="{path:'/malladdress',query:{info:item}}" tag="span" class="edit">编辑</router-link>
+            <span class="delete" @click="deleteAddress(item.addressId)">删除</span>
           </div>
         </div>
       </div>
@@ -32,7 +32,8 @@
     name: "AddressList",
     data(){
       return{
-        selected: false,
+        selected: null,
+        addressList: [],
       }
     },
     components:{
@@ -40,10 +41,64 @@
     },
     created(){
       document.title = "账号设置";
+      this.getAddressList();
+    },
+    filters:{
+      filterStr(str){
+        return str.replace(/,/g,"");
+      }
     },
     methods:{
-      select(){
-        this.selected = !this.selected;
+      select(i){
+        let obj = this.addressList[i];
+        let _isDefault = obj.isDefault === '1' ? false : true;
+        this.axios.post(this.baseURL.mall + '/m/my/setIsDefault' + this.Service.queryString({
+          token: this.mallToken,
+          isDefault: _isDefault,
+          addressId: obj.addressId
+        })).then(res =>{
+          console.log("设置默认地址",res);
+          if(res.data.h.code === 200){
+            this.selected = _isDefault ? i : null;
+            obj.isDefault = _isDefault ? '1' : '0';
+            this.addressList.map(function(item,index){
+              if(index != i){
+                item.isDefault = '0';
+              }
+            });
+          }
+        })
+      },
+      /*获取收货地址*/
+      getAddressList(){
+        this.axios.post(this.baseURL.mall + '/m/my/queryUserAddress' + this.Service.queryString({
+          token: this.mallToken,
+        })).then(res =>{
+          console.log("收货地址",res);
+          if(res.data.h.code === 200){
+            this.addressList = res.data.b;
+            let vm = this;
+            this.addressList.map(function(item,index){
+              if(item.isDefault == 1){
+                vm.selected = index;
+              }
+            })
+          }
+        })
+      },
+      /*删除地址*/
+      deleteAddress(id){
+        this.axios.post(this.baseURL.mall + '/m/my/deleteUserAddress' + this.Service.queryString({
+          token: this.mallToken,
+          addressId: id
+        })).then(res =>{
+          console.log("删除地址",res);
+          if(res.data.h.code === 200){
+            this.getAddressList();
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
       }
     }
   }
@@ -62,11 +117,12 @@
     align-items center;
     height: 0.45rem;
     padding 0 0.1rem;
+    margin-bottom 50px;
   }
   .list-item{
     position relative;
     box-sizing border-box;
-    height: 0.8rem;
+    min-height: 0.8rem;
     padding: 0.15rem 0.1rem 0.1rem 0.1rem;
   }
   .list-item::after{
@@ -98,8 +154,8 @@
   .left{
     font-size 0;
     .iconfont{
-      font-size 0.12rem;
       margin-right 0.05rem;
+      vertical-align sub;
     }
     span{
       font-size 0.12rem;
@@ -118,5 +174,8 @@
     .delete{
       color: #333;
     }
+  }
+  .icon-xuanzhong1{
+    color: #d74a45;
   }
 </style>

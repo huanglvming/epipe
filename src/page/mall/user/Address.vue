@@ -31,6 +31,13 @@
 <script>
   const FooterTab = () => import("../../../components/mall/FooterTab.vue");
   const AreaSelector = () => import("../../../components/mall/AreaSelector.vue");
+  function filterStr(str) {
+    try{
+      return str.replace(/,/g,'');
+    }catch(err){
+      console.log(err);
+    }
+  }
   export default {
     name: "MallAddress",
     components:{
@@ -39,11 +46,11 @@
     },
     data(){
       return{
-        area: "",
-        areaObj: {},
-        name: "",
-        phone: "",
-        address: "",
+        area: this.$route.query.info ? filterStr(this.$route.query.info.areaInfo) : "",
+        areaObj: this.$route.query.info ? this.$route.query.info : {},
+        name: this.$route.query.info ? this.$route.query.info.trueName : "",
+        phone: this.$route.query.info ? this.$route.query.info.telPhone : "",
+        address: this.$route.query.info ? this.$route.query.info.address : "",
         showSelection: false,
       }
     },
@@ -58,6 +65,7 @@
     },
     created(){
       document.title = "账号设置";
+      console.log(this.$route.query.info);
     },
     methods:{
       /*显示区域选择*/
@@ -75,17 +83,21 @@
       handleConfirm(){
         if(this.submitActive){
           this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateUserAddress" + this.Service.queryString({
-            token: "38238544643632157582",
+            token: this.mallToken,
             trueName: this.name,
             telPhone: this.phone,
-            isDefault: 0,
+            isDefault: this.areaObj.isDefault ? this.areaObj.isDefault : "0",
             provinceId: this.areaObj.proviceId,
             cityId: this.areaObj.cityId ? this.areaObj.cityId : "",
             areaId: this.areaObj.areaId ? this.areaObj.areaId : "",
             areaInfo: this.area,
-            address: this.address
+            address: this.address,
+            addressId: this.areaObj.addressId ? this.areaObj.addressId : "",
           })).then(res =>{
             console.log("提交结果",res);
+            if(res.data.h.code === 200){
+              this.$router.push("/malladdresslist");
+            }
           })
         }
       },

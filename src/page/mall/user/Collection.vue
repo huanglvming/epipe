@@ -5,15 +5,15 @@
       <span v-else>完成</span>
     </div>
     <div class="collection-list" :class="{'padding-bottom':edit&&len>4}">
-      <div class="list-item" v-for="(item,index) in len" :key="index">
+      <div class="list-item" v-for="(item,index) in itemList" :key="index">
         <div class="left">
           <i class="iconfont" :class="checkedList[index] ? 'icon-xuanzhong1' : 'icon-weixuan'" v-if="edit" @click="singleCheck(index)"></i>
-          <img src="#" alt="">
+          <img :src="imgPrefix+item.goodsImage" alt="">
         </div>
         <div class="right">
-          <div class="desc">Apple MacBook Pro 15.4英寸笔记本 银色Core i7 处理器/16GB</div>
+          <div class="desc">{{item.goodsName}}</div>
           <div class="sub">
-            <div class="price">￥3099</div>
+            <div class="price">￥{{item.goodsStorePrice}}</div>
             <div class="buy">
               <i class="iconfont icon-gouwucheicon"></i>
               <button class="buy-now">立即购买</button>
@@ -21,19 +21,29 @@
           </div>
         </div>
       </div>
+      <infinite-loading spinner="bubbles" distance="50" @infinite="infiniteHandler">
+        <span slot="no-more">
+          暂无更多数据
+        </span>
+        <span slot="no-results">
+          暂无结果
+        </span>
+      </infinite-loading>
+      <div class="no-data" v-if="noData">暂无数据</div>
     </div>
     <div class="operate" v-show="edit">
       <div class="select-all" @click="handleSelectAll">
         <i class="iconfont" :class="selectAll ? 'icon-xuanzhong1' : 'icon-weixuan'"></i>
         <p>全选</p>
       </div>
-      <button class="btn-delete">删除</button>
+      <button class="btn-delete" @click="deleteCollection">删除</button>
     </div>
     <footer-tab :category="3"></footer-tab>
   </div>
 </template>
 <script>
   const FooterTab = () => import("../../../components/mall/FooterTab.vue");
+  const InfiniteLoading = () => import("vue-infinite-loading");
   export default {
     name: "MallCollection",
     data(){
@@ -42,30 +52,34 @@
         selectAll: false,
         len: 0,
         checkedList: [],
+        pageSize: 10,
+        pageNo: 1,
+        itemList: [],
+        imgPrefix: "",
+        goodsIdList: [],
+        noData: false,
       }
     },
     components:{
+      InfiniteLoading,
       FooterTab
     },
     created(){
       document.title = "商品收藏";
-      let vm = this;
-      setTimeout(() =>{
-        vm.len = 8;
-        vm.checkedList = new Array(vm.len);
-      },200);
     },
     watch:{
       'checkedList':{
         handler: function(arr){
-          for(var i=0; i<arr.length; i++){
+          this.goodsIdList = [];
+          for(var i=0; i<this.len; i++){
             if(!arr[i]){
               this.selectAll = false;
-              return;
+            }else{
+              this.goodsIdList.push(this.itemList[i].goodsId);
             }
-            if(i === arr.length-1){
-              this.selectAll = true;
-            }
+          }
+          if(this.goodsIdList.length === this.len){
+            this.selectAll = true;
           }
         },
         deep: true
@@ -75,21 +89,80 @@
       handleEdit(){
         this.edit = !this.edit;
       },
+      /*全选*/
       handleSelectAll(){
         this.selectAll = !this.selectAll;
         for(var i=0; i<this.len; i++){
           this.$set(this.checkedList,i,this.selectAll);
         }
       },
+      /*单选*/
       singleCheck(index){
         this.$set(this.checkedList,index,!this.checkedList[index]);
-      }
+      },
+      /*滚动加载*/
+      infiniteHandler($state){
+        setTimeout(() =>{
+          let vm = this;
+          vm.axios.post(vm.baseURL.mall + "/m/my/myFavGoods" + vm.Service.queryString({
+            token: vm.mallToken,
+            pageSize: vm.pageSize || 10,
+            pageNo: vm.pageNo || 1
+          })).then(res => {
+            console.log("收藏商品",res);
+            if(res.data.h.code === 200){
+              vm.imgPrefix = res.data.b.imgPrefix;
+              if(res.data.b.goods.length < 1){
+                $state.complete();
+              }else{
+                res.data.b.goods.map(function(item){
+                  vm.itemList.push(item);
+                  vm.len ++;
+                });
+                vm.pageNo ++;
+                $state.loaded();
+              }
+            }else{
+              $state.complete();
+            }
+          })
+        },500);
+      },
+      /*取消收藏*/
+      deleteCollection(){
+        this.axios.post(this.baseURL.mall + "/m/favorite/deleteFavGoods" + this.Service.queryString({
+          token: this.mallToken,
+          goodsIds: this.goodsIdList.join(','),
+        })).then(res =>{
+          console.log("取消收藏",res);
+          if(res.data.h.code === 200){
+            this.$toast(res.data.b.msg);
+            let deleteList = [];
+            let vm = this;
+            this.checkedList.map(function(item,index){
+              if(item){
+                deleteList.push(vm.itemList[index]);
+              }
+            });
+            deleteList.map(function(item){
+              vm.itemList.splice(vm.itemList.indexOf(item),1);
+            });
+            this.len = vm.itemList.length;
+            this.checkedList.splice(0,this.checkedList.length);
+            this.selectAll = false;
+            this.noData = vm.itemList.length === 0 ? true : false;
+          }
+        })
+      },
     }
   }
 </script>
 <style lang="stylus" scoped>
   .collection-wrapper{
     background white;
+  }
+  .icon-xuanzhong1{
+    color: #d74a45;
   }
   .status{
     display flex;
@@ -137,13 +210,24 @@
     }
   }
   .right{
+    position relative;
     display flex;
     flex-direction column;
     justify-content space-between;
     height: 1rem;
     padding: 0.1rem 0;
     padding-right 0.1rem;
-    border-bottom 1px solid #E9E9E9;
+    &::after{
+      content: "";
+      position absolute;
+      left 0;
+      bottom 0;
+      width 100%;
+      height 1px;
+      background #e9e9e9;
+      transform scaleY(0.5);
+      transform-origin center;
+    }
     .desc{
       display: -webkit-box;
       -webkit-box-orient: vertical;
@@ -189,7 +273,7 @@
     position fixed;
     box-sizing border-box;
     left 0;
-    bottom 50px;
+    bottom 49px;
     width 100%;
     height 49px;
     padding 0 0.1rem;
@@ -215,5 +299,18 @@
       color: white;
       border-radius 2px;
     }
+  }
+  .no-data{
+    z-index 9;
+    position: fixed;
+    top: 45px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #666;
+    font-size: 14px;
+    padding-top: 0.3rem;
+    text-align: center;
+    background: white;
   }
 </style>

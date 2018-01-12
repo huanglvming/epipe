@@ -53,6 +53,7 @@
       /*获取地址数据*/
       getData(type,code){
         this.axios.post(this.baseURL.mall + '/m/my/queryAllAddress' + this.Service.queryString({
+          token: this.mallToken,
           id: code ? code : "",
         })).then(res =>{
           console.log(res);
