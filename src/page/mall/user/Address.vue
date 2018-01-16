@@ -7,7 +7,7 @@
       </div>
       <div class="setting-item">
         <div class="setting-title">联系方式</div>
-        <input class="setting-content" type="tel" placeholder="手机号码" v-model="phone">
+        <input class="setting-content" type="tel" placeholder="手机号码" v-model="phone" @blur="handleBlur(phone)">
       </div>
       <div class="setting-item">
         <div class="setting-title">所在区域</div>
@@ -56,7 +56,7 @@
     },
     computed:{
       submitActive(){
-        if(this.name && this.phone && this.address && this.area){
+        if(this.name && this.checkPhone(this.phone) && this.address && this.area){
           return true;
         }else{
           return false;
@@ -86,6 +86,7 @@
             token: this.mallToken,
             trueName: this.name,
             telPhone: this.phone,
+            mobPhone: this.phone,
             isDefault: this.areaObj.isDefault ? this.areaObj.isDefault : "0",
             provinceId: this.areaObj.proviceId,
             cityId: this.areaObj.cityId ? this.areaObj.cityId : "",
@@ -96,9 +97,24 @@
           })).then(res =>{
             console.log("提交结果",res);
             if(res.data.h.code === 200){
+              console.log("修改成功");
               this.$router.push("/malladdresslist");
             }
           })
+        }
+      },
+      /*验证手机号码*/
+      checkPhone(phone){
+        if(!(/^1(3|4|5|7|8)\d{9}$/.test(phone))){
+          return false;
+        }else{
+          return true;
+        }
+      },
+      handleBlur(phone){
+        console.log(phone);
+        if(!(/^1(3|4|5|7|8)\d{9}$/.test(phone))){
+          this.$toast("手机号码有误");
         }
       },
     }

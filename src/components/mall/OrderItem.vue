@@ -8,7 +8,9 @@
         </div>
         <div class="item-sub">
           <div class="item-row" v-for="(item,index) in obj.orderGoodsList" :key="index">
-            <div class="goods-picture"></div>
+            <div class="goods-picture">
+              <img :src="imgPrefix + item.goodsImage" alt="">
+            </div>
             <div class="goods-details">
               <div class="goods-desc">
                 <p class="desc-title">{{item.goodsName}}</p>
@@ -16,13 +18,13 @@
               </div>
               <div class="goods-price">
                 <p class="price">￥{{item.goodsPrice}}</p>
-                <p class="number">x1</p>
+                <p class="number">x{{item.goodsNum}}</p>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="btn-wrapper">
+      <div class="btn-wrapper" v-if="showBtn">
         <div class="btn">订单详情</div>
         <div class="btn">取消订单</div>
         <div class="btn btn-pay">立即付款</div>
@@ -33,7 +35,17 @@
 <script>
   export default {
     name: "OrderItem",
-    props:["obj"],
+    props:{
+      obj:{
+        required: true,
+      },
+      imgPrefix:{
+        required: true,
+      },
+      showBtn:{
+        default: true,
+      }
+    },
     filters:{
       handleStatus(state){
         switch (state){
@@ -125,7 +137,7 @@
     width: 0.7rem;
     height: 0.7rem;
     margin-right 0.12rem;
-    background red;
+    background #dedede;
     img{
       width: inherit;
       height: inherit;
@@ -134,6 +146,7 @@
   .goods-details{
     display flex;
     justify-content space-between;
+    min-width 2.81rem;
   }
   .goods-desc{
     width 2.1rem;

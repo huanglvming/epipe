@@ -1,0 +1,277 @@
+<template>
+  <div class="order-wrapper">
+    <section class="section-item">
+      <p class="line">
+        <span class="line-title">订单状态:</span>
+        <span class="line-content line-status">{{objData.orderState | filterStatus}} </span>
+      </p>
+      <p class="line">
+        <span class="line-title">订单编号:</span>
+        <span class="line-content">{{objData.orderSn}}</span>
+      </p>
+      <p class="line">
+        <span class="line-title">下单时间:</span>
+        <span class="line-content">{{objData.createTimeStr}}</span>
+      </p>
+      <div class="btn-wrapper" v-if="objData.orderState === 0">
+        <div class="btn btn-repay">重新下单</div>
+      </div>
+      <div class="btn-wrapper" v-else-if="objData.orderState === 10">
+        <div class="btn btn-cancel" @click="handleCancel">取消订单</div>
+        <div class="btn btn-pay">微信支付</div>
+      </div>
+      <div class="btn-wrapper" v-else-if="objData.orderState === 20">
+        <div class="btn btn-refund">申请退款</div>
+      </div>
+      <div class="btn-wrapper" v-else-if="objData.orderState === 40">
+        <div class="btn btn-return" @click="goodsReturn">申请退货</div>
+        <div class="btn btn-comment">确认收货</div>
+      </div>
+      <div class="btn-wrapper" v-else-if="objData.orderState === 50">
+        <div class="btn btn-return" @click="goodsReturn">申请退货</div>
+        <div class="btn btn-comment">我要评价</div>
+      </div>
+    </section>
+    <section class="section-item">
+      <div class="sup">
+        <p class="line">
+          <span class="line-title">商品金额:</span>
+          <span class="line-content line-price">￥{{objData.orderAmount}}</span>
+        </p>
+        <p class="line">
+          <span class="line-title">收货地址:</span>
+          <span class="line-content">{{objData.address.areaInfo | filterStr}}{{objData.address.address}}</span>
+        </p>
+        <p class="line">
+          <span class="line-title">收货人:</span>
+          <span class="line-content">{{objData.address.trueName}}&emsp;{{objData.address.mobPhone | filterPhone}}</span>
+        </p>
+      </div>
+      <div class="sub">
+        <p class="line">
+          <span class="line-title">发票类型:</span>
+          <span class="line-content line-price">{{objData.invoice}}</span>
+        </p>
+        <p class="line">
+          <span class="line-title">发票抬头:</span>
+          <span class="line-content">深圳前海优管信息科技有限公司</span>
+        </p>
+        <p class="line">
+          <span class="line-title">发票内容:</span>
+          <span class="line-content">商品明细</span>
+        </p>
+      </div>
+    </section>
+    <section>
+      <order-item :obj="objData" :imgPrefix="imgPrefix" :showBtn="false"></order-item>
+    </section>
+    <section class="section-item section-price">
+      <div class="price-line">
+        <span class="price-title">商品金额</span>
+        <span class="price-amount">￥{{objData.orderAmount}}</span>
+      </div>
+      <div class="price-line">
+        <span class="price-title">运费</span>
+        <span class="price-amount">+￥0</span>
+      </div>
+      <div class="price-sub"><span class="sub-title">实付金额:</span><span class="price-amount">￥{{objData.orderAmount}}</span></div>
+    </section>
+    <footer-tab :category="3"></footer-tab>
+  </div>
+</template>
+<script>
+  const FooterTab = () => import("../../../components/mall/FooterTab.vue");
+  const OrderItem = () => import("../../../components/mall/OrderItem.vue");
+  export default {
+    name: "OrderDetails",
+    components:{
+      FooterTab,
+      OrderItem
+    },
+    data(){
+      return{
+        objData: {},
+        imgPrefix: this.$route.query.imgPrefix,
+        orderSn: this.$route.query.orderSn,
+      }
+    },
+    created(){
+      document.title="订单详情";
+      this.getData();
+    },
+    filters:{
+      filterStr(str){
+        return str.replace(/,/g,"");
+      },
+      filterStatus(state){
+        switch (state){
+          case 0:
+            return "已取消";
+            break;
+          case 10:
+            return "待付款";
+            break;
+          case 20:
+            return "已付款";
+            break;
+          case 40:
+            return "已发货";
+            break;
+          case 50:
+            return "已完成";
+            break;
+        }
+      },
+      filterPhone(phone){
+        phone = phone.replace(/(\d{3})\d{4}(\d{4})/, '$1****$2');
+        return phone;
+      },
+    },
+    methods:{
+      /*获取数据*/
+      getData(){
+        this.axios.post(this.baseURL.mall + "/m/my/detail" + this.Service.queryString({
+          token: this.mallToken,
+          orderSn: this.orderSn
+        })).then(res =>{
+          console.log("订单详情",res);
+          if(res.data.h.code === 200){
+            this.objData = res.data.b;
+          }
+        })
+      },
+      /*取消订单*/
+      handleCancel(){
+        this.axios.post(this.baseURL.mall + "/m/my/orderCancel" + this.Service.queryString({
+          token: this.mallToken,
+          orderSn: this.orderSn
+        })).then(res =>{
+          console.log("取消订单",res);
+          if(res.data.h.code === 200){
+
+          }
+        })
+      },
+      /*申请退货*/
+      goodsReturn(){
+        this.axios.post(this.baseURL.mall + "/m/my/applyGoodsReturn" + this.Service.queryString({
+          token: this.mallToken,
+          orderSn: this.orderSn
+        })).then(res =>{
+          console.log("申请退货",res);
+          if(res.data.h.code === 200){
+
+          }
+        })
+      }
+    }
+  }
+</script>
+<style lang="stylus" scoped>
+  border(borderColor= #e9e9e9,borderWidth= 1px){
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: borderWidth;
+    background: borderColor;
+    transform: scaleY(0.5);
+    transform-origin: center;
+  }
+  .section-item{
+    position relative;
+    padding 9px 10px;
+    margin-bottom 10px;
+    background white;
+    &::before{
+      border();
+      top 0;
+    }
+    &::after{
+      border();
+      bottom 0;
+    }
+  }
+  .line{
+    line-height 24px;
+    font-size 13px;
+    .line-title{
+      display inline-block;
+      min-width 5em;
+      color: #999;
+    }
+    .line-content{
+      color: #333;
+    }
+    .line-status{
+      color: #ff8800;
+    }
+  }
+  .btn-wrapper{
+    display flex;
+    justify-content center;
+    width 3.55rem;
+    height 0.45rem;
+    margin-top 5px;
+  }
+  .btn{
+    flex 1;
+    height inherit;
+    border-radius 4px;
+    font-size 16px;
+    color white;
+    line-height 0.45rem;
+    text-align center;
+  }
+  .btn:not(:last-child){
+    margin-right 0.15rem;
+  }
+  .btn-cancel,.btn-return,.btn-refund{
+    background #bfbfbf;
+  }
+  .btn-pay{
+    background #54b736;
+  }
+  .btn-repay,.btn-comment{
+    background #EA3B3D;
+  }
+  .sup{
+    position relative;
+    margin-bottom 10px;
+    padding-bottom 9px;
+    &::after{
+      content: "";
+      position absolute;
+      left -10px;
+      bottom: -10px;
+      width calc(100% + 20px);
+      height: 10px;
+      background #F4F4F4;
+    }
+  }
+  .sub{
+    padding-top 9px;
+  }
+  .price-line{
+    display flex;
+    justify-content space-between;
+    line-height 24px;
+    font-size 13px;
+  }
+  .price-sub{
+    display flex;
+    justify-content flex-end;
+    margin-top 25px;
+  }
+  .price-title{
+    color: #333;
+  }
+  .price-amount{
+    color: #d74a45;
+  }
+  .sub-title{
+    font-size 15px;
+    font-weight bold;
+    color: #333;
+  }
+</style>

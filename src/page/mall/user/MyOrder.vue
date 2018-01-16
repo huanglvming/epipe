@@ -4,7 +4,7 @@
       <div class="menu-item" :class="{'menu-active': index === selected}" v-for="(item,index) in menuList" :key="index" @click="tab(index)">{{item.title}}</div>
     </div>
     <div class="order-list">
-      <order-item v-for="(item,index) in orderList" :key="index" :obj="item"></order-item>
+      <order-item v-for="(item,index) in orderList" :key="index" :obj="item" :imgPrefix="imgPrefix" @click.native="linkDetails(item)"></order-item>
       <infinite-loading spinner="bubbles" @distance="50" @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more">
           暂无更多数据
@@ -37,6 +37,7 @@
         pageSize: 10,
         pageNo: 1,
         orderState: null,
+        imgPrefix: "",
       }
     },
     created(){
@@ -53,7 +54,7 @@
       infiniteHandler($state){
         setTimeout(() =>{
           this.axios.post(this.baseURL.mall + '/m/my/orderList' + this.Service.queryString({
-            token: this.mallToken,
+            token: this.mallToken.getToken(),
             pageSize: this.pageSize || "",
             pageNo: this.pageNo || "",
             orderState: this.orderState || "",
@@ -63,6 +64,7 @@
               if(res.data.b.result.length < 1){
                 $state.complete();
               }else{
+                this.imgPrefix = res.data.b.toUrl;
                 this.orderList = this.orderList.concat(res.data.b.result);
                 this.pageNo ++;
                 setTimeout(()=>{
@@ -79,11 +81,16 @@
         },500);
       },
       changeFilter() {
+
         this.orderList = [];
         this.$nextTick(() => {
           this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
         });
       },
+      /*跳转订单详情*/
+      linkDetails(item){
+        this.$router.push({path: '/orderdetails', query:{orderSn:item.orderSn,imgPrefix:this.imgPrefix}});
+      }
     }
   }
 </script>
