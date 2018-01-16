@@ -31,15 +31,15 @@
       </div>
     </div>
     <div class="orders">
-      <div class="link-item">
+      <router-link to="myorder" class="link-item">
         <div class="link-title">我的订单</div>
         <div class="link-icon">
           <i class="iconfont icon-jinru"></i>
         </div>
-      </div>
+      </router-link>
       <div class="status">
         <div class="status-item">
-          <p><i class="iconfont icon-daifukuan"></i></p>
+          <p><i class="iconfont icon-daifukuan1"></i></p>
           <p class="item-title">代付款</p>
         </div>
         <div class="status-item">
@@ -254,5 +254,8 @@
     font-size 0.12rem;
     color: #666;
     margin-top 0.05rem;
+  }
+  .link-title{
+    color: #333;
   }
 </style>

@@ -61,11 +61,11 @@
   }
   .footer-tab-item{
     flex: 1;
-    padding: 8px 0;
+    padding: 6px 0;
     text-align center;
   }
   .iconfont{
-    font-size: 18px;
+    font-size: 22px;
     color: #999;
   }
   .tab-title{

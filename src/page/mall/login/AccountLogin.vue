@@ -47,7 +47,8 @@
             console.log(res);
             let dataMes=res.data.h;
             if(dataMes.code==200){
-              localStorage.setItem('accountToken',res.data.b.token);
+              this.mallToken.setToken(res.data.b.token);
+              console.log("new_token",res.data.b.token);
               this.$router.push({path:'/mallhome'});
             }else{
               this.tips=dataMes.msg;

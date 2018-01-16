@@ -96,7 +96,7 @@
       //获取购物车列表信息
       getCartList(){
         this.axios.post(this.baseURL.mall + "/m/cart/myCart"+this.Service.queryString({
-          token:this.mallToken
+          token:this.mallToken.getToken()
         })).then(res=>{
           console.log('购物车信息',res);
           if(res.data.h.code==200){

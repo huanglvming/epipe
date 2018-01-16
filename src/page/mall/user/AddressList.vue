@@ -4,7 +4,8 @@
       <div class="list-item" v-for="(item,i) in addressList" :key="i">
         <div class="consignee list-line">
           <span class="name">{{item.trueName}}</span>
-          <span class="tel">{{item.mobPhone}}</span>
+          <span class="tel" v-if="item.telPhone">{{item.telPhone}}</span>
+          <span class="tel" v-else>{{item.mobPhone}}</span>
         </div>
         <div class="address">{{item.areaInfo | filterStr}}{{item.address}}</div>
         <div class="operation">
@@ -92,8 +93,8 @@
           token: this.mallToken,
           addressId: id
         })).then(res =>{
-          console.log("删除地址",res);
           if(res.data.h.code === 200){
+            this.selected = null;
             this.getAddressList();
           }else{
             this.$toast(res.data.h.msg);

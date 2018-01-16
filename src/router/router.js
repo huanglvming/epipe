@@ -80,6 +80,7 @@ const MallUserInfo = r => require.ensure([], () => r(require('@/page/mall/user/I
 const MallAddressList = r => require.ensure([], () => r(require('@/page/mall/user/AddressList.vue')), 'group-mall')
 const MallCollection = r => require.ensure([], () => r(require('@/page/mall/user/Collection.vue')), 'group-mall')
 const MyOrder = r => require.ensure([], () => r(require('@/page/mall/user/MyOrder.vue')), 'group-mall')
+const OrderDetails = r => require.ensure([], () => r(require('@/page/mall/user/OrderDetails.vue')), 'group-mall')
 
 export default new Router({
   routes: [
@@ -387,6 +388,10 @@ export default new Router({
     {
       path: '/manageaddress',  //专用发票
       component: ManageAddress,
+    },
+    {
+      path: '/orderdetails',  //订单详情
+      component: OrderDetails,
     },
   ]
 })
