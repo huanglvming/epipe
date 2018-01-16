@@ -89,6 +89,11 @@
     },
     created(){
       this.getSettlement();
+      if(localStorage.getItem("invoiceListArr")){
+        let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
+        console.log(newInvoiceList);
+        
+      }
     }
   }
 </script>
