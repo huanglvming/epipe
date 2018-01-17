@@ -36,7 +36,7 @@
           <div class="selection-item">价格优先</div>
         </div>
         <div class="search-result">
-          <div class="result-item" v-for="(item,index) in resultList" :key="index" v-if="resultList.length>0">
+          <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="result-item" v-for="(item,index) in resultList" :key="index" v-if="resultList.length>0">
             <div class="goods-picture">
               <img :src="imgPrefix + item.goodsImage" alt="商品">
             </div>
@@ -50,7 +50,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </router-link>
           <div class="no-result" v-if="resultList.length<1">暂无搜索结果</div>
         </div>
       </div>

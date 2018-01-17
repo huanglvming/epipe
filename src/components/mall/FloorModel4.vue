@@ -4,7 +4,7 @@
       <img :src="imgPrefix + floorObj.floorTitleImg" alt="">
     </div>
     <div class="floor-4-view">
-      <div class="item" v-for="(item,index) in floorObj.floorGoods" v-if="index!=1">
+      <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="item" v-for="(item,index) in floorObj.floorGoods" v-if="index!=1" :key="index">
         <div class="item-content">
           <div class="item-img">
             <img :src="imgPrefix + item.goodsImage" alt="">
@@ -19,7 +19,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </router-link>
       <div class="item" v-else>
         <div class="item-menu">
           <div class="menu-tab" v-for="(item,index) in floorObj.floorKeywords" :key="index">{{item}}</div>

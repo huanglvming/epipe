@@ -8,23 +8,21 @@
           <div class="selection-item">价格优先</div>
         </div>
         <div class="search-result">
-          <div class="result-item" v-for="(item,index) in resultList" :key="index" v-if="resultList.length>0">
-            
-              <div class="goods-picture">
-                <img :src="imgPrefix + item.goodsImage" alt="商品">
-              </div>
-              <div class="goods-details">
-                <div class="goods-desc">{{item.goodsName}}</div>
-                <div class="goods-opr">
-                  <div class="price">￥{{item.goodsStorePrice}}</div>
-                  <div class="buy">
-                    <i class="iconfont icon-xiaogouwucheicon"></i>
-                    <span class="btn-buy">立即购买</span>
-                  </div>
+          <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="result-item" v-for="(item,index) in resultList" :key="index" v-if="resultList.length>0">
+            <div class="goods-picture">
+              <img :src="imgPrefix + item.goodsImage" alt="商品">
+            </div>
+            <div class="goods-details">
+              <div class="goods-desc">{{item.goodsName}}</div>
+              <div class="goods-opr">
+                <div class="price">￥{{item.goodsStorePrice}}</div>
+                <div class="buy">
+                  <i class="iconfont icon-xiaogouwucheicon"></i>
+                  <span class="btn-buy">立即购买</span>
                 </div>
               </div>
-         
-          </div>
+            </div>
+          </router-link>
           <div class="no-result" v-else>暂无搜索结果</div>
         </div>
       </div>
