@@ -195,7 +195,7 @@
       collection(){
         console.log(this.goodsId);
         this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
           goodsIds:this.goodsId
         })).then(res=>{
           console.log(res);
@@ -213,7 +213,7 @@
           return false;
         }
         this.axios.post(this.baseURL.mall + "/m/cart/addCartItems"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:this.specId
@@ -233,7 +233,7 @@
           return false;
         }
         this.axios.post(this.baseURL.mall + "/m/cart/buy_now"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
           goodsId:this.goodsId,
           count:this.buyValue,
           specId:this.specId

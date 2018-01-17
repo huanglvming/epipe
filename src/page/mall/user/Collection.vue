@@ -131,7 +131,7 @@
       /*取消收藏*/
       deleteCollection(){
         this.axios.post(this.baseURL.mall + "/m/favorite/deleteFavGoods" + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
           goodsIds: this.goodsIdList.join(','),
         })).then(res =>{
           console.log("取消收藏",res);

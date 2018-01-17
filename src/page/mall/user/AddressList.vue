@@ -54,7 +54,7 @@
         let obj = this.addressList[i];
         let _isDefault = obj.isDefault === '1' ? false : true;
         this.axios.post(this.baseURL.mall + '/m/my/setIsDefault' + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
           isDefault: _isDefault,
           addressId: obj.addressId
         })).then(res =>{
@@ -73,7 +73,7 @@
       /*获取收货地址*/
       getAddressList(){
         this.axios.post(this.baseURL.mall + '/m/my/queryUserAddress' + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
         })).then(res =>{
           console.log("收货地址",res);
           if(res.data.h.code === 200){
@@ -90,7 +90,7 @@
       /*删除地址*/
       deleteAddress(id){
         this.axios.post(this.baseURL.mall + '/m/my/deleteUserAddress' + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
           addressId: id
         })).then(res =>{
           if(res.data.h.code === 200){

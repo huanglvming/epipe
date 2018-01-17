@@ -66,7 +66,7 @@
       //获取所有收件地址
       getAddressList(){
         this.axios.post(this.baseURL.mall + "/m/my/queryUserAddress"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
         })).then(res=>{
           console.log(res);
           if(res.data.h.code==200){
@@ -81,7 +81,7 @@
         console.log(index);
         if(this.addressList[index].isDefault==0){
           this.axios.post(this.baseURL.mall + "/m/my/setIsDefault" + this.Service.queryString({
-            token: this.mallToken,
+            token: this.mallToken.getToken(),
             isDefault:true,
             addressId:this.addressList[index].addressId
           })).then(res =>{
@@ -126,7 +126,7 @@
       handleConfirm(addressId){
         if(this.submitActive){
           this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateUserAddress" + this.Service.queryString({
-            token: this.mallToken,
+            token: this.mallToken.getToken(),
             trueName: this.name,
             telPhone: this.phone,
             mobPhone:this.phone,
