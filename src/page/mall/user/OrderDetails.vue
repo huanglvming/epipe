@@ -131,7 +131,7 @@
       /*获取数据*/
       getData(){
         this.axios.post(this.baseURL.mall + "/m/my/detail" + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
           orderSn: this.orderSn
         })).then(res =>{
           console.log("订单详情",res);
@@ -143,7 +143,7 @@
       /*取消订单*/
       handleCancel(){
         this.axios.post(this.baseURL.mall + "/m/my/orderCancel" + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
           orderSn: this.orderSn
         })).then(res =>{
           console.log("取消订单",res);
@@ -155,7 +155,7 @@
       /*申请退货*/
       goodsReturn(){
         this.axios.post(this.baseURL.mall + "/m/my/applyGoodsReturn" + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
           orderSn: this.orderSn
         })).then(res =>{
           console.log("申请退货",res);

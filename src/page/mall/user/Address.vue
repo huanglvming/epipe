@@ -83,7 +83,7 @@
       handleConfirm(){
         if(this.submitActive){
           this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateUserAddress" + this.Service.queryString({
-            token: this.mallToken,
+            token: this.mallToken.getToken(),
             trueName: this.name,
             telPhone: this.phone,
             mobPhone: this.phone,

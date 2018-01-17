@@ -81,7 +81,7 @@
         },500);
       },
       changeFilter() {
-
+				this.pageNo = 1;
         this.orderList = [];
         this.$nextTick(() => {
           this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');

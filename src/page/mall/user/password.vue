@@ -48,7 +48,7 @@
       /*获取用户信息*/
       getData(){
         this.axios.post(this.baseURL.mall + '/m/my/queryPersonalMsg' + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
         })).then(res =>{
           console.log("个人信息",res);
           if(res.data.h.code === 200){
@@ -64,7 +64,7 @@
         if(this.confirmFlag){
           if(this.newPassword === this.confirmPassword){
             this.axios.post(this.baseURL.mall + '/m/my/modifyPass' + this.Service.queryString({
-              token: this.mallToken,
+              token: this.mallToken.getToken(),
               mobile: this.mobile,
               password: this.oldPassword,
               newpassword: this.newPassword,
@@ -86,7 +86,7 @@
       /*退出登录*/
       logout(){
         this.axios.post(this.baseURL.mall + '/m/my/loginOut' + this.Service.queryString({
-          token: this.mallToken,
+          token: this.mallToken.getToken(),
         })).then(res =>{
           console.log("退出登录",res);
           if(res.data.h.code === 200){
