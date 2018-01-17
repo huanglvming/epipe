@@ -191,14 +191,24 @@
     },
     created(){
       document.title="发票";
-//      if(localStorage.getItem("invoiceListArr")){
-//        let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
-//        console.log(newInvoiceList);
-//        this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateInvoice"+this.Service.queryString({
-//
-//        })).then(res=>{})
-//        }
-//      }
+      if(localStorage.getItem("invoiceListArr")){
+        let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
+        console.log(newInvoiceList);
+        this.axios.post(this.baseURL.mall + "/m/my/queryInvoiceByInvId"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          invId:newInvoiceList.invId
+        })).then(res=>{
+          console.log('已保存发票信息',res);
+          if(res.data.h.code===200){
+            if(res.data.b.invState==2 && res.data.b.invRecProvince==''){
+              this.NorInvoiceFun();
+              this.ComInvoiceHeaFun();
+              this.InvHeacon=res.data.b.invTitle;
+              this.IdentNnm=res.data.b.invCode;
+            }
+          }
+        })
+      }
     }
   }
 </script>
