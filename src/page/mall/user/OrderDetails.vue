@@ -40,11 +40,11 @@
         </p>
         <p class="line">
           <span class="line-title">收货地址:</span>
-          <span class="line-content">{{objData.address.areaInfo | filterStr}}{{objData.address.address}}</span>
+          <span class="line-content" v-if="objData.address">{{objData.address.areaInfo | filterStr}}{{objData.address.address}}</span>
         </p>
         <p class="line">
           <span class="line-title">收货人:</span>
-          <span class="line-content">{{objData.address.trueName}}&emsp;{{objData.address.mobPhone | filterPhone}}</span>
+          <span class="line-content" v-if="objData.address">{{objData.address.trueName}}&emsp;{{objData.address.mobPhone | filterPhone}}</span>
         </p>
       </div>
       <div class="sub">
@@ -101,7 +101,9 @@
     },
     filters:{
       filterStr(str){
-        return str.replace(/,/g,"");
+        if(str){
+          return str.replace(/,/g,"");
+        }
       },
       filterStatus(state){
         switch (state){

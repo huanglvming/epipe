@@ -38,26 +38,26 @@
         </div>
       </router-link>
       <div class="status">
-        <div class="status-item">
+        <router-link :to="{path:'myorder',query:{state:1}}" tag="div" class="status-item">
           <p><i class="iconfont icon-daifukuan1"></i></p>
-          <p class="item-title">代付款</p>
-        </div>
-        <div class="status-item">
+          <p class="item-title">待付款</p>
+        </router-link>
+        <router-link :to="{path:'myorder',query:{state:2}}" tag="div" class="status-item">
           <p><i class="iconfont icon-yifukuan"></i></p>
           <p class="item-title">已付款</p>
-        </div>
-        <div class="status-item">
+        </router-link>
+        <router-link :to="{path:'myorder',query:{state:3}}" tag="div" class="status-item">
           <p><i class="iconfont icon-daifahuo"></i></p>
           <p class="item-title">已发货</p>
-        </div>
-        <div class="status-item">
+        </router-link>
+        <router-link :to="{path:'myorder',query:{state:4}}" tag="div" class="status-item">
           <p><i class="iconfont icon-yiwancheng"></i></p>
           <p class="item-title">已完成</p>
-        </div>
-        <div class="status-item">
+        </router-link>
+        <router-link :to="{path:'myorder',query:{state:5}}" tag="div" class="status-item">
           <p><i class="iconfont icon-yiquxiao"></i></p>
           <p class="item-title">已取消</p>
-        </div>
+        </router-link>
       </div>
     </div>
     <div class="links">

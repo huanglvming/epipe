@@ -51,7 +51,7 @@
               </div>
             </div>
           </div>
-          <div class="no-result">暂无搜索结果</div>
+          <div class="no-result" v-if="resultList.length<1">暂无搜索结果</div>
         </div>
       </div>
     </div>
