@@ -5,7 +5,7 @@
     </div>
     <div class="order-list">
       <order-item v-for="(item,index) in orderList" :key="index" :obj="item" :imgPrefix="imgPrefix" @click.native="linkDetails(item)"></order-item>
-      <infinite-loading spinner="bubbles" @distance="50" @infinite="infiniteHandler" ref="infiniteLoading">
+      <infinite-loading spinner="bubbles" @distance="0" @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more">
           暂无更多数据
         </span>
@@ -30,18 +30,22 @@
     },
     data(){
       return{
-        menuList: [{title: "我的订单",code: null},{title: "待付款",code: 10},{title: "已付款",code: 20},
+        menuList: [{title: "我的订单",code: ""},{title: "待付款",code: 10},{title: "已付款",code: 20},
           {title: "已发货",code: 40},{title: "已完成",code: 50},{title: "已取消",code: 0}],
         selected: 0,
         orderList: [],
         pageSize: 10,
         pageNo: 1,
-        orderState: null,
+        orderState: "",
         imgPrefix: "",
       }
     },
     created(){
       document.title = "我的订单";
+      if(this.$route.query.state){
+        this.selected = this.$route.query.state;
+        this.orderState = this.menuList[this.$route.query.state].code;
+      }
     },
     methods:{
       /*菜单切换*/
@@ -57,7 +61,7 @@
             token: this.mallToken.getToken(),
             pageSize: this.pageSize || "",
             pageNo: this.pageNo || "",
-            orderState: this.orderState || "",
+            orderState: this.orderState,
           })).then(res =>{
             console.log(this.menuList[this.selected].title,res);
             if(res.data.h.code === 200){

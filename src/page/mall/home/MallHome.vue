@@ -107,7 +107,6 @@
       document.title = '优优商城';
       this.getBanner();
       this.getFloor();
-      console.log("the_token_we_get_is",this.mallToken.getToken());
     },
     mounted(){
       this.$nextTick(() =>{

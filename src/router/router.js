@@ -73,15 +73,15 @@ const Invoice = r => require.ensure([], () => r(require('@/page/mall/shop/Invoic
 const SpecialInvoice = r => require.ensure([], () => r(require('@/page/mall/shop/SpecialInvoice.vue')), 'group-mall')
 const ManageAddress = r => require.ensure([], () => r(require('@/page/mall/shop/ManageAddress.vue')), 'group-mall')
 
-const MallUser = r => require.ensure([], () => r(require('@/page/mall/user/User.vue')), 'group-mall')
-const MallSetting = r => require.ensure([], () => r(require('@/page/mall/user/Setting.vue')), 'group-mall')
-const MallAddress = r => require.ensure([], () => r(require('@/page/mall/user/Address.vue')), 'group-mall')
-const MallPassword = r => require.ensure([], () => r(require('@/page/mall/user/Password.vue')), 'group-mall')
-const MallUserInfo = r => require.ensure([], () => r(require('@/page/mall/user/Info.vue')), 'group-mall')
-const MallAddressList = r => require.ensure([], () => r(require('@/page/mall/user/AddressList.vue')), 'group-mall')
-const MallCollection = r => require.ensure([], () => r(require('@/page/mall/user/Collection.vue')), 'group-mall')
-const MyOrder = r => require.ensure([], () => r(require('@/page/mall/user/MyOrder.vue')), 'group-mall')
-const OrderDetails = r => require.ensure([], () => r(require('@/page/mall/user/OrderDetails.vue')), 'group-mall')
+const MallUser = r => require.ensure([], () => r(require('@/page/mall/user/User.vue')), 'mall-user')
+const MallSetting = r => require.ensure([], () => r(require('@/page/mall/user/Setting.vue')), 'mall-user')
+const MallAddress = r => require.ensure([], () => r(require('@/page/mall/user/Address.vue')), 'mall-user')
+const MallPassword = r => require.ensure([], () => r(require('@/page/mall/user/Password.vue')), 'mall-user')
+const MallUserInfo = r => require.ensure([], () => r(require('@/page/mall/user/Info.vue')), 'mall-user')
+const MallAddressList = r => require.ensure([], () => r(require('@/page/mall/user/AddressList.vue')), 'mall-user')
+const MallCollection = r => require.ensure([], () => r(require('@/page/mall/user/Collection.vue')), 'mall-user')
+const MyOrder = r => require.ensure([], () => r(require('@/page/mall/user/MyOrder.vue')), 'mall-user')
+const OrderDetails = r => require.ensure([], () => r(require('@/page/mall/user/OrderDetails.vue')), 'mall-user')
 
 export default new Router({
   routes: [

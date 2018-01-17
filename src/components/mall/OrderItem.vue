@@ -24,10 +24,33 @@
           </div>
         </div>
       </div>
-      <div class="btn-wrapper" v-if="showBtn">
+      <div class="btn-wrapper" v-show="showBtn" v-if="obj.orderState === 0">
+        <div class="btn">订单详情</div>
+        <div class="btn btn-pay">重新下单</div>
+      </div>
+      <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 10">
         <div class="btn">订单详情</div>
         <div class="btn">取消订单</div>
-        <div class="btn btn-pay">立即付款</div>
+        <div class="btn btn-pay">微信支付</div>
+      </div>
+      <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 20">
+        <div class="btn">申请退款</div>
+        <div class="btn btn-pay">订单详情</div>
+      </div>
+      <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 40">
+        <div class="btn">订单详情</div>
+        <div class="btn">申请退款</div>
+        <div class="btn btn-pay">确认收货</div>
+      </div>
+      <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 50">
+        <div class="btn">订单详情</div>
+        <div class="btn">申请退款</div>
+        <div class="btn btn-pay">我要评价</div>
+      </div>
+      <div class="btn-wrapper" v-show="showBtn" v-else>
+        <div class="btn">订单详情</div>
+        <div class="btn">取消订单</div>
+        <div class="btn btn-pay">立即下单</div>
       </div>
     </div>
   </div>

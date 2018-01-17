@@ -1,7 +1,11 @@
 <template>
   <div class="account-login">
-    <input type="text"  @input="handleInput" class="inputpart"  placeholder="请输入手机号" v-model="phone">
-    <input type="password" class="inputpart"  placeholder="请输入密码" v-model="password">
+    <div class="input-container">
+      <input type="text"  @input="handleInput" class="inputpart"  placeholder="请输入手机号" v-model="phone">
+    </div>
+    <div class="input-container">
+      <input type="password" class="inputpart"  placeholder="请输入密码" v-model="password">
+    </div>
     <div class="warn-tip">{{tips}}</div>
     <input type="button" value="确认登录" id="sub" @click="confimSubmit">
     <div class="operate">
@@ -60,24 +64,31 @@
   }
 </script>
 <style lang="stylus" scoped>
+  input{
+    -webkit-appearance: none;
+    outline none;
+    background transparent;
+  }
   .account-login {
+    width 100%;
     height: 100%;
     background: #fff;
     padding: .35rem .275rem 0 .275rem;
     box-sizing: border-box;
     position: absolute
   }
+  .input-container{
+    border-bottom: .01rem solid #ccc;
+  }
   .inputpart {
     height: .49rem;
     border: none;
-    border-bottom: .01rem solid #ccc;
     font-size: .16rem;
     width: 100%;
     color: #333;
   }
   .inputpart:focus{
     outline none;
-    border-bottom .01rem solid #ff8800;
   }
   .warn-tip {
     font-size .13rem;
