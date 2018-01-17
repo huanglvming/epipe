@@ -108,13 +108,13 @@
     methods:{
       getUserInfo(){
         this.axios.post(this.baseURL.mall + '/m/my/queryPersonalMsg' + this.Service.queryString({
-          token: this.mallToken
+          token: this.mallToken.getToken()
         })).then(res =>{
           console.log("个人信息",res);
           if(res.data.h.code === 200){
             this.userInfo = res.data.b;
           }
-          if(res.data.h.code === 50){
+          if(res.data.h.code === 50 || res.data.h.code === 30){
             this.$router.push("/accountlogin");
           }
         })

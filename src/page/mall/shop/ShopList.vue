@@ -110,6 +110,8 @@
             this.shopList=shopList;
             console.log(this.shopList);
             this.imgPrefix=res.data.b.imgPrefix;
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
           }
         })
       },
@@ -235,7 +237,7 @@
       //删除
       delect(){
         this.axios.post(this.baseURL.mall + "/m/cart/deleteCartItems"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
           cartIds:this.cartIds.join(',')
         })).then(res=>{
           console.log(res);
@@ -250,7 +252,7 @@
       //移入收藏夹
       addToCollection(){
         this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
           goodsIds:this.goodsIds.join(',')
         })).then(res=>{
           console.log(res);
@@ -264,7 +266,7 @@
       //结算
       settlement(){
         this.axios.post(this.baseURL.mall + "/m/cart/confirmOrder"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
           cartIds:this.cartIds.join(',')
         })).then(res=>{
           console.log(res);

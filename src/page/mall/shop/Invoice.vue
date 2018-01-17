@@ -163,7 +163,7 @@
           return false;
         }
         this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateInvoice"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
           invId:this.invId,
           invState:this.invState,
           invTitle:this.InvHeacon,
@@ -191,6 +191,14 @@
     },
     created(){
       document.title="发票";
+//      if(localStorage.getItem("invoiceListArr")){
+//        let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
+//        console.log(newInvoiceList);
+//        this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateInvoice"+this.Service.queryString({
+//
+//        })).then(res=>{})
+//        }
+//      }
     }
   }
 </script>
