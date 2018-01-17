@@ -1,48 +1,54 @@
 <template>
   <div class="invoice">
-    <div><span class="sp1">发票类型</span><span class="sp2">{{InvoiceType}}</span></div>
-    <div @click="NoInvoiceFun"><span class="sp1"><i class="iconfont" :class="NoInvoiceSel ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>不开发票</span></div>
-    <div @click="NorInvoiceFun"><span class="sp1"><i class="iconfont" :class="NorInvoiceSel ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>普通发票</span></div>
-    <div @click="SpeInvoiceFun"><span class="sp1"><i class="iconfont" :class="SpeInvoiceSel ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>增值税专用发票</span></div>
-    <article v-if="NorInvoiceSel">
-      <div class="invoice-header"><span class="sp1">发票抬头</span><span class="sp2">{{InvHeacon}}</span></div>
-      <div @click="PerInvoiceHeaFun">
-        <span class="sp1"><i class="iconfont" :class="PerInvoiceHea ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>个人</span>
-        <span class="sp2" v-if="PerInvoiceHea"><input type="text" placeholder="请输入个人名字" v-model="InvHeacon"></span>
-      </div>
-      <div @click="ComInvoiceHeaFun">
-        <span class="sp1"><i class="iconfont" :class="ComInvoiceHea ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>公司</span>
-        <span class="sp2" v-if="ComInvoiceHea"><input type="text" placeholder="请输入公司全称"  v-model="InvHeacon"></span>
-      </div>
-      <div v-if="ComInvoiceHea"><span class="sp1"><i  class="iconfont"></i>纳税人识别号</span><span class="sp2"><input type="text" placeholder="请输入纳税人识别号"></span></div>
-      <div class="invoice-header"><span class="sp1">普通商品发票内容</span><span class="sp2">{{InvoiceCon}}</span></div>
-      <div v-for="(obj,index) in InvoiceConArr" @click="InvoiceConFun(index,obj)">
-        <span class="sp1"><i class="iconfont" :class="InvoiceConIndex==index ?  'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>{{obj}}</span>
-      </div>
-    </article>
-    <article v-if="SpeInvoiceSel">
-      <div  class="invoice-header">
-        <a href="#/SpecialInvoice">
-          <span class="sp1">增票资质</span><span class="sp2"><i class="iconfont icon-jinru"></i></span>
-        </a>
-      </div>
-      <section><span class="sp1">单位名称</span><span class="sp2">深圳前海优管信息技术有限公司</span></section>
-      <section><span class="sp1">纳税人识别号</span><span class="sp2">9875 2356 1254 158</span></section>
-      <section><span class="sp1">注册地址</span><span class="sp2">深圳南山区</span></section>
-      <section><span class="sp1">注册电话</span><span class="sp2">12314564654</span></section>
-      <section><span class="sp1">开户银行</span><span class="sp2">平安银行</span></section>
-      <section><span class="sp1">银行账号</span><span class="sp2">4461231489744165132</span></section>
-      <section><span class="sp1">发票内容</span><span class="sp2">商品明细</span></section>
-      <section><span class="sp1">收票人姓名</span><span class="sp2">深圳南山区</span></section>
-      <section><span class="sp1">收票人手机</span><span class="sp2">18645214555</span></section>
-      <section><span class="sp1">所在地区</span><span class="sp2">深圳南山区</span></section>
-      <section><span class="sp1">详细地址</span><span class="sp2">深圳南山区</span></section>
-    </article>
-    <section class="confimBtn">确认</section>
+    <div v-if="!showSelection">
+      <div class="height-45"><span class="sp1">发票类型</span><span class="sp2">{{InvoiceType}}</span></div>
+      <div class="height-45" @click="NoInvoiceFun"><span class="sp1"><i class="iconfont" :class="NoInvoiceSel ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>不开发票</span></div>
+      <div class="height-45" @click="NorInvoiceFun"><span class="sp1"><i class="iconfont" :class="NorInvoiceSel ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>普通发票</span></div>
+      <div class="height-45" @click="SpeInvoiceFun"><span class="sp1"><i class="iconfont" :class="SpeInvoiceSel ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>增值税专用发票</span></div>
+      <article v-if="NorInvoiceSel">
+        <div  class="invoice-header height-45"><span class="sp1">发票抬头</span><span class="sp2">{{InvHeacon}}</span></div>
+        <div class="height-45" @click="PerInvoiceHeaFun">
+          <span class="sp1"><i class="iconfont" :class="PerInvoiceHea ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>个人</span>
+          <span class="sp2" v-if="PerInvoiceHea"><input type="text" placeholder="请输入个人名字" v-model="InvHeacon"></span>
+        </div>
+        <div class="height-45" @click="ComInvoiceHeaFun">
+          <span class="sp1"><i class="iconfont" :class="ComInvoiceHea ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>公司</span>
+          <span class="sp2" v-if="ComInvoiceHea"><input type="text" placeholder="请输入公司全称"  v-model="InvHeacon"></span>
+        </div>
+        <div class="height-45" v-if="ComInvoiceHea">
+          <span class="sp1"><i  class="iconfont"></i>纳税人识别号</span>
+          <span class="sp2"><input type="text" placeholder="请输入纳税人识别号" v-model="IdentNnm"></span>
+        </div>
+        <div class="invoice-header height-45"><span class="sp1">普通商品发票内容</span><span class="sp2">{{InvoiceCon}}</span></div>
+        <div class="height-45" v-for="(obj,index) in InvoiceConArr" @click="InvoiceConFun(index,obj)">
+          <span class="sp1"><i class="iconfont" :class="InvoiceConIndex==index ?  'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>{{obj}}</span>
+        </div>
+      </article>
+      <article v-if="SpeInvoiceSel">
+        <div  class="invoice-header height-45">
+            <span class="sp1">增票资质</span><span class="sp2"></span>
+        </div>
+        <section><span class="sp1">单位名称</span><span class="sp2"><input type="text" v-model="CompanyName"></span></section>
+        <section><span class="sp1">纳税人识别号</span><span class="sp2"><input type="text" v-model="IdentNnm"></span></section>
+        <section><span class="sp1">注册地址</span><span class="sp2"><input type="text" v-model="RegisterAddress"></span></section>
+        <section><span class="sp1">注册电话</span><span class="sp2"><input type="text" v-model="RegisterPhone"></span></section>
+        <section><span class="sp1">开户银行</span><span class="sp2"><input type="text" v-model="OpenBank"></span></section>
+        <section><span class="sp1">银行账号</span><span class="sp2"><input type="text" v-model="BankAccount"></span></section>
+        <section><span class="sp1">发票内容</span><span class="sp2"><input type="text" v-model="InvoiceCon"></span></section>
+        <section><span class="sp1">收票人姓名</span><span class="sp2"><input type="text" v-model="ReceiveName"></span></section>
+        <section><span class="sp1">收票人手机</span><span class="sp2"><input type="text" v-model="ReceivePhone"></span></section>
+        <section><span class="sp1">所在地区</span><span class="sp2"  @click="handleSelect"><input type="text" readonly v-model="area"><i class="iconfont icon-jinru"></i></span></section>
+        <section><span class="sp1">详细地址</span><span class="sp2"><input type="text" v-model="DetailAddress"></span></section>
+      </article>
+      <section class="confimBtn" @click="InvoiceSubmit">确认</section>
+    </div>
+    <div class="select-address"  v-else>
+      <area-selector @selectArea="handleSelection"></area-selector>
+    </div>
   </div>
 </template>
 <script>
-  document.title="发票";
+  const AreaSelector = () => import("../../../components/mall/AreaSelector.vue");
   export default {
     data:function () {
       return{
@@ -55,146 +61,276 @@
         InvHeacon:'',              //发票抬头
         InvoiceConArr:['商品明细','文具','电脑配件','耗材','日用品','电器数码','家具建材','日化用品'] ,
         InvoiceConIndex:'',
-        InvoiceCon:'商品明细'
-        
+        InvoiceCon:'商品明细',
+        areaObj: {},
+        showSelection: false,
+        area:'',
+        invState:'',
+        invId:'',
+        InvoiceCon:'',
+        CompanyName:'',
+        IdentNnm:'',
+        RegisterPhone:'',
+        RegisterAddress:'',
+        OpenBank:'',
+        BankAccount:'',
+        ReceiveName:'',
+        ReceivePhone:'',
+        area:'',
+        DetailAddress:'',
       }
     },
+    components:{
+      AreaSelector
+    },
     methods:{
+      //显示区域选择
+      handleSelect(){
+        this.showSelection = true;
+      },
+      //监听回调函数
+      handleSelection(obj){
+        console.log(obj);
+        this.area = obj.provice+obj.city+obj.area;
+        this.areaObj = obj;
+        this.showSelection = false;
+      },
+      //不开发票
       NoInvoiceFun(){
         this.NoInvoiceSel=true;
         this.NorInvoiceSel=false;
         this.SpeInvoiceSel=false;
         this.InvoiceType='不开发票';
+        this.invState='';
       },
+      //普通发票
       NorInvoiceFun(){
         this.NoInvoiceSel=false;
         this.NorInvoiceSel=true;
         this.SpeInvoiceSel=false;
         this.InvoiceType='普通发票';
+        this.PerInvoiceHeaFun();
+        this.invState=1;
+        this.InvoiceCon='';
+        this.CompanyName='';
+        this.IdentNnm='';
+        this.RegisterPhone='';
+        this.RegisterAddress='';
+        this.OpenBank='';
+        this.BankAccount='';
+        this.ReceiveName='';
+        this.ReceivePhone='';
+        this.area='';
+        this.DetailAddress='';
       },
+      //增值税专用发票
       SpeInvoiceFun(){
         this.NoInvoiceSel=false;
         this.NorInvoiceSel=false;
         this.SpeInvoiceSel=true;
         this.InvoiceType='增值税专用发票';
+        this.invState=2;
+        this.InvoiceCon='';
+        this.IdentNnm='';
+        this.InvHeacon='';
       },
+      //普通发票个人
       PerInvoiceHeaFun(){
         this.PerInvoiceHea=true;
         this.ComInvoiceHea=false;
+        this.invState=1;
+        this.InvHeacon='';
+        this.InvoiceConIndex='';
+        this.InvoiceCon='商品明细';
       },
+      //普通发票公司
       ComInvoiceHeaFun(){
         this.PerInvoiceHea=false;
         this.ComInvoiceHea=true;
+        this.invState=2;
+        this.InvHeacon='';
+        this.InvoiceConIndex='';
+        this.InvoiceCon='商品明细';
       },
+      //普通发票商品内容
       InvoiceConFun(index,obj){
         this.InvoiceConIndex=index;
         this.InvoiceCon=obj;
+      },
+      InvoiceSubmit(){
+        if(this.NoInvoiceSel==true){
+          this.$router.push({path:'/ConfirmOrder'});
+          return false;
+        }
+        this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateInvoice"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          invId:this.invId,
+          invState:this.invState,
+          invTitle:this.InvHeacon,
+          invContent:this.InvoiceCon,
+          invCompany:this.CompanyName,
+          invCode:this.IdentNnm,
+          invRegPhone:this.RegisterPhone,
+          invRegAddr:this.RegisterAddress,
+          invRegBname:this.OpenBank,
+          invRegBaccount:this.BankAccount,
+          invRecName:this.ReceiveName,
+          invRecMobphone:this.ReceivePhone,
+          invRecProvince:this.area,
+          invGotoAddr:this.DetailAddress,
+        })).then(res=>{
+          console.log(res);
+          if(res.data.h.code==200){
+            localStorage.setItem('invoiceListArr',JSON.stringify(res.data.b));
+            this.$router.push({path:'/ConfirmOrder'});
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
       }
     },
     created(){
-      console.log(localStorage.getItem("SpecialInvoice"));
-      if(localStorage.getItem("SpecialInvoice")=='true'){
-        this.SpeInvoiceFun();
-        localStorage.removeItem("SpecialInvoice");
-        let InvoiceArrNew=localStorage.getItem("InvoiceInfo").split(",");
-        console.log(InvoiceArrNew);
-      }
+      document.title="发票";
+//      if(localStorage.getItem("invoiceListArr")){
+//        let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
+//        console.log(newInvoiceList);
+//        this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateInvoice"+this.Service.queryString({
+//
+//        })).then(res=>{})
+//        }
+//      }
     }
   }
 </script>
 <style lang="stylus" scoped>
   .invoice{
     overflow hidden;
-    article{
-      overflow hidden;
-    }
     div{
-      position relative;
-      height .45rem;
-      line-height .45rem;
-      padding 0 .1rem;
-      background #fff;
-      overflow hidden;
-      .sp1{
-        float left;
-        font-size .14rem;
-        color #333;
-        i{
-          font-size .18rem;
-          margin-right .1rem;
-          vertical-align middle;
-        }
-        .red{
-          color  #d74a45;
-        }
-        .gray{
-          color #ccc;
-        }
+      article{
+        overflow hidden;
       }
-      .sp2{
-        float right;
-        font-size .12rem;
-        color #666;
-        i{
-          color #ccc;
+      div.height-45{
+        position relative;
+        height .45rem;
+        line-height .45rem;
+        padding 0 .1rem;
+        background #fff;
+        overflow hidden;
+        .sp1{
+          float left;
           font-size .14rem;
+          color #333;
+          i{
+            font-size .18rem;
+            margin-right .1rem;
+            vertical-align middle;
+          }
+          .red{
+            color  #d74a45;
+          }
+          .gray{
+            color #ccc;
+          }
+        }
+        .sp2{
+          float right;
+          font-size .12rem;
+          color #666;
+          i{
+            color #ccc;
+            font-size .14rem;
+          }
+        }
+        input{
+          width 2.45rem;
+          height .25rem;
+          background #f3f3f5;
+          border-radius 2px;
+          font-size .12rem;
+          color #333;
+          padding-left .1rem;
+          box-sizing border-box;
+        }
+        input:focus{
+          outline none;
         }
       }
-      input{
-        width 2.45rem;
-        height .25rem;
-        background #f3f3f5;
-        border-radius 2px;
-        font-size .12rem;
-        color #333;
-        padding-left .1rem;
-        box-sizing border-box;
+      .invoice-header{
+        margin-top .1rem;
+        a{
+          display block;
+          width 100%;
+          height 100%;
+        }
       }
-      input:focus{
-        outline none;
+      section{
+        height .45rem;
+        line-height .45rem;
+        overflow hidden;
+        padding 0 .1rem;
+        background #fff;
+        span{
+          display inline-block;
+          font-size .12rem;
+          height 100%;
+          float left;
+        }
+        .sp1{
+          width .72rem;
+          text-align left;
+          color #999;
+        }
+        .sp2 {
+          color #333;
+          margin-left .15rem;
+          position relative;
+          height .3rem;
+          line-height .3rem;
+          margin-top .075rem;
+          input{
+            width 2.65rem;
+            height .3rem;
+            background #f7f7fa;
+            border-radius 2px;
+            padding-left .1rem;
+            box-sizing border-box;
+          }
+          input:focus{
+            outline none;
+          }
+          i{
+            color #ccc;
+            position absolute;
+            right 5px;
+            top 0;
+          }
+        }
+        .sp2:after{
+          content: "";
+          position absolute;
+          left 0;
+          top 0;
+          width 200%;
+          height 200%;
+          border  1px solid #ccc;
+          box-sizing border-box;
+          transform scale(0.5);
+          transform-origin 0 0;
+          pointer-events: none;
+        }
       }
-    }
-    .invoice-header{
-      margin-top .1rem;
-      a{
-        display block;
-        width 100%;
-        height 100%;
+      .confimBtn{
+        height .5rem;
+        line-height .5rem;
+        text-align center;
+        font-size .16rem;
+        color #fff;
+        margin-top .75rem;
+        background #d74a45;
       }
-    }
-    section{
-      height .45rem;
-      line-height .45rem;
-      overflow hidden;
-      padding 0 .1rem;
-      background #fff;
-      span{
-        display inline-block;
-        font-size .12rem;
-        height 100%;
-        float left;
-      }
-      .sp1{
-        width .72rem;
-        text-align left;
-        color #999;
-      }
-      .sp2 {
-        color #333;
-        margin-left .15rem;
-      }
-    }
-    .confimBtn{
-      height .5rem;
-      line-height .5rem;
-      text-align center;
-      font-size .16rem;
-      color #fff;
-      margin-top .75rem;
-      background #d74a45;
     }
   }
-  .invoice div:after{
+  .invoice div.height-45:after{
     content: "";
     position absolute;
     left 0;

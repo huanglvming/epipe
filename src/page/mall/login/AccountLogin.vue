@@ -47,11 +47,9 @@
             console.log(res);
             let dataMes=res.data.h;
             if(dataMes.code==200){
-              localStorage.setItem('accountToken',res.data.b.token);
-              //console.log(localStorage.getItem('accountToken'));
-              if(localStorage.getItem('accountToken')!==null && localStorage.getItem('accountToken')!=='null'){
-                this.$router.push({path:'/mallhome'});
-              }
+              this.mallToken.setToken(res.data.b.token);
+              console.log("new_token",res.data.b.token);
+              this.$router.push({path:'/mallhome'});
             }else{
               this.tips=dataMes.msg;
             }

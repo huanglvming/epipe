@@ -76,7 +76,7 @@
         this.cartList=settleOrder.cartVoList;
         this.goodsTotalPrice=settleOrder.map.goodsTotalPrice;
         this.axios.post(this.baseURL.mall + "/m/my/queryUserAddress"+this.Service.queryString({
-          token:this.mallToken,
+          token:this.mallToken.getToken(),
         })).then(res=>{
           console.log(res);
           if(res.data.h.code==200){
@@ -89,6 +89,10 @@
     },
     created(){
       this.getSettlement();
+      if(localStorage.getItem("invoiceListArr")){
+        let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
+        console.log(newInvoiceList);
+      }
     }
   }
 </script>
