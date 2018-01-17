@@ -4,11 +4,11 @@ export const baseURL = {
 };
 export const mallToken = {
   setToken: function(token){
-    localStorage.setItem("token",token);
+    localStorage.setItem("mallLoginToken",token);
     console.log("设置成功");
   },
   getToken: function(){
-    const token = localStorage.getItem("token") || "暂时没有数据";
+    const token = localStorage.getItem("mallLoginToken");
     console.log("token",token)
     return token;
   }
