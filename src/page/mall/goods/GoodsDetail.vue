@@ -91,7 +91,7 @@
       <ul>
         <li>
           <div @click="collection">
-            <p><i class="iconfont icon-shoucang"></i></p>
+            <p><i class="iconfont icon-shoucang-weixuan"></i></p>
             <p>收藏</p>
           </div>
           <div>
@@ -365,7 +365,7 @@
             margin-top 9px;
           }
         }
-        div:last-child{
+        div{
           p:first-child{
             margin-top 6px;
             i{

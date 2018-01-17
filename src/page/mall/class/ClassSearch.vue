@@ -23,7 +23,7 @@
               </div>
             </div>
           </router-link>
-          <div class="no-result" v-else>暂无搜索结果</div>
+          <div class="no-result" v-if="resultList.length==0">暂无搜索结果</div>
         </div>
       </div>
     </div>
@@ -62,6 +62,7 @@
       }
     },
     created(){
+      document.title="分类";
       this.getClassSearchList();
     },
   }
@@ -270,7 +271,7 @@
     overflow scroll;
     -webkit-overflow-scrolling: touch;
     padding-top 40px;
-    padding-bottom 45px;
+    margin-bottom 45px;
   }
   .no-result{
     text-align: center;
