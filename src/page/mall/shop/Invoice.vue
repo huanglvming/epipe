@@ -7,12 +7,12 @@
       <div class="height-45" @click="SpeInvoiceFun"><span class="sp1"><i class="iconfont" :class="SpeInvoiceSel ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>增值税专用发票</span></div>
       <article v-if="NorInvoiceSel">
         <div  class="invoice-header height-45"><span class="sp1">发票抬头</span><span class="sp2">{{InvHeacon}}</span></div>
-        <div class="height-45" @click="PerInvoiceHeaFun">
-          <span class="sp1"><i class="iconfont" :class="PerInvoiceHea ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>个人</span>
+        <div class="height-45">
+          <span class="sp1" @click="PerInvoiceHeaFun"><i class="iconfont" :class="PerInvoiceHea ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>个人</span>
           <span class="sp2" v-if="PerInvoiceHea"><input type="text" placeholder="请输入个人名字" v-model="InvHeacon"></span>
         </div>
-        <div class="height-45" @click="ComInvoiceHeaFun">
-          <span class="sp1"><i class="iconfont" :class="ComInvoiceHea ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>公司</span>
+        <div class="height-45">
+          <span class="sp1" @click="ComInvoiceHeaFun"><i class="iconfont" :class="ComInvoiceHea ? 'icon-xuanzhong1 red' : 'icon-weixuan gray'"></i>公司</span>
           <span class="sp2" v-if="ComInvoiceHea"><input type="text" placeholder="请输入公司全称"  v-model="InvHeacon"></span>
         </div>
         <div class="height-45" v-if="ComInvoiceHea">
@@ -199,12 +199,34 @@
           invId:newInvoiceList.invId
         })).then(res=>{
           console.log('已保存发票信息',res);
+          let dataB=res.data.b;
           if(res.data.h.code===200){
-            if(res.data.b.invState==2 && res.data.b.invRecProvince==''){
+            if(dataB.invState==2 && dataB.invRecProvince==''){
               this.NorInvoiceFun();
               this.ComInvoiceHeaFun();
-              this.InvHeacon=res.data.b.invTitle;
-              this.IdentNnm=res.data.b.invCode;
+              this.InvHeacon=dataB.invTitle;
+              this.IdentNnm=dataB.invCode;
+              this.InvoiceCon=dataB.invContent;
+              this.InvoiceConIndex=this.InvoiceConArr.indexOf(this.InvoiceCon);
+            }else if(dataB.invState==1){
+              this.NorInvoiceFun();
+              this.PerInvoiceHeaFun();
+              this.InvHeacon=dataB.invTitle;
+              this.InvoiceCon=dataB.invContent;
+              this.InvoiceConIndex=this.InvoiceConArr.indexOf(this.InvoiceCon);
+            }else if(dataB.invState==2 && dataB.invRecProvince!=''){
+              this.SpeInvoiceFun();
+              this.InvoiceCon=dataB.invContent;
+              this.CompanyName=dataB.invCompany;
+              this.IdentNnm=dataB.invCode;
+              this.RegisterPhone=dataB.invRegPhone;
+              this.RegisterAddress=dataB.invRegAddr;
+              this.OpenBank=dataB.invRegBname;
+              this.BankAccount=dataB.invRegBaccount;
+              this.ReceiveName=dataB.invRecName;
+              this.ReceivePhone=dataB.invRecMobphone;
+              this.area=dataB.invRecProvince;
+              this.DetailAddress=dataB.invGotoAddr;
             }
           }
         })

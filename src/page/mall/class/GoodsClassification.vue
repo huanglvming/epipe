@@ -17,7 +17,7 @@
           <div  v-for="(item,index) in items.classList" :key="index">
             <div class="class-tit">{{item.gcName}}</div>
             <ul>
-              <li  v-for="(obj,index) in item.classList" :key="index">{{obj.gcName}}</li>
+              <li  v-for="(obj,index) in item.classList" :key="index" @click="classSearch(obj.gcId)">{{obj.gcName}}</li>
             </ul>
           </div>
         </div>
@@ -59,6 +59,9 @@
       changeClass(index){
         this.selected = index;
         this.showIndex = index;
+      },
+      classSearch(gcId){
+        this.$router.push("/ClassSearch?gcId="+gcId);
       }
     }
   }

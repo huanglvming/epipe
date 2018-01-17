@@ -62,6 +62,7 @@ const Register = r => require.ensure([], () => r(require('@/page/mall/login/Regi
 const MallAgreement = r => require.ensure([], () => r(require('@/page/mall/login/MallAgreement.vue')), 'group-mall')
 const MallHome = r => require.ensure([], () => r(require('@/page/mall/home/MallHome.vue')), 'group-mall')
 const GoodsClassification = r => require.ensure([], () => r(require('@/page/mall/class/GoodsClassification.vue')), 'group-mall')
+const ClassSearch = r => require.ensure([], () => r(require('@/page/mall/class/ClassSearch.vue')), 'group-mall')
 const GoodsDetail = r => require.ensure([], () => r(require('@/page/mall/goods/GoodsDetail.vue')), 'group-mall')
 const TestDetail = r => require.ensure([], () => r(require('@/page/mall/goods/TestDetail.vue')), 'group-mall')
 const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
@@ -320,6 +321,10 @@ export default new Router({
     {
       path: '/goodsclassification',  //分类
       component: GoodsClassification,
+    },
+    {
+      path: '/classsearch',  //分类搜索
+      component: ClassSearch,
     },
     {
       path: '/goodsdetail',  //商品详情

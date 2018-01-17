@@ -46,7 +46,7 @@
     <div class="invoice-info">
       <a href="#/Invoice">
         <div>发票信息</div>
-        <div>不开发票 <i class="iconfont icon-jinru"></i></div>
+        <div>{{invoiceType}}<i class="iconfont icon-jinru"></i></div>
       </a>
     </div>
     <div class="total-price">
@@ -54,7 +54,7 @@
       <div><span>运费</span><span>￥0.00</span></div>
       <div><span></span><span><i>总价：</i>￥{{goodsTotalPrice}}.00</span></div>
     </div>
-    <div class="wx-pay"><div>微信支付</div></div>
+    <div class="wx-pay" @click="submitPay"><div>微信支付</div></div>
   </div>
 </template>
 <script>
@@ -66,6 +66,11 @@
         cartList:'',    //结算订单列表
         addressList:'', //收件地址
         goodsTotalPrice:'', //结算总额
+        invoiceType:'不开发票',
+        cartIds:[],
+        openInv:0,
+        invoiceId:''
+        
       }
     },
     methods:{
@@ -74,6 +79,11 @@
         console.log(settleOrder);
         this.imgPrefix=settleOrder.imgPrefix;
         this.cartList=settleOrder.cartVoList;
+        for(let i=0;i<this.cartList.length;i++){
+          for(let j=0;j<this.cartList[i].list.length;j++){
+            this.cartIds.push(this.cartList[i].list[j].cartId);
+          }
+        }
         this.goodsTotalPrice=settleOrder.map.goodsTotalPrice;
         this.axios.post(this.baseURL.mall + "/m/my/queryUserAddress"+this.Service.queryString({
           token:this.mallToken.getToken(),
@@ -81,9 +91,22 @@
           console.log(res);
           if(res.data.h.code==200){
             this.addressList=res.data.b;
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
           }else{
             this.$toast(res.data.h.msg);
           }
+        })
+      },
+      submitPay(){
+        this.axios.post(this.baseURL.mall + "/m/my/orderPay"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          cartIds:this.cartIds.join(','),
+          addressId:this.addressList[0].addressId,
+          openInv:this.openInv,
+          invoiceId:this.invoiceId
+        })).then(res=>{
+          console.log(res);
         })
       }
     },
@@ -91,7 +114,19 @@
       this.getSettlement();
       if(localStorage.getItem("invoiceListArr")){
         let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
-        console.log(newInvoiceList);
+        console.log('发票信息',newInvoiceList);
+        this.openInv=1;
+        this.invoiceId=newInvoiceList.invId;
+        if(newInvoiceList.invState==1){
+          this.invoiceType='普通发票 个人';
+        }else if(newInvoiceList.invState==2 && newInvoiceList.invRecProvince==''){
+          this.invoiceType='普通发票 公司';
+        }else if(newInvoiceList.invState==2 && newInvoiceList.invRecProvince!=''){
+          this.invoiceType='增值税专用发票';
+        }
+      }else{
+        this.openInv=0;
+        this.invoiceId='';
       }
     }
   }
