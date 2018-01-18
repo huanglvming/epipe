@@ -25,10 +25,10 @@
         <div class="number">23</div>
         <div class="title">店铺收藏</div>
       </div>
-      <div class="menu-item">
-        <div class="number">23</div>
+      <router-link to="recenthistory" class="menu-item">
+        <div class="number">{{historyNum}}</div>
         <div class="title">最近浏览</div>
-      </div>
+      </router-link>
     </div>
     <div class="orders">
       <router-link to="myorder" class="link-item">
@@ -99,6 +99,7 @@
     data(){
       return{
         userInfo:{},
+        historyNum: JSON.parse(localStorage.getItem("browser_history")).length,
       }
     },
     created(){

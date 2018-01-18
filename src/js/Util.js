@@ -79,6 +79,6 @@ const Util = {
 
     let t2 = year2 + '/' + month2 + '/' + day2;
     return t2;
-  }
+  },
 }
 module.exports = Util

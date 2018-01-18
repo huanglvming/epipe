@@ -82,6 +82,7 @@ const MallAddressList = r => require.ensure([], () => r(require('@/page/mall/use
 const MallCollection = r => require.ensure([], () => r(require('@/page/mall/user/Collection.vue')), 'mall-user')
 const MyOrder = r => require.ensure([], () => r(require('@/page/mall/user/MyOrder.vue')), 'mall-user')
 const OrderDetails = r => require.ensure([], () => r(require('@/page/mall/user/OrderDetails.vue')), 'mall-user')
+const RecentHistory = r => require.ensure([], () => r(require('@/page/mall/user/RecentHistory.vue')), 'mall-user')
 
 export default new Router({
   routes: [
@@ -397,6 +398,10 @@ export default new Router({
     {
       path: '/orderdetails',  //订单详情
       component: OrderDetails,
+    },
+    {
+      path: '/recenthistory',  //最近浏览
+      component: RecentHistory,
     },
   ]
 })

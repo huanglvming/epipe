@@ -5,7 +5,7 @@
       <span v-else>完成</span>
     </div>
     <div class="collection-list" :class="{'padding-bottom':edit&&len>4}">
-      <div class="list-item" v-for="(item,index) in itemList" :key="index">
+      <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="list-item" v-for="(item,index) in itemList" :key="index">
         <div class="left">
           <i class="iconfont" :class="checkedList[index] ? 'icon-xuanzhong1' : 'icon-weixuan'" v-if="edit" @click="singleCheck(index)"></i>
           <img :src="imgPrefix+item.goodsImage" alt="">
@@ -20,7 +20,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </router-link>
       <infinite-loading spinner="bubbles" distance="50" @infinite="infiniteHandler">
         <span slot="no-more">
           暂无更多数据

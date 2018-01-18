@@ -64,7 +64,7 @@
     data(){
       return{
         showSuggestion: true,
-        searchKey: "",
+        searchKey: this.$route.query.key || "",
         hasSearch: false,
         resultList: [],
         imgPrefix: "",
@@ -87,6 +87,10 @@
     },
     created(){
       this.getHotKey();
+      let keyword = this.$route.query.key;
+      if(keyword){
+        this.handleSearch();
+      }
     },
     methods:{
       handleSearchKey(){
@@ -330,7 +334,7 @@
       width: 1.1rem;
       height: 1.1rem;
       margin: 0.05rem auto;
-      background: red;
+      background: #dedede;
     }
   }
   .goods-details{
