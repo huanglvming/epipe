@@ -105,7 +105,7 @@
         setTimeout(() =>{
           let vm = this;
           vm.axios.post(vm.baseURL.mall + "/m/my/myFavGoods" + vm.Service.queryString({
-            token: vm.mallToken,
+            token: vm.mallToken.getToken(),
             pageSize: vm.pageSize || 10,
             pageNo: vm.pageNo || 1
           })).then(res => {

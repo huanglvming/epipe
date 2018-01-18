@@ -18,7 +18,7 @@
     </div>
     <div class="menu-tab">
       <router-link to="mallcollection" tag="div" class="menu-item">
-        <div class="number">23</div>
+        <div class="number">{{userInfo.favGoodsNum}}</div>
         <div class="title">商品收藏</div>
       </router-link>
       <div class="menu-item">

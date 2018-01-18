@@ -65,7 +65,6 @@
       return{
         showSuggestion: true,
         searchKey: "",
-        t: null,
         hasSearch: false,
         resultList: [],
         imgPrefix: "",
@@ -91,8 +90,7 @@
     },
     methods:{
       handleSearchKey(){
-        clearTimeout(this.t);
-        this.t = setTimeout(() =>{
+        setTimeout(() =>{
           if(this.searchKey){
             this.showSuggestion = false;
           }else{
