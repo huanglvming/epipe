@@ -22,7 +22,7 @@
       </router-link>
       <div class="item" v-else>
         <div class="item-menu">
-          <div class="menu-tab" v-for="(item,index) in floorObj.floorKeywords" :key="index">{{item}}</div>
+          <router-link :to="{path:'/mallsearch',query:{key: item}}" class="menu-tab" v-for="(item,index) in floorObj.floorKeywords" :key="index">{{item}}</router-link>
         </div>
       </div>
     </div>
