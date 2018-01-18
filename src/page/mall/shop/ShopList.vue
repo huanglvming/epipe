@@ -3,13 +3,13 @@
     <div class="hea-ope" @click="listOperate">{{operate}}</div>
     <div class="one-shop" v-for="(obj,index1) in shopList" :key="index1">
       <div class="seller-shop-name">
-        <i class="iconfont" :class="obj.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' " ></i>{{obj.storeName}}
-        <input type="checkbox" name="oneStroe" v-model="obj.checked" @click="chooseShopGoods(index1)"/>
+        <i class="iconfont" :class="obj.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' "  @click="chooseShopGoods(index1)"></i>{{obj.storeName}}
+        <!--<input type="checkbox" name="oneStroe" v-model="obj.checked" @click="chooseShopGoods(index1)"/>-->
       </div>
       <div class="shop-goods" v-for="(item,index) in obj.list" :key="index">
         <div class="goods-ope">
-          <i class="iconfont" :class="item.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc'" ></i>
-          <input type="checkbox" name="one" v-model="item.checked" @click="chooseOne(index1,index)"/>
+          <i class="iconfont" :class="item.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc'" @click="chooseOne(index1,index)"></i>
+          <!--<input type="checkbox" name="one" v-model="item.checked" @click="chooseOne(index1,index)"/>-->
         </div>
         <div class="goods-pho"><img :src="imgPrefix+item.goodsImages" alt=""></div>
         <div class="goods-class">
@@ -30,8 +30,8 @@
     <div class="settlement">
       <div class="sel-all" >
         <div>
-          <i class="iconfont" :class="allChecked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' "></i>
-          <input type="checkbox" name="all" v-model="allChecked" @click="chooseAllGoods"/>
+          <i class="iconfont" :class="allChecked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' " @click="chooseAllGoods"></i>
+          <!--<input type="checkbox" name="all" v-model="allChecked" @click="chooseAllGoods"/>-->
         </div>
         <div>全选</div>
       </div>
@@ -218,11 +218,9 @@
           }
           flag == true ? this.shopList[index1].checked = true : this.shopList[index1].checked = false;
         }
-    
         // 判断是否选择所有商品的全选
         this.isChooseAll();
       },
-  
       // 判断是否选择所有商品的全选
       isChooseAll () {
         let flag1 = true;

@@ -91,7 +91,7 @@
       <ul>
         <li>
           <div @click="collection">
-            <p><i class="iconfont icon-shoucang"></i></p>
+            <p><i class="iconfont icon-shoucang-weixuan"></i></p>
             <p>收藏</p>
           </div>
           <div>
@@ -112,7 +112,6 @@
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import InfiniteLoading from 'vue-infinite-loading';
   import Pagination from '../../../components/Pagination.vue';
-  document.title="商品详情";
   export  default {
     data:function () {
       return{
@@ -208,15 +207,17 @@
       },
       //加入购物车
       addToCart(){
-        if(this.specId==''){
-          this.$toast('请选择规格');
-          return false;
+        if(this.specList.length>0){
+          if(this.specId==''){
+            this.$toast('请选择规格');
+            return false;
+          }
         }
         this.axios.post(this.baseURL.mall + "/m/cart/addCartItems"+this.Service.queryString({
           token:this.mallToken.getToken(),
           goodsId:this.goodsId,
           count:this.buyValue,
-          specId:this.specId
+          specId:this.specId!='' ? this.specId : this.goodsList[0].specId
         })).then(res=>{
           console.log(res);
           if(res.data.h.code==200){
@@ -228,20 +229,26 @@
       },
       //立即购买
       buyNow(){
-        if(this.specId==''){
-          this.$toast('请选择规格');
-          return false;
+        if(this.specList.length>0){
+          if(this.specId==''){
+            this.$toast('请选择规格');
+            return false;
+          }
         }
         this.axios.post(this.baseURL.mall + "/m/cart/buy_now"+this.Service.queryString({
           token:this.mallToken.getToken(),
           goodsId:this.goodsId,
           count:this.buyValue,
-          specId:this.specId
+          specId:this.specId!='' ? this.specId : this.goodsList[0].specId
         })).then(res=>{
           console.log(res);
-          localStorage.setItem("settleOrder",JSON.stringify(res.data.b));
-          if(localStorage.getItem("settleOrder")){
-            this.$router.push({path:'/ConfirmOrder'});
+          if(res.data.h.code==200){
+            localStorage.setItem("settleOrder",JSON.stringify(res.data.b));
+            if(localStorage.getItem("settleOrder")){
+              this.$router.push({path:'/ConfirmOrder'});
+            }
+          }else{
+            this.$toast(res.data.h.msg);
           }
         })
       },
@@ -253,9 +260,13 @@
             let goodsData=res.data.b;
             this.goodsStorePrice=goodsData.goods[0].goodsStorePrice;
             this.goodsList=goodsData.goods;
-            this.specList=goodsData.specList;
-            this.goodsSpecObj=goodsData.goodsSpecObj;
-            this.specIdArr=new Array(goodsData.specList.length);
+            if(goodsData.specList){
+              this.specList=goodsData.specList;
+              this.specIdArr=new Array(goodsData.specList.length);
+            }
+            if(goodsData.goodsSpecObj){
+              this.goodsSpecObj=goodsData.goodsSpecObj;
+            }
             this.bannerPrefix=goodsData.imgPrefix;
             this.banner=goodsData.goods[0].goodsImageMore;
             let detailImg= goodsData.detail[0].replace(/&lt;/g,"<");
@@ -291,6 +302,7 @@
       }
     },
     created(){
+      document.title="商品详情";
       this.getGoodsDetail();
       //this.getComment();
     }
@@ -365,7 +377,7 @@
             margin-top 9px;
           }
         }
-        div:last-child{
+        div{
           p:first-child{
             margin-top 6px;
             i{
