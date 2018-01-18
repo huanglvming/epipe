@@ -3,12 +3,12 @@
     <div class="search-wrapper">
       <div class="has-search">
         <div class="selections">
-          <div class="selection-item">综合排序</div>
-          <div class="selection-item">销量优先</div>
-          <div class="selection-item">价格优先</div>
+          <div class="selection-item" :class="{orderColor:orderState==1}" @click="orderBy(' ',1,' ')">综合排序</div>
+          <div class="selection-item" :class="{orderColor:orderState==2}" @click="orderBy('salenum',2,'desc')">销量优先</div>
+          <div class="selection-item" :class="{orderColor:orderState==3}" @click="orderBy('goodsStorePrice',3,'asc')">价格优先</div>
         </div>
         <div class="search-result">
-          <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="result-item" v-for="(item,index) in resultList" :key="index" v-if="resultList.length>0">
+          <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="result-item" v-for="(item,index) in resultList" :key="index">
             <div class="goods-picture">
               <img :src="imgPrefix + item.goodsImage" alt="商品">
             </div>
@@ -18,12 +18,19 @@
                 <div class="price">￥{{item.goodsStorePrice}}</div>
                 <div class="buy">
                   <i class="iconfont icon-xiaogouwucheicon"></i>
-                  <span class="btn-buy">立即购买</span>
+                  <span class="btn-buy" @click.prevent="buyNow(index)">立即购买</span>
                 </div>
               </div>
             </div>
           </router-link>
-          <div class="no-result" v-if="resultList.length==0">暂无搜索结果</div>
+          <infinite-loading spinner="bubbles" :on-infinite="onInfinite" ref="infiniteLoading">
+            <span slot="no-more">
+              暂无更多加载
+            </span>
+            <span slot="no-results">
+              暂无结果
+            </span>
+          </infinite-loading>
         </div>
       </div>
     </div>
@@ -32,38 +39,60 @@
 </template>
 
 <script>
-  import FooterTab from "../../../components/mall/FooterTab.vue";
+  const FooterTab = () => import("../../../components/mall/FooterTab.vue");
+  const InfiniteLoading = () => import("vue-infinite-loading");
   export default{
     name: "Search",
     data(){
       return{
         resultList: [],
         imgPrefix: "",
+        orderState:1
       }
     },
     components:{
       FooterTab,
+      InfiniteLoading
     },
     methods:{
-      getClassSearchList(){
-        this.axios.post(this.baseURL.mall + "/m/search/goodsClassSearch"+this.Service.queryString({
-          gcIds:this.$route.query.gcId,
-          pageNo:1,
-          pageSize:10,
-          sortField:'',
-          sortOrder:'asc'
-        })).then(res=> {
-          console.log(res);
-          if(res.data.h.code==200){
-            this.resultList=res.data.b.goods;
-            this.imgPrefix=res.data.b.imgPrefix;
-          }
-        })
+      onInfinite(sortField,index,sortOrder){
+        let vm = this;
+        setTimeout(() =>{
+          vm.axios.post(vm.baseURL.mall + "/m/search/goodsClassSearch"+vm.Service.queryString({
+            gcIds:vm.$route.query.gcId,
+            pageNo:vm.resultList.length/10+1,
+            pageSize:10,
+            sortField:sortField || '',
+            sortOrder:sortOrder || ''
+          })).then(res=> {
+            console.log(res);
+            if(res.data.h.code==200){
+              vm.imgPrefix=res.data.b.imgPrefix;
+              if (res.data.b.goods.length == 0) {
+                console.log("加载完了");
+                vm.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+              } else {
+                vm.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+                vm.resultList = vm.resultList.concat(res.data.b.goods);
+              }
+            }else{
+              console.log("加载完了");
+              vm.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+            }
+          })
+        },500);
+      },
+      orderBy(sortField,index,sortOrder){
+        //this.resultList=[];
+        this.onInfinite(sortField,index,sortOrder);
+        this.orderState=index;
+      },
+      buyNow(index){
+        console.log(index);
       }
     },
     created(){
       document.title="分类";
-      this.getClassSearchList();
     },
   }
 </script>
@@ -206,6 +235,9 @@
   }
   .selection-item{
     flex: 1;
+  }
+  .orderColor{
+    color #d74845;
   }
   .result-item{
     display flex;
