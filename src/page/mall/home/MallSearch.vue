@@ -45,8 +45,8 @@
               <div class="goods-opr">
                 <div class="price">￥{{item.goodsStorePrice}}</div>
                 <div class="buy">
-                  <i class="iconfont icon-xiaogouwucheicon"></i>
-                  <span class="btn-buy">立即购买</span>
+                  <i class="iconfont icon-xiaogouwucheicon" @click.prevent="addToCart(index)"></i>
+                  <span class="btn-buy"  @click.prevent="buyNow(index)">立即购买</span>
                 </div>
               </div>
             </div>
@@ -136,6 +136,45 @@
           console.log("热门搜索关键字",res);
           if(res.data.h.code === 200){
             this.hotList = res.data.b;
+          }
+        })
+      },
+      addToCart(index){
+        console.log(index);
+        this.axios.post(this.baseURL.mall + "/m/cart/addCartItems"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          goodsId:this.resultList[index].goodsId,
+          count:1,
+          specId:this.resultList[index].specId
+        })).then(res=>{
+          console.log(res);
+          if(res.data.h.code==200){
+            this.$toast(res.data.b.msg);
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
+      },
+      buyNow(index){
+        console.log(index);
+        this.axios.post(this.baseURL.mall + "/m/cart/buy_now"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          goodsId:this.resultList[index].goodsId,
+          count:1,
+          specId:this.resultList[index].specId
+        })).then(res=>{
+          console.log(res);
+          if(res.data.h.code==200){
+            localStorage.setItem("settleOrder",JSON.stringify(res.data.b));
+            if(localStorage.getItem("settleOrder")){
+              this.$router.push({path:'/ConfirmOrder'});
+            }
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
+          }else{
+            this.$toast(res.data.h.msg);
           }
         })
       }
