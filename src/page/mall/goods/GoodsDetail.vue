@@ -112,7 +112,7 @@
   import { swiper, swiperSlide } from 'vue-awesome-swiper'
   import InfiniteLoading from 'vue-infinite-loading';
   import Pagination from '../../../components/Pagination.vue';
-  export  default {
+  export default {
     data:function () {
       return{
         checkedArr:[], //规格判断
@@ -146,7 +146,7 @@
       swiperSlide
     },
     mounted () {
-      
+
       let headerH=window.getComputedStyle(this.$refs.header).height.replace("px","");
       //console.log(headerH);
       let footerH=window.getComputedStyle(this.$refs.footer).height.replace("px","");
@@ -252,12 +252,25 @@
           }
         })
       },
+      /*设置缓存*/
+      setStore: function (item){
+        let storeList = localStorage.getItem("browser_history") ? JSON.parse(localStorage.getItem("browser_history")) : new Array();
+        if(JSON.stringify(storeList).indexOf(JSON.stringify(item)) < 0){
+          storeList.unshift(item);
+          if(storeList.length>20){
+            storeList = storeList.splice(0,20);
+          }
+        }
+        localStorage.setItem("browser_history",JSON.stringify(storeList));
+        console.log("localList",storeList);
+      },
       //获取商品信息与详情
       getGoodsDetail(){
         this.axios.get(this.baseURL.mall + '/m/goods/goodsInfo?goodsId='+this.$route.query.goodsId).then(res =>{
           console.log("商品详情",res);
           if(res.data.h.code === 200){
             let goodsData=res.data.b;
+            this.setStore(goodsData.goods[0]);
             this.goodsStorePrice=goodsData.goods[0].goodsStorePrice;
             this.goodsList=goodsData.goods;
             if(goodsData.specList){
@@ -268,6 +281,7 @@
               this.goodsSpecObj=goodsData.goodsSpecObj;
             }
             this.bannerPrefix=goodsData.imgPrefix;
+            localStorage.setItem("imgPrefix",goodsData.imgPrefix);
             this.banner=goodsData.goods[0].goodsImageMore;
             let detailImg= goodsData.detail[0].replace(/&lt;/g,"<");
             detailImg= detailImg.replace(/&gt;/g,">");
