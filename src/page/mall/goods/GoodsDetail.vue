@@ -322,7 +322,7 @@
     }
   }
 </script>
-<style lang="stylus" scoped>
+<style lang="stylus">
   ::-webkit-scrollbar {/*隐藏滚轮*/
     display: none;
     width: 0px;
@@ -561,9 +561,14 @@
         width 100%;
         overflow hidden;
         color: red;
+        img{
+          width 100%;
+          display block;
+        }
       }
       img{
         width 100%;
+        display block;
       }
     }
     .comment{

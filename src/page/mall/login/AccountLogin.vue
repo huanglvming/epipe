@@ -9,9 +9,14 @@
     <div class="warn-tip">{{tips}}</div>
     <input type="button" value="确认登录" id="sub" @click="confimSubmit">
     <div class="operate">
-      <span><a href="#/ForgetPassword">忘记密码</a></span>
-      <span>|</span>
-      <span><a href="#/VerificationLogin">验证登录</a></span>
+      <div>
+        <span><a href="#/ForgetPassword">忘记密码</a></span>
+        <span>|</span>
+        <span><a href="#/VerificationLogin">验证登录</a></span>
+      </div>
+      <div>
+        <span><a href="#/Register">注册</a></span>
+      </div>
     </div>
   </div>
 </template>
@@ -105,23 +110,27 @@
     margin-top .5rem;
   }
   .operate{
-    display inline-block;
-    position relative;
-    left 50%;
-    transform translateX(-50%);
     margin-top .15rem;
-    span{
-      margin-right .05rem;
-      font-size .14rem;
-      a{
-        color #6699ff;
+    div{
+      span{
+        margin-right .05rem;
+        font-size .14rem;
+        a{
+          color #6699ff;
+        }
+      }
+      span:last-child{
+        margin-right 0;
+      }
+      span:nth-child(2){
+        color #999;
       }
     }
-    span:last-child{
-      margin-right 0;
+    div:first-child{
+      float left;
     }
-    span:nth-child(2){
-      color #999;
+    div:last-child{
+      float right;
     }
   }
 </style>

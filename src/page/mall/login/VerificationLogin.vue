@@ -101,6 +101,11 @@
   }
 </script>
 <style lang="stylus" scoped>
+  input{
+    -webkit-appearance: none;
+    outline none;
+    background transparent;
+  }
   .phone-div{
     width 100%;
     position relative;
