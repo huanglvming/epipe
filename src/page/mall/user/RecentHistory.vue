@@ -30,7 +30,8 @@
     },
     data(){
       return{
-        list: JSON.parse(localStorage.getItem("browser_history")),
+//        list: JSON.parse(localStorage.getItem("browser_history")),
+        list: localStorage.getItem("browser_history") ? JSON.parse(localStorage.getItem("browser_history")) : [],
         imgPrefix: localStorage.getItem("imgPrefix"),
       }
     },

@@ -4,7 +4,7 @@
       <router-link to="mallsetting" tag="div" class="user-info-content">
         <div class="user">
           <div class="avatar">
-            <img :src="userInfo.imgurl" alt="">
+            <img :src="userInfo.imgurl" alt="" v-if="userInfo.imgurl">
           </div>
           <div class="info-content">
             <div class="id">用户名: {{userInfo.phone}}</div>
@@ -99,7 +99,7 @@
     data(){
       return{
         userInfo:{},
-        historyNum: JSON.parse(localStorage.getItem("browser_history")).length,
+        historyNum: localStorage.getItem("browser_history") ? JSON.parse(localStorage.getItem("browser_history")).length : 0,
       }
     },
     created(){
