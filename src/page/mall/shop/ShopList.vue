@@ -1,48 +1,55 @@
 <template>
-  <div class="shop-cart">
-    <div class="hea-ope" @click="listOperate">{{operate}}</div>
-    <div class="one-shop" v-for="(obj,index1) in shopList" :key="index1">
-      <div class="seller-shop-name">
-        <i class="iconfont" :class="obj.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' "  @click="chooseShopGoods(index1)"></i>{{obj.storeName}}
-        <!--<input type="checkbox" name="oneStroe" v-model="obj.checked" @click="chooseShopGoods(index1)"/>-->
-      </div>
-      <div class="shop-goods" v-for="(item,index) in obj.list" :key="index">
-        <div class="goods-ope">
-          <i class="iconfont" :class="item.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc'" @click="chooseOne(index1,index)"></i>
-          <!--<input type="checkbox" name="one" v-model="item.checked" @click="chooseOne(index1,index)"/>-->
+  <div>
+    <div v-if="shopList.length>0" class="shop-cart">
+      <div class="hea-ope" @click="listOperate">{{operate}}</div>
+      <div class="one-shop" v-for="(obj,index1) in shopList" :key="index1">
+        <div class="seller-shop-name">
+          <i class="iconfont" :class="obj.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' "  @click="chooseShopGoods(index1)"></i>{{obj.storeName}}
+          <!--<input type="checkbox" name="oneStroe" v-model="obj.checked" @click="chooseShopGoods(index1)"/>-->
         </div>
-        <div class="goods-pho"><img :src="imgPrefix+item.goodsImages" alt=""></div>
-        <div class="goods-class">
-          <P class="p1">{{item.goodsName}}</P>
-          <P class="p2" v-if="item.specInfo!==''" v-html="item.specInfo"></P>
-          <P class="p2" v-if="item.specInfo===''">无具体规格</P>
-          <section class="price-num">
-            <section class="price"><i>￥</i>{{item.goodsPrice}}</section>
-            <section class="num">
-              <span @click="reduce(index1,index)"><i class="iconfont icon-jian"></i></span>
-              <span><input type="text" :value="item.goodsNum"></span>
-              <span @click="add(index1,index)"><i class="iconfont icon-jia1"></i></span>
+        <div class="shop-goods" v-for="(item,index) in obj.list" :key="index">
+          <div class="goods-ope">
+            <i class="iconfont" :class="item.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc'" @click="chooseOne(index1,index)"></i>
+            <!--<input type="checkbox" name="one" v-model="item.checked" @click="chooseOne(index1,index)"/>-->
+          </div>
+          <div class="goods-pho"><img :src="imgPrefix+item.goodsImages" alt=""></div>
+          <div class="goods-class">
+            <P class="p1">{{item.goodsName}}</P>
+            <P class="p2" v-if="item.specInfo!==''" v-html="item.specInfo"></P>
+            <P class="p2" v-if="item.specInfo===''">无具体规格</P>
+            <section class="price-num">
+              <section class="price"><i>￥</i>{{item.goodsPrice}}</section>
+              <section class="num">
+                <span @click="reduce(index1,index)"><i class="iconfont icon-jian"></i></span>
+                <span><input type="text" :value="item.goodsNum"></span>
+                <span @click="add(index1,index)"><i class="iconfont icon-jia1"></i></span>
+              </section>
             </section>
-          </section>
+          </div>
+        </div>
+      </div>
+      <div class="settlement">
+        <div class="sel-all" >
+          <div>
+            <i class="iconfont" :class="allChecked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' " @click="chooseAllGoods"></i>
+            <!--<input type="checkbox" name="all" v-model="allChecked" @click="chooseAllGoods"/>-->
+          </div>
+          <div>全选</div>
+        </div>
+        <div class="tot-price" v-if="showIndex==0">
+          <div class="tot-price-btn" @click="settlement">去结算<i>({{selGoodsNum}}件)</i></div>
+          <div class="tot-price-num">总计：<i>￥{{totalPrice}}.00</i></div>
+        </div>
+        <div class="tot-price" v-if="showIndex==1">
+          <div class="manage-shops" @click="delect">删除</div>
+          <div class="manage-shops" @click="addToCollection">移入收藏</div>
         </div>
       </div>
     </div>
-    <div class="settlement">
-      <div class="sel-all" >
-        <div>
-          <i class="iconfont" :class="allChecked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' " @click="chooseAllGoods"></i>
-          <!--<input type="checkbox" name="all" v-model="allChecked" @click="chooseAllGoods"/>-->
-        </div>
-        <div>全选</div>
-      </div>
-      <div class="tot-price" v-if="showIndex==0">
-        <div class="tot-price-btn" @click="settlement">去结算<i>({{selGoodsNum}}件)</i></div>
-        <div class="tot-price-num">总计：<i>￥{{totalPrice}}.00</i></div>
-      </div>
-      <div class="tot-price" v-if="showIndex==1">
-        <div class="manage-shops" @click="delect">删除</div>
-        <div class="manage-shops" @click="addToCollection">移入收藏</div>
-      </div>
+    <div v-else class="noShopListData">
+      <div class="noIcon"><img src="../../../assets/shopIcon.png" alt=""></div>
+      <p>哎呦，您的购物车空空如也～</p>
+      <div class="goToShop"><a href="#/mallhome">去逛逛</a></div>
     </div>
     <footer-tab :category="2"></footer-tab>
   </div>
@@ -547,5 +554,51 @@
   }
   .select-d74a45{
     color #d74a45;
+  }
+  .noShopListData{
+    margin-top 1rem;
+    text-align center;
+    .noIcon{
+      width 1.3rem;
+      height .95rem;
+      margin 0 auto;
+      img{
+        width 100%;
+      }
+    }
+    p{
+      color #333;
+      font-size .14rem;
+      margin-top .3rem;
+    }
+    .goToShop{
+      width 1rem;
+      height .3rem;
+      line-height .3rem;
+      text-align  center;
+      position relative;
+      margin .3rem auto;
+      a{
+        display block;
+        width 100%;
+        height 100%;
+        font-size .12rem;
+        color #666;
+        position absolute;
+        z-index 2;
+      }
+    }
+    .goToShop::after{
+      content: "";
+      position absolute;
+      left 0;
+      top 0;
+      z-index 1;
+      width 200%;
+      height 200%;
+      border: 1px solid #e5e5e5;
+      transform scale(0.5);
+      transform-origin 0 0;
+    }
   }
 </style>
