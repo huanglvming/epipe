@@ -98,26 +98,40 @@
           }
         })
       },
-      submitPay(){
-        this.axios.post(this.baseURL.mall + "/m/my/getCode"+this.Service.queryString({
-          token:this.mallToken.getToken()
-        })).then(res=>{
-          console.log(res);
-          if(res.data.h.code==200){
-           window.location.href=res.data.b;
-          }
-        })
-      }
 //      submitPay(){
-//        this.axios.post(this.baseURL.mall + "/m/my/orderPay"+this.Service.queryString({
-//          token:this.mallToken.getToken(),
-//          cartIds:this.cartIds.join(','),
-//          addressId:this.addressList[0].addressId,
-//          openInv:this.openInv,
-//          invoiceId:this.invoiceId
+//        this.axios.post(this.baseURL.mall + "/m/my/getCode"+this.Service.queryString({
+//          token:this.mallToken.getToken()
 //        })).then(res=>{
 //          console.log(res);
 //          if(res.data.h.code==200){
+//            this.axios.get(res.data.b).then(data =>{
+//              console.log(data);
+//              this.$toast(res.data.h.msg);
+//            })
+//          window.location.href=res.data.b;
+//            this.submitPayThen();
+//            setTimeout(() =>{
+//              this.submitPayThen();
+//            },3000)
+//          }
+//        })
+//      },
+      submitPay(){
+        this.axios.post(this.baseURL.mall + "/m/my/getCode"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          cartIds:this.cartIds.join(','),
+          addressId:this.addressList[0].addressId,
+          openInv:this.openInv,
+          invoiceId:this.invoiceId
+        })).then(res=>{
+          console.log(res);
+          if(res.data.h.code==200){
+            window.location.href=res.data.b;
+//            this.axios.get(res.data.b).then(result =>{
+//              console.log(result);
+//              this.$toast(result.data.h.msg);
+//            })
+          }
 //            let payInfoList=res.data.b;
 //            function onBridgeReady(){
 //              WeixinJSBridge.invoke(
@@ -149,8 +163,8 @@
 //          }else{
 //            this.$toast(res.data.h.msg);
 //          }
-//        })
-//      }
+        })
+      }
     },
     created(){
       this.getSettlement();
