@@ -57,6 +57,7 @@
             let dataMes=res.data.h;
             if(dataMes.code==200){
               this.mallToken.setToken(res.data.b.token);
+              localStorage.setItem('preLoginPhone',this.phone);
               console.log("new_token",res.data.b.token);
               this.$router.push({path:'/mallhome'});
             }else{
@@ -65,6 +66,9 @@
           });
         }
       }
+    },
+    created(){
+      this.phone=localStorage.getItem("preLoginPhone") || '';
     }
   }
 </script>
