@@ -23,7 +23,7 @@
               </div>
             </div>
           </router-link>
-          <infinite-loading spinner="bubbles" :on-infinite="onInfinite" ref="infiniteLoading">
+          <infinite-loading spinner="bubbles"   @infinite="infiniteHandler" ref="infiniteLoading">
             <span slot="no-more">
               暂无更多加载
             </span>
@@ -47,7 +47,8 @@
       return{
         resultList: [],
         imgPrefix: "",
-        orderState:1
+        orderState:1,
+        pageNo:1
       }
     },
     components:{
@@ -55,36 +56,37 @@
       InfiniteLoading
     },
     methods:{
-      onInfinite(sortField,index,sortOrder){
-        let vm = this;
+      infiniteHandler($state,sortField,index,sortOrder){
         setTimeout(() =>{
+          let vm = this;
           vm.axios.post(vm.baseURL.mall + "/m/search/goodsClassSearch"+vm.Service.queryString({
             gcIds:vm.$route.query.gcId,
-            pageNo:vm.resultList.length/10+1,
             pageSize:10,
+            pageNo:this.pageNo,
             sortField:sortField || '',
             sortOrder:sortOrder || ''
           })).then(res=> {
             console.log(res);
             if(res.data.h.code==200){
-              vm.imgPrefix=res.data.b.imgPrefix;
-              if (res.data.b.goods.length == 0) {
-                console.log("加载完了");
-                vm.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+              if (res.data.b.goods.length < 1) {
+                $state.complete();
               } else {
-                vm.$refs.infiniteLoading.$emit('$InfiniteLoading:loaded');
+                vm.imgPrefix=res.data.b.imgPrefix;
                 vm.resultList = vm.resultList.concat(res.data.b.goods);
+                this.pageNo++;
+                setTimeout(()=>{
+                  $state.loaded();
+                },1000);
               }
             }else{
-              console.log("加载完了");
-              vm.$refs.infiniteLoading.$emit('$InfiniteLoading:complete');
+              $state.complete();
             }
           })
-        },500);
+        },1000);
       },
-      orderBy(sortField,index,sortOrder){
+      orderBy($state,sortField,index,sortOrder){
         //this.resultList=[];
-        this.onInfinite(sortField,index,sortOrder);
+        this.infiniteHandler($state,sortField,index,sortOrder);
         this.orderState=index;
       },
       addToCart(index){
@@ -336,10 +338,8 @@
     color: white;
   }
   .search-result{
-    overflow scroll;
-    -webkit-overflow-scrolling: touch;
-    padding-top 40px;
-    margin-bottom 45px;
+    margin-top  40px;
+    margin-bottom 50px;
   }
   .no-result{
     text-align: center;
