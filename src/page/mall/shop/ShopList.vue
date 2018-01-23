@@ -83,6 +83,7 @@
         }else{
           this.operate='编辑商品';
           this.showIndex=0;
+          this.getCartList();
         }
       },
       //购买商品加减
@@ -241,21 +242,35 @@
       },
       //删除
       delect(){
-        this.axios.post(this.baseURL.mall + "/m/cart/deleteCartItems"+this.Service.queryString({
-          token:this.mallToken.getToken(),
-          cartIds:this.cartIds.join(',')
-        })).then(res=>{
-          console.log(res);
-          if(res.data.h.code==200){
-            this.$toast("删除成功");
-            this.getCartList();
-          }else{
-            this.$toast(res.data.h.msg);
-          }
+        if(this.cartIds.length==0){
+          this.$toast("未选择要删除的商品");
+          return false;
+        }
+        this.$confirm('确认要删除吗?').then(()=>{
+          this.axios.post(this.baseURL.mall + "/m/cart/deleteCartItems"+this.Service.queryString({
+            token:this.mallToken.getToken(),
+            cartIds:this.cartIds.join(',')
+          })).then(res=>{
+            console.log(res);
+            if(res.data.h.code==200){
+              this.$toast("删除成功");
+              this.getCartList();
+              this.reset();
+            }else{
+              this.$toast(res.data.h.msg);
+            }
+          })
+        }).catch(()=>{
+          this.getCartList();
+          this.reset();
         })
       },
       //移入收藏夹
       addToCollection(){
+        if(this.goodsIds.length==0){
+          this.$toast("未选择要收藏的商品");
+          return false;
+        }
         this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
           token:this.mallToken.getToken(),
           goodsIds:this.goodsIds.join(',')
@@ -263,10 +278,19 @@
           console.log(res);
           if(res.data.h.code==200){
             this.$toast("移入收藏夹成功");
+            this.getCartList();
+            this.reset();
           }else{
             this.$toast(res.data.h.msg);
           }
         })
+      },
+      //重置未选择状态
+      reset(){
+        this.cartIds=[];
+        this.goodsIds=[];
+        this.selGoodsNum=0;
+        this.totalPrice=0;
       },
       //结算
       settlement(){
