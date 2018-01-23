@@ -39,7 +39,7 @@
             console.log(res);
             if(res.data.h.code!=200){
               this.time=60;
-              this.disabled=true;
+              this.btndisabled=true;
               this.btnclass="verifi-code-true";
               this.timer();
               this.axios.post(this.baseURL.mall+"/m/user/sendMessage"+this.Service.queryString({
@@ -66,7 +66,7 @@
         } else{
           this.time=0;
           this.btntxt="获取验证码";
-          this.disabled=false;
+          this.btndisabled=false;
           this.btnclass="verifi-code-false";
         }
       },
@@ -86,17 +86,19 @@
             console.log(res);
             let dataMes=res.data.h;
             if(dataMes.code==200){
-              localStorage.setItem('accountToken',res.data.b.token);
-              //console.log(localStorage.getItem('accountToken'));
-              if(localStorage.getItem('accountToken')!==null && localStorage.getItem('accountToken')!=='null'){
-                this.$router.push({path:'/mallhome'});
-              }
+              this.mallToken.setToken(res.data.b.token);
+              localStorage.setItem('preLoginPhone',this.phone);
+              console.log("new_token",res.data.b.token);
+              this.$router.push({path:'/mallhome'});
             }else{
               this.tips=dataMes.msg;
             }
           });
         }
       }
+    },
+    created(){
+      this.phone=localStorage.getItem("preLoginPhone") || '';
     }
   }
 </script>

@@ -112,6 +112,12 @@
               password:this.password
             })).then(res =>{
             console.log(res);
+            if(res.data.h.code==200){
+              this.$toast('修改密码成功');
+              this.$router.push({path:'/accountlogin'});
+            }else{
+              this.tips=res.data.h.msg;
+            }
           });
         }
       }

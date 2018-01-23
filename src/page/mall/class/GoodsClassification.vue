@@ -1,7 +1,7 @@
 <template>
   <div class="goods-class">
     <div class="search-container" ref="search">
-      <div class="search-bar">
+      <div class="search-bar"  @click="linkSearch">
         <i class="iconfont icon-sousuoicon"></i>
         <input type="text" class="search-input">
       </div>
@@ -62,7 +62,10 @@
       },
       classSearch(gcId){
         this.$router.push("/ClassSearch?gcId="+gcId);
-      }
+      },
+      linkSearch(){
+        this.$router.push({path:'/mallsearch'});
+      },
     }
   }
 </script>

@@ -182,7 +182,10 @@
           console.log(res);
           if(res.data.h.code==200){
             localStorage.setItem('invoiceListArr',JSON.stringify(res.data.b));
-            this.$router.push({path:'/ConfirmOrder'});
+            this.$toast("保存成功");
+            setTimeout(() =>{
+              this.$router.push({path:'/ConfirmOrder'});
+            },1000);
           }else{
             this.$toast(res.data.h.msg);
           }

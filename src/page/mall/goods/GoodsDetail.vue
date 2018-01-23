@@ -30,8 +30,7 @@
             <li>
               <div class="spec-name">数量</div>
               <div class="con-spec">
-                <span><input type="button" value="-"  @click="reduce"></span><span><input type="text" v-model="buyValue"></span><span><input
-                type="button" value="+" @click="add"></span>
+                <span><input type="button" value="-"  @click="reduce"></span><span><input type="number" v-model="buyValue"  pattern="[0-9]*"></span><span><input type="button" value="+" @click="add"></span>
               </div>
             </li>
           </ul>
@@ -181,6 +180,9 @@
           console.log('specId',this.specId);
         }
       },
+      handleInput(e){
+        e.target.value=e.target.value.replace(/[^\d]/g,'');
+      },
       //购买商品加减
       add(){
         this.buyValue++;
@@ -200,6 +202,8 @@
           console.log(res);
           if(res.data.h.code===200){
             this.$toast("收藏成功");
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -222,6 +226,8 @@
           console.log(res);
           if(res.data.h.code==200){
             this.$toast(res.data.b.msg);
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -247,6 +253,8 @@
             if(localStorage.getItem("settleOrder")){
               this.$router.push({path:'/ConfirmOrder'});
             }
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
           }else{
             this.$toast(res.data.h.msg);
           }
