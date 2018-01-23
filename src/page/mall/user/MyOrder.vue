@@ -146,4 +146,9 @@
     margin-top 60px;
     margin-bottom 50px;
   }
+  @media screen and (max-width: 320px) {
+    .menu-item {
+      font-size 12px;
+    }
+  }
 </style>

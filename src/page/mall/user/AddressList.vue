@@ -89,17 +89,22 @@
       },
       /*删除地址*/
       deleteAddress(id){
-        this.axios.post(this.baseURL.mall + '/m/my/deleteUserAddress' + this.Service.queryString({
-          token: this.mallToken.getToken(),
-          addressId: id
-        })).then(res =>{
-          if(res.data.h.code === 200){
-            this.selected = null;
-            this.getAddressList();
-          }else{
-            this.$toast(res.data.h.msg);
-          }
-        })
+        let vm = this;
+          this.$confirm("是否确定删除该地址?").then(() =>{
+            this.axios.post(this.baseURL.mall + '/m/my/deleteUserAddress' + this.Service.queryString({
+              token: this.mallToken.getToken(),
+              addressId: id
+            })).then(res =>{
+              if(res.data.h.code === 200){
+                this.selected = null;
+                this.getAddressList();
+              }else{
+                this.$toast(res.data.h.msg);
+              }
+            });
+          }).catch(err =>{
+            console.log("删除失败");
+          });
       }
     }
   }

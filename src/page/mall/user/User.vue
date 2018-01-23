@@ -221,6 +221,7 @@
   }
   .links{
     margin-top 0.1rem;
+    margin-bottom 49px;
     background white;
   }
   .link-item{

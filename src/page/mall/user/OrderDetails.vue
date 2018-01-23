@@ -13,10 +13,10 @@
         <span class="line-title">下单时间:</span>
         <span class="line-content">{{objData.createTimeStr}}</span>
       </p>
-      <div class="btn-wrapper" v-if="objData.orderState === 0">
-        <div class="btn btn-repay">重新下单</div>
-      </div>
-      <div class="btn-wrapper" v-else-if="objData.orderState === 10">
+      <!--<div class="btn-wrapper" v-if="objData.orderState === 0">-->
+        <!--<div class="btn btn-repay">重新下单</div>-->
+      <!--</div>-->
+      <div class="btn-wrapper" v-if="objData.orderState === 10">
         <div class="btn btn-cancel" @click="handleCancel">取消订单</div>
         <div class="btn btn-pay">微信支付</div>
       </div>

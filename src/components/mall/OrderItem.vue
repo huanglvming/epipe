@@ -26,7 +26,7 @@
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-if="obj.orderState === 0">
         <div class="btn">订单详情</div>
-        <div class="btn btn-pay">重新下单</div>
+        <!--<div class="btn btn-pay">重新下单</div>-->
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 10">
         <div class="btn">订单详情</div>
