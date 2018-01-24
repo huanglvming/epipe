@@ -62,7 +62,7 @@
       /*修改密码*/
       handleConfirm(){
         if(this.confirmFlag){
-          if(this.newPassword === this.confirmPassword){
+          if(this.checkPasswords()){
             this.axios.post(this.baseURL.mall + '/m/my/modifyPass' + this.Service.queryString({
               token: this.mallToken.getToken(),
               mobile: this.mobile,
@@ -76,8 +76,6 @@
                 this.$toast(res.data.h.msg);
               }
             })
-          }else{
-           this.$toast("新密码前后不一致");
           }
         }else{
           return;
@@ -93,6 +91,38 @@
             this.$router.push("/accountlogin");
           }
         })
+      },
+      /*检验密码格式*/
+      checkPasswords(){
+        function check(str){
+          var ls = 0;
+          if(str.match(/([a-zA-Z])+/)){
+            ls ++;
+          }
+          if(str.match(/([0-9])+/)){
+            ls ++;
+          }
+          if(str.match(/[^a-zA-Z0-9]+/)){
+            ls++;
+          }
+          if(ls >= 2){
+            return true;
+          }else{
+            return false;
+          }
+        }
+        if(this.newPassword.length<6){
+          this.$toast("密码长度应为6-20位");
+          return false;
+        }else if(this.newPassword != this.confirmPassword){
+          this.$toast("密码前后不一致");
+          return false;
+        }else if(!check(this.newPassword)){
+          this.$toast("密码格式错误");
+          return false;
+        }else{
+          return true;
+        }
       }
     }
   }

@@ -18,17 +18,17 @@
       <!--</div>-->
       <div class="btn-wrapper" v-if="objData.orderState === 10">
         <div class="btn btn-cancel" @click="handleCancel">取消订单</div>
-        <div class="btn btn-pay">微信支付</div>
+        <div class="btn btn-pay" @click="wepay">微信支付</div>
       </div>
       <div class="btn-wrapper" v-else-if="objData.orderState === 20">
         <div class="btn btn-refund">申请退款</div>
       </div>
       <div class="btn-wrapper" v-else-if="objData.orderState === 40">
-        <div class="btn btn-return" @click="goodsReturn">申请退货</div>
+        <!--<div class="btn btn-return" @click="goodsReturn">申请退货</div>-->
         <div class="btn btn-comment">确认收货</div>
       </div>
       <div class="btn-wrapper" v-else-if="objData.orderState === 50">
-        <div class="btn btn-return" @click="goodsReturn">申请退货</div>
+        <!--<div class="btn btn-return" @click="goodsReturn">申请退货</div>-->
         <div class="btn btn-comment">我要评价</div>
       </div>
     </section>
@@ -154,6 +154,19 @@
           console.log("取消订单",res);
           if(res.data.h.code === 200){
 
+          }
+        })
+      },
+      /*微信支付*/
+      wepay(){
+        this.axios.post(this.baseURL.mall + "/m/my/getCodeByOrderListOrDetail" + this.Service.queryString({
+          token: this.token,
+          orderSn: this.orderSn
+        })).then(res =>{
+          if(res.data.h.code === 200){
+            window.location.href = res.data.b;
+          }else{
+            this.$alert(res.data.h.msg);
           }
         })
       },

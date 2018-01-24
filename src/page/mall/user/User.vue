@@ -5,6 +5,7 @@
         <div class="user">
           <div class="avatar">
             <img :src="userInfo.imgurl" alt="" v-if="userInfo.imgurl">
+            <img :src="avatar" alt="" v-else>
           </div>
           <div class="info-content">
             <div class="id">用户名: {{userInfo.phone}}</div>
@@ -91,6 +92,7 @@
 </template>
 <script>
   const FooterTab = () => import("../../../components/mall/FooterTab.vue");
+  const imgUrl = require("../../../assets/avatar.png");
   export default {
     name: "MallUser",
     components:{
@@ -98,6 +100,7 @@
     },
     data(){
       return{
+        avatar: imgUrl,
         userInfo:{},
         historyNum: localStorage.getItem("browser_history") ? JSON.parse(localStorage.getItem("browser_history")).length : 0,
       }

@@ -34,18 +34,25 @@
     props: ["floorObj","imgPrefix"],
   }
 </script>
-<style lang="stylus">
+<style lang="stylus" scoped>
   .floor{
     width 3.45rem;
   }
   .floor-title{
     height: 0.6rem;
+    img{
+      width 100%;
+      height 100%;
+    }
   }
   .floor-banner{
     width 3.45rem;
     height 0.95rem;
     border-radius 0.08rem;
     background: white;
+    .swiper-container{
+      height inherit;
+    }
   }
   .floor-4-view{
     display: flex;

@@ -2,7 +2,8 @@
   <div class="setting-wrapper">
     <div class="setting-item user-info">
       <div class="user-content">
-        <img :src="userInfo.imgurl" alt="">
+        <img :src="userInfo.imgurl" alt="" v-if="userInfo.imgurl">
+        <img :src="avatar" alt="" v-else>
         <span class="name">{{userInfo.realName}}（{{userInfo.phone}}）</span>
       </div>
     </div>
@@ -22,6 +23,7 @@
 </template>
 <script>
   const FooterTab = () => import("../../../components/mall/FooterTab.vue");
+  const imgURL = require("../../../assets/avatar.png");
   export default {
     name: "MallSetting",
     components:{
@@ -30,6 +32,7 @@
     data(){
       return{
         userInfo:{},
+        avatar: imgURL
       }
     },
     created(){
