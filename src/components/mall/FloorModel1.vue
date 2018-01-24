@@ -52,7 +52,7 @@
   }
 </script>
 
-<style lang="stylus">
+<style lang="stylus" scoped>
   .floor{
     width 3.45rem;
   }
@@ -69,6 +69,9 @@
     height: 0.8625rem;
     border-radius 0.08rem;
     background: white;
+    .swiper-container{
+      height inherit;
+    }
   }
   .floor-1-view{
     overflow-x scroll;

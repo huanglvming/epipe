@@ -65,6 +65,9 @@
     height: 0.8625rem;
     border-radius 0.08rem;
     background: white;
+    .swiper-container{
+      height inherit;
+    }
   }
   .floor-2-view{
     display flex;
