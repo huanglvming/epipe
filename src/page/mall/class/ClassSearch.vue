@@ -3,9 +3,9 @@
     <div class="search-wrapper">
       <div class="has-search">
         <div class="selections">
-          <div class="selection-item" :class="{orderColor:orderState==1}" @click="orderBy(' ',1,' ')">综合排序</div>
-          <div class="selection-item" :class="{orderColor:orderState==2}" @click="orderBy('salenum',2,'desc')">销量优先</div>
-          <div class="selection-item" :class="{orderColor:orderState==3}" @click="orderBy('goodsStorePrice',3,'asc')">价格优先</div>
+          <div class="selection-item" :class="{orderColor:orderState==1}" @click="orderBy($state,' ',1,' ')">综合排序</div>
+          <div class="selection-item" :class="{orderColor:orderState==2}" @click="orderBy($state,'salenum',2,'desc')">销量优先</div>
+          <div class="selection-item" :class="{orderColor:orderState==3}" @click="orderBy($state,'goodsStorePrice',3,'asc')">价格优先</div>
         </div>
         <div class="search-result">
           <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="result-item" v-for="(item,index) in resultList" :key="index">
@@ -56,7 +56,7 @@
       InfiniteLoading
     },
     methods:{
-      infiniteHandler($state,sortField,index,sortOrder){
+      infiniteHandler($state,sortField,sortOrder){
         setTimeout(() =>{
           let vm = this;
           vm.axios.post(vm.baseURL.mall + "/m/search/goodsClassSearch"+vm.Service.queryString({
@@ -85,9 +85,12 @@
         },1000);
       },
       orderBy($state,sortField,index,sortOrder){
-        //this.resultList=[];
-        this.infiniteHandler($state,sortField,index,sortOrder);
         this.orderState=index;
+        this.resultList=[];
+        this.pageNo=1;
+        setTimeout(()=>{
+          this.infiniteHandler($state,sortField,sortOrder);
+        },500)
       },
       addToCart(index){
         console.log(index);

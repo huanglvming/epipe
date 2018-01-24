@@ -424,7 +424,8 @@
   }
   .tab-con{
     margin-top .45rem;
-    overflow-y scroll;
+    /*overflow-y scroll;*/
+    -webkit-overflow-scrolling touch;
     .goods-banner{
       height 3.75rem;
       background #fff;
