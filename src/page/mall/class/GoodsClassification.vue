@@ -120,6 +120,7 @@
       float left;
       ul{
         overflow-y scroll;
+        -webkit-overflow-scrolling touch;
         background #f0f0f5;
         li{
           width 100%;
@@ -149,6 +150,7 @@
     .class-area-r{
       margin-left .95rem;
       overflow-y scroll;
+      -webkit-overflow-scrolling touch;
       .con-class{
       
       }
