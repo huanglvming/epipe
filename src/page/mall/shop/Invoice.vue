@@ -159,6 +159,7 @@
       },
       InvoiceSubmit(){
         if(this.NoInvoiceSel==true){
+          localStorage.removeItem('invoiceListArr');
           this.$router.push({path:'/ConfirmOrder'});
           return false;
         }

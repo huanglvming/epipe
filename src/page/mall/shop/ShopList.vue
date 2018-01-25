@@ -21,7 +21,8 @@
               <section class="price"><i>￥</i>{{item.goodsPrice}}</section>
               <section class="num">
                 <span @click="reduce(index1,index)"><i class="iconfont icon-jian"></i></span>
-                <span><input type="text" :value="item.goodsNum"></span>
+                <span><input type="text" v-model="item.goodsNum" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                 onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" @blur="blur(index1,index,Number(item.goodsNum))"></span>
                 <span @click="add(index1,index)"><i class="iconfont icon-jia1"></i></span>
               </section>
             </section>
@@ -92,6 +93,21 @@
         if(this.shopList[i].list[j].checked){
           this.totalPrice+=this.shopList[i].list[j].goodsPrice
         }
+        this.axios.post(this.baseURL.mall + "/m/cart/mergeCartQuantity"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          cartId:this.shopList[i].list[j].cartId,
+          specId:this.shopList[i].list[j].specId,
+          count:this.shopList[i].list[j].goodsNum
+        })).then(res=>{
+          console.log("修改购物车",res);
+          if(res.data.h.code==200){
+            this.getCartList();
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
       },
       reduce(i,j){
         if(this.shopList[i].list[j].goodsNum!==1){
@@ -100,6 +116,45 @@
             this.totalPrice-=this.shopList[i].list[j].goodsPrice
           }
         }
+        this.axios.post(this.baseURL.mall + "/m/cart/mergeCartQuantity"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          cartId:this.shopList[i].list[j].cartId,
+          specId:this.shopList[i].list[j].specId,
+          count:this.shopList[i].list[j].goodsNum
+        })).then(res=>{
+          console.log("修改购物车",res);
+          if(res.data.h.code==200){
+            this.getCartList();
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
+      },
+      //输入框失去焦点
+      blur(i,j,value){
+         console.log(i,j,value);
+         if(value===this.shopList[i].list[j].goodsNum){
+           return false;
+         }else if(value==0 || value==''){
+           value=1;
+         }
+        this.axios.post(this.baseURL.mall + "/m/cart/mergeCartQuantity"+this.Service.queryString({
+          token:this.mallToken.getToken(),
+          cartId:this.shopList[i].list[j].cartId,
+          specId:this.shopList[i].list[j].specId,
+          count:value
+        })).then(res=>{
+          console.log("修改购物车",res);
+          if(res.data.h.code==200){
+            this.getCartList();
+          }else  if(res.data.h.code === 50 || res.data.h.code === 30){
+            this.$router.push("/accountlogin");
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        })
       },
       //获取购物车列表信息
       getCartList(){
