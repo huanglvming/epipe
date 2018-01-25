@@ -36,13 +36,15 @@
 </script>
 <style lang="stylus" scoped>
   .floor{
+    overflow-x hidden;
     width 3.45rem;
   }
   .floor-title{
+    width 100%;
     height: 0.6rem;
     img{
       width 100%;
-      height 100%;
+      max-height 100%;
     }
   }
   .floor-banner{

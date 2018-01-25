@@ -9,7 +9,10 @@
     <div class="banner">
       <swiper :options="swiperOption">
         <swiper-slide v-for="(slide,index) in banner" :key="index">
-          <img :src="bannerPrefix + slide.advImg" v-if="slide">
+          <a :href="slide.advUrl" v-if="slide.advUrl">
+            <img :src="bannerPrefix + slide.advImg" v-if="slide">
+          </a>
+          <img :src="bannerPrefix + slide.advImg" v-else>
         </swiper-slide>
         <div class="swiper-pagination" slot="pagination"></div>
       </swiper>
@@ -174,7 +177,7 @@
       content: "";
       position absolute;
       left 0;
-      bottom 0;
+      bottom -1px;
       width 100%;
       height 1px;
       background #e5e5e5;

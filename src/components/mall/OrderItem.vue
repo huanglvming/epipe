@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-if="obj.orderState === 0">
-        <div class="btn">订单详情</div>
+        <div class="btn btn-pay">订单详情</div>
         <!--<div class="btn btn-pay">重新下单</div>-->
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 10">
@@ -43,7 +43,7 @@
         <div class="btn btn-pay">确认收货</div>
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 50">
-        <div class="btn">订单详情</div>
+        <div class="btn btn-pay">订单详情</div>
         <!--<div class="btn" @click.stop.prevent="refund">申请退款</div>-->
         <!--<div class="btn btn-pay">我要评价</div>-->
       </div>
@@ -115,21 +115,25 @@
       },
       /*取消订单*/
       cancleOrder(){
-        this.axios.post(this.baseURL.mall + "/m/my/orderCancel" + this.Service.queryString({
-          token: this.mallToken.getToken(),
-          orderSn: this.obj.orderSn
-        })).then(res =>{
-          console.log("取消订单",res);
-          if(res.data.h.code === 200){
-            this.$router.push({
-              path: '/orderdetails',
-              query: {
-                orderSn: this.obj.orderSn,
-                imgPrefix: this.imgPrefix
-              }
-            })
-          }
-        })
+        this.$confirm("确定要取消订单?").then(() =>{
+          this.axios.post(this.baseURL.mall + "/m/my/orderCancel" + this.Service.queryString({
+            token: this.mallToken.getToken(),
+            orderSn: this.obj.orderSn
+          })).then(res =>{
+            console.log("取消订单",res);
+            if(res.data.h.code === 200){
+              this.$router.push({
+                path: '/orderdetails',
+                query: {
+                  orderSn: this.obj.orderSn,
+                  imgPrefix: this.imgPrefix
+                }
+              })
+            }
+          })
+        }).catch(() =>{
+          console.log("failed");
+        });
       },
     }
   }

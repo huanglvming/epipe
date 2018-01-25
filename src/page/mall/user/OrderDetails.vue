@@ -52,13 +52,14 @@
           <span class="line-title">发票类型:</span>
           <span class="line-content line-price">{{invoice[0]}}</span>
         </p>
-        <p class="line">
+        <p class="line" v-if="invoice[1]">
           <span class="line-title">发票抬头:</span>
           <span class="line-content">{{invoice[1]}}</span>
         </p>
         <p class="line">
           <span class="line-title">发票内容:</span>
           <span class="line-content" v-if="orderInvoice">{{orderInvoice.invContent}}</span>
+          <span class="line-content" v-else>{{invoice[2]}}</span>
         </p>
         <div v-if="orderInvoice">
           <p class="line">
@@ -87,7 +88,7 @@
           </p>
           <p class="line">
             <span class="line-title">地址:</span>
-            <span class="line-content">广东省深圳市南山区白石洲下白石</span>
+            <span class="line-content">{{orderInvoice.invRegAddr}}{{orderInvoice.invGotoAddr}}</span>
           </p>
         </div>
       </div>
@@ -124,7 +125,7 @@
         imgPrefix: this.$route.query.imgPrefix,
         orderSn: this.$route.query.orderSn,
         token: this.$route.query.token || this.mallToken.getToken(),
-        orderInvoice: {},
+        orderInvoice: null,
         invoice: {},
       }
     },
@@ -183,15 +184,17 @@
       },
       /*取消订单*/
       handleCancel(){
-        this.axios.post(this.baseURL.mall + "/m/my/orderCancel" + this.Service.queryString({
-          token: this.token,
-          orderSn: this.orderSn
-        })).then(res =>{
-          console.log("取消订单",res);
-          if(res.data.h.code === 200){
-
-          }
-        })
+        this.$confirm("确定要取消订单?").then(() =>{
+          this.axios.post(this.baseURL.mall + "/m/my/orderCancel" + this.Service.queryString({
+            token: this.token,
+            orderSn: this.orderSn
+          })).then(res =>{
+            console.log("取消订单",res);
+            if(res.data.h.code === 200){
+              location.reload();
+            }
+          })
+        });
       },
       /*微信支付*/
       wepay(){
