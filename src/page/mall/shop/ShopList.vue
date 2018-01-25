@@ -192,7 +192,7 @@
             if ( this.allChecked ) {
               this.goodsIds.splice(this.goodsIds.indexOf(list[k].goodsId),1);
               this.cartIds.splice(this.cartIds.indexOf(list[k].cartId),1);
-              this.selGoodsNum--;
+              this.selGoodsNum-=list[k].goodsNum;
               this.totalPrice-=list[k].goodsNum*list[k].goodsPrice;
             }else{
               if(this.goodsIds.indexOf(list[k].goodsId)==-1){
@@ -200,7 +200,7 @@
               }
               if(this.cartIds.indexOf(list[k].cartId)==-1){
                 this.cartIds.push(list[k].cartId);
-                this.selGoodsNum++;
+                this.selGoodsNum+=list[k].goodsNum;
                 this.totalPrice+=list[k].goodsNum*list[k].goodsPrice;
               }
             }
@@ -221,7 +221,7 @@
             list[i].checked = false;
             this.goodsIds.splice(this.goodsIds.indexOf(list[i].goodsId),1);
             this.cartIds.splice(this.cartIds.indexOf(list[i].cartId),1);
-            this.selGoodsNum--;
+            this.selGoodsNum-=list[i].goodsNum;
             this.totalPrice-=list[i].goodsNum*list[i].goodsPrice;
           }
           console.log("goodsIds:",this.goodsIds);
@@ -234,7 +234,7 @@
             }
             if(this.cartIds.indexOf(list[i].cartId)==-1){
               this.cartIds.push(list[i].cartId);
-              this.selGoodsNum++;
+              this.selGoodsNum+=list[i].goodsNum;
               this.totalPrice+=list[i].goodsNum*list[i].goodsPrice;
             }
           }
@@ -259,7 +259,7 @@
           console.log("goodsIds:",this.goodsIds);
           this.cartIds.splice(this.cartIds.indexOf(list[index].cartId),1);
           console.log("cartIds:",this.cartIds);
-          this.selGoodsNum--;
+          this.selGoodsNum-=list[index].goodsNum;
           this.totalPrice-=list[index].goodsNum*list[index].goodsPrice;
         } else {
           list[index].checked = !list[index].checked;
@@ -269,7 +269,7 @@
           console.log("goodsIds:",this.goodsIds);
           this.cartIds.push(list[index].cartId);
           console.log("cartIds:",this.cartIds);
-          this.selGoodsNum++;
+          this.selGoodsNum+=list[index].goodsNum;
           this.totalPrice+=list[index].goodsNum*list[index].goodsPrice;
           // 判断是否选择当前店铺的全选
           let flag = true;
