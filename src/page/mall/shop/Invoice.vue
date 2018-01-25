@@ -17,7 +17,7 @@
         </div>
         <div class="height-45" v-if="ComInvoiceHea">
           <span class="sp1"><i  class="iconfont"></i>纳税人识别号</span>
-          <span class="sp2"><input type="text" placeholder="请输入纳税人识别号" v-model="IdentNnm"></span>
+          <span class="sp2"><input type="number" placeholder="请输入纳税人识别号" v-model="IdentNnm"></span>
         </div>
         <div class="invoice-header height-45"><span class="sp1">普通商品发票内容</span><span class="sp2">{{InvoiceCon}}</span></div>
         <div class="height-45" v-for="(obj,index) in InvoiceConArr" @click="InvoiceConFun(index,obj)">
@@ -29,14 +29,14 @@
             <span class="sp1">增票资质</span><span class="sp2"></span>
         </div>
         <section><span class="sp1">单位名称</span><span class="sp2"><input type="text" v-model="CompanyName"></span></section>
-        <section><span class="sp1">纳税人识别号</span><span class="sp2"><input type="text" v-model="IdentNnm"></span></section>
+        <section><span class="sp1">纳税人识别号</span><span class="sp2"><input type="text" onkeyup="this.value = this.value.replace(/[^\d]/g, '')"  v-model="IdentNnm"></span></section>
         <section><span class="sp1">注册地址</span><span class="sp2"><input type="text" v-model="RegisterAddress"></span></section>
-        <section><span class="sp1">注册电话</span><span class="sp2"><input type="text" v-model="RegisterPhone"></span></section>
+        <section><span class="sp1">注册电话</span><span class="sp2"><input type="tel" v-model="RegisterPhone"></span></section>
         <section><span class="sp1">开户银行</span><span class="sp2"><input type="text" v-model="OpenBank"></span></section>
-        <section><span class="sp1">银行账号</span><span class="sp2"><input type="text" v-model="BankAccount"></span></section>
+        <section><span class="sp1">银行账号</span><span class="sp2"><input type="text" onkeyup="this.value = this.value.replace(/[^\d]/g, '')" v-model="BankAccount"></span></section>
         <section><span class="sp1">发票内容</span><span class="sp2"><input type="text" v-model="InvoiceCon"></span></section>
         <section><span class="sp1">收票人姓名</span><span class="sp2"><input type="text" v-model="ReceiveName"></span></section>
-        <section><span class="sp1">收票人手机</span><span class="sp2"><input type="text" v-model="ReceivePhone"></span></section>
+        <section><span class="sp1">收票人手机</span><span class="sp2"><input type="tel" v-model="ReceivePhone"></span></section>
         <section><span class="sp1">所在地区</span><span class="sp2"  @click="handleSelect"><input type="text" readonly v-model="area"><i class="iconfont icon-jinru"></i></span></section>
         <section><span class="sp1">详细地址</span><span class="sp2"><input type="text" v-model="DetailAddress"></span></section>
       </article>
@@ -158,10 +158,34 @@
         this.InvoiceCon=obj;
       },
       InvoiceSubmit(){
-        if(this.NoInvoiceSel==true){
+        if(this.NoInvoiceSel==true){                          //不开发票
           localStorage.removeItem('invoiceListArr');
           this.$router.push({path:'/ConfirmOrder'});
           return false;
+        }
+        if(this.NorInvoiceSel==true && this.PerInvoiceHea==true){         //普通发票个人
+          if(this.InvHeacon==''){
+            this.$toast("请输入个人名字");
+            return false;
+          }
+        }
+        if(this.NorInvoiceSel==true && this.ComInvoiceHea==true){         //普通发票公司
+          if(this.InvHeacon==''){
+            this.$toast("请输入公司全称");
+            return false;
+          }
+          if(this.IdentNnm==''){
+            this.$toast("请输入纳税人识别号");
+            return false;
+          }
+        }
+        if(this.SpeInvoiceSel==true){       //增值税专用发票
+          if(this.CompanyName=='' || this.IdentNnm=='' || this.RegisterAddress=='' || this.RegisterPhone=='' ||
+          this.OpenBank=='' || this.BankAccount=='' || this.InvoiceCon=='' || this.ReceiveName=='' || this.ReceivePhone=='' ||
+          this.area=='' || this.DetailAddress==''){
+            this.$toast("请填写完整的增票资质")
+            return false;
+          }
         }
         this.axios.post(this.baseURL.mall + "/m/my/saveOrUpdateInvoice"+this.Service.queryString({
           token:this.mallToken.getToken(),
