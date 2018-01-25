@@ -50,16 +50,46 @@
       <div class="sub">
         <p class="line">
           <span class="line-title">发票类型:</span>
-          <span class="line-content line-price">{{objData.invoice}}</span>
+          <span class="line-content line-price">{{invoice[0]}}</span>
         </p>
         <p class="line">
           <span class="line-title">发票抬头:</span>
-          <span class="line-content">深圳前海优管信息科技有限公司</span>
+          <span class="line-content">{{invoice[1]}}</span>
         </p>
         <p class="line">
           <span class="line-title">发票内容:</span>
-          <span class="line-content">商品明细</span>
+          <span class="line-content" v-if="orderInvoice">{{orderInvoice.invContent}}</span>
         </p>
+        <div v-if="orderInvoice">
+          <p class="line">
+            <span class="line-title">纳税人识别号:</span>
+            <span class="line-content">{{orderInvoice.invCode}}</span>
+          </p>
+          <p class="line">
+            <span class="line-title">注册地址:</span>
+            <span class="line-content">{{orderInvoice.invRegAddr}}</span>
+          </p>
+          <p class="line">
+            <span class="line-title">注册电话:</span>
+            <span class="line-content">{{orderInvoice.invRegPhone}}</span>
+          </p>
+          <p class="line">
+            <span class="line-title">开户银行:</span>
+            <span class="line-content">{{orderInvoice.invRegBname}}</span>
+          </p>
+          <p class="line">
+            <span class="line-title">收票人:</span>
+            <span class="line-content">{{orderInvoice.invRecName}}</span>
+          </p>
+          <p class="line">
+            <span class="line-title">发票人手机:</span>
+            <span class="line-content">{{orderInvoice.invRecMobphone}}</span>
+          </p>
+          <p class="line">
+            <span class="line-title">地址:</span>
+            <span class="line-content">广东省深圳市南山区白石洲下白石</span>
+          </p>
+        </div>
       </div>
     </section>
     <section>
@@ -94,6 +124,8 @@
         imgPrefix: this.$route.query.imgPrefix,
         orderSn: this.$route.query.orderSn,
         token: this.$route.query.token || this.mallToken.getToken(),
+        orderInvoice: {},
+        invoice: {},
       }
     },
     created(){
@@ -139,7 +171,11 @@
         })).then(res =>{
           console.log("订单详情",res);
           if(res.data.h.code === 200){
-            this.objData = res.data.b;
+            this.objData = res.data.b.order;
+            this.invoice = res.data.b.order.invoice.split("&nbsp;&nbsp;");
+            if(res.data.b.orderInvoice){
+              this.orderInvoice = res.data.b.orderInvoice;
+            }
           }
         }).catch(err =>{
           console.log(err);
@@ -210,6 +246,9 @@
       bottom 0;
     }
   }
+  .section-price{
+    margin-bottom 49px;
+  }
   .line{
     line-height 24px;
     font-size 13px;
@@ -279,6 +318,7 @@
   .price-sub{
     display flex;
     justify-content flex-end;
+    align-items center;
     margin-top 25px;
   }
   .price-title{

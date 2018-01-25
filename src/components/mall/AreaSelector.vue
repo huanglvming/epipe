@@ -82,7 +82,7 @@
         this.areaObj.provice = this.proviceList[index].areaName;
         this.areaObj.proviceId = this.proviceList[index].areaId;
         if(specicalList.includes(this.proviceList[index].areaName)){
-          this.$emit('selectArea',this.proviceList[index].areaName);
+          this.$emit('selectArea',this.areaObj);
         }else{
           this.getData(1,this.proviceList[index].areaId);
         }

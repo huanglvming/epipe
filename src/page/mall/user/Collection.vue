@@ -7,7 +7,7 @@
     <div class="collection-list" :class="{'padding-bottom':edit&&len>4}">
       <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="list-item" v-for="(item,index) in itemList" :key="index">
         <div class="left">
-          <i class="iconfont" :class="checkedList[index] ? 'icon-xuanzhong1' : 'icon-weixuan'" v-if="edit" @click="singleCheck(index)"></i>
+          <i class="iconfont" :class="checkedList[index] ? 'icon-xuanzhong1' : 'icon-weixuan'" v-if="edit" @click.stop.prevent="singleCheck(index)"></i>
           <img :src="imgPrefix+item.goodsImage" alt="">
         </div>
         <div class="right">
@@ -215,6 +215,7 @@
     flex-direction column;
     justify-content space-between;
     height: 1rem;
+    min-width 1rem;
     padding: 0.1rem 0;
     padding-right 0.1rem;
     &::after{

@@ -68,7 +68,8 @@
           const bannerHeight = banner.scrollHeight;
           setTimeout(() =>{
             window.onscroll = function () {
-              if(document.documentElement.scrollTop>bannerHeight){
+              let scrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop;
+              if(scrollTop>bannerHeight){
                 vm.searchContainerActive = true;
                 return;
               }else{
@@ -169,7 +170,17 @@
   }
   .search-container-active{
     background: rgba(255,255,255,1);
-    border-bottom: 1px solid #e5e5e5;
+    &::after{
+      content: "";
+      position absolute;
+      left 0;
+      bottom 0;
+      width 100%;
+      height 1px;
+      background #e5e5e5;
+      transform scaleY(0.5);
+      transform-origin center;
+    }
     .search-bar{
       background: #F2F2F5;
     }
