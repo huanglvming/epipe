@@ -146,14 +146,14 @@
     },
     mounted () {
 
-      let headerH=window.getComputedStyle(this.$refs.header).height.replace("px","");
-      //console.log(headerH);
-      let footerH=window.getComputedStyle(this.$refs.footer).height.replace("px","");
-      //console.log(footerH);
-      let winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
-      //console.log(winH);
-      let conH=winH-headerH-footerH;
-      this.$refs.conpart.style.height = conH +'px';
+//      let headerH=window.getComputedStyle(this.$refs.header).height.replace("px","");
+//      //console.log(headerH);
+//      let footerH=window.getComputedStyle(this.$refs.footer).height.replace("px","");
+//      //console.log(footerH);
+//      let winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+//      //console.log(winH);
+//      let conH=winH-headerH-footerH;
+//      this.$refs.conpart.style.height = conH +'px';
     },
     methods: {
       //tab切换
@@ -343,6 +343,7 @@
     border-bottom 1px solid #e5e5e5;
     position fixed;
     top 0;
+    z-index 10;
     ul{
       li{
         width 33.333%;
@@ -424,6 +425,7 @@
   }
   .tab-con{
     margin-top .45rem;
+    padding-bottom 50px;
     /*overflow-y scroll;*/
     -webkit-overflow-scrolling touch;
     .goods-banner{

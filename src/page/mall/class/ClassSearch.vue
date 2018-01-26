@@ -359,7 +359,7 @@
   }
   .search-result{
     margin-top  40px;
-    margin-bottom 50px;
+    padding-bottom 50px;
   }
   .no-result{
     text-align: center;
