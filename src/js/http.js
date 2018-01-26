@@ -30,8 +30,7 @@ axios.interceptors.request.use(
       window.localStorage.setItem("auth_token",getCookie("auth_token"));
     }else{
       if(!config.headers.auth_token){
-        // config.headers.auth_token = window.localStorage.auth_token;
-        config.headers.auth_token = "b934859c-d682-41e6-aaa3-976fe0ba4c7e";
+        config.headers.auth_token = window.location.href.indexOf("app.epipe.cn")>0 ? window.localStorage.auth_token : "b2e18163-9b2b-45f5-a1ef-8e72eef808ff";
       }
     }
     return config;

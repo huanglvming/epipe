@@ -113,6 +113,11 @@
       this.getFloor();
     },
     mounted(){
+      /*微信端从商品详情页面返回首页会大概率的导致首页空白，原因未知，一下代码为解决该Bug*/
+      setTimeout(() =>{
+        document.documentElement.scrollTop = 0;
+        document.body.scrollTop = 0;
+      },0);
       this.$nextTick(() =>{
         this.getScrollTop();
       });
