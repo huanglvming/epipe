@@ -292,7 +292,7 @@
       width 2.25rem;
       height inherit;
       font-size 0.14rem;
-      color: #ccc;
+      color: #333;
       outline none;
       background transparent;
     }

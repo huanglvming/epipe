@@ -14,7 +14,9 @@
     </router-link>
     <router-link to="shoplist" tag="div" class="footer-tab-item" :class="{'tab-active': category===2}">
       <div class="icon-container">
-        <i class="iconfont" :class="category===2 ? 'icon-gouwuche-xuanzhongicon':'icon-gouwucheicon'"></i>
+        <i class="iconfont icon-car" :class="category===2 ? 'icon-gouwuche-xuanzhongicon':'icon-gouwucheicon'">
+          <div class="goods-number">5</div>
+        </i>
       </div>
       <p class="tab-title">购物车</p>
     </router-link>
@@ -31,6 +33,18 @@
   export default{
     name: 'FooterTab',
     props:["category"],
+    methods:{
+      getGoodsNumber(){
+        this.axios.post(this.baseURL.mall + '/m/cart/myCart' + this.Service.queryString({
+          token: this.mallToken.getToken()
+        })).then(res =>{
+          console.log("购物车",res);
+        })
+      },
+    },
+    created(){
+      this.getGoodsNumber();
+    }
   }
 </script>
 
@@ -78,6 +92,27 @@
     }
     .tab-title{
       color: #FF8800;
+    }
+  }
+  .icon-car{
+    position relative;
+    .goods-number{
+      position absolute;
+      left 0;
+      top 0;
+      width 13px;
+      height: 10px;
+      border-radius 5px;
+      text-align center;
+      line-height 10px;
+      font-size 7px;
+      background #e54545;
+      color: white;
+    }
+  }
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3){
+    .footer-tab{
+      padding-bottom 34px;
     }
   }
 </style>

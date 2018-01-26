@@ -151,4 +151,9 @@
       font-size 12px;
     }
   }
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3){
+    .order-list{
+      margin-bottom 84px;
+    }
+  }
 </style>

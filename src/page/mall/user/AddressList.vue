@@ -17,7 +17,7 @@
             <div class="right">
               <!--<router-link :to="{path:'/malladdress',query:{info:item}}" tag="span" class="edit">编辑</router-link>-->
               <span class="edit" @click="showEdit(item)">编辑</span>
-              <span class="delete" @click="deleteAddress(item.addressId)">删除</span>
+              <span class="delete" @click="deleteAddress(item)">删除</span>
             </div>
           </div>
         </div>
@@ -145,11 +145,12 @@
         })
       },
       /*删除地址*/
-      deleteAddress(id){
+      deleteAddress(item){
         this.$confirm("是否确定删除该地址?").then(() =>{
           this.axios.post(this.baseURL.mall + '/m/my/deleteUserAddress' + this.Service.queryString({
             token: this.mallToken.getToken(),
-            addressId: id
+            addressId: item.addressId,
+            isDefault: item.isDefault
           })).then(res =>{
             if(res.data.h.code === 200){
               this.selected = null;
@@ -235,12 +236,21 @@
     color: #999;
   }
   .add-address{
+    position relative;
     display flex;
     justify-content space-between;
     align-items center;
     height: 0.45rem;
     padding 0 0.1rem;
-    margin-bottom 50px;
+    &::after{
+      content: "";
+      position absolute;
+      left 0;
+      bottom -49px;
+      width 100%;
+      height 49px;
+      background #F4F4F4;
+    }
   }
   .list-item{
     position relative;
