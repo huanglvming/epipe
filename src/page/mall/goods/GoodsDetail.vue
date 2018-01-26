@@ -24,8 +24,8 @@
             <li  v-for="(item,i) in specList" :key="i" >
               <div class="spec-name">{{item.spName}}</div>
               <div class="con-spec">
-                <span  v-for="(obj,j) in item.specValueList" :key="j"  :data-value-id=obj.spValueId  :class="{specActive:checkedArr[i]==j}"  @click="selt($event,i,j)">{{obj.spValueName}}</span>
-              </div>
+                <span  v-for="(obj,j) in item.specValueList" :key="j"  :data-value-id=obj.spValueId  :class="{specActive:checkedArr[i]==j || item.specValueList.length==1}"  @click="selt(i,j)">{{obj.spValueName}}</span>
+              </div
             </li>
             <li>
               <div class="spec-name">数量</div>
@@ -162,12 +162,14 @@
         this.showIndex = index;
       },
       //选择规格
-      selt(e,i,j){
+      selt(i,j){
         console.log(i,j);
         this.$set(this.checkedArr,i,j);
-        let valueId=e.target.getAttribute('data-value-id');
+//        let valueId=e.target.getAttribute('data-value-id');
+        let valueId=this.specList[i].specValueList[j].spValueId;
         this.specIdArr.splice(i,1,valueId);
-        let state=false
+        let state=false;
+        console.log(this.specIdArr);
         for(let a=0;a<this.specIdArr.length;a++){
           if(this.specIdArr[a]=='' ||  this.specIdArr[a]==undefined ||  typeof (this.specIdArr[a])==undefined){
            state=true;
@@ -281,12 +283,19 @@
             this.setStore(goodsData.goods[0]);
             this.goodsStorePrice=goodsData.goods[0].goodsStorePrice;
             this.goodsList=goodsData.goods;
+            if(goodsData.goodsSpecObj){
+              this.goodsSpecObj=goodsData.goodsSpecObj;
+            }
             if(goodsData.specList){
               this.specList=goodsData.specList;
               this.specIdArr=new Array(goodsData.specList.length);
-            }
-            if(goodsData.goodsSpecObj){
-              this.goodsSpecObj=goodsData.goodsSpecObj;
+              for(let k=0;k<this.specList.length;k++){
+                for(let j=0;j<this.specList[k].specValueList.length;j++){
+                  if(this.specList[k].specValueList.length==1){
+                    this.selt(k,j);   //只有一种规格默认获取specId
+                  }
+                }
+              }
             }
             this.bannerPrefix=goodsData.imgPrefix;
             localStorage.setItem("imgPrefix",goodsData.imgPrefix);
