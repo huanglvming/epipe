@@ -108,6 +108,7 @@
         })).then(res=>{
           console.log(res);
           if(res.data.h.code==200) {
+            localStorage.removeItem('invoiceListArr');
             window.location.href = res.data.b;
           }
         })
@@ -120,11 +121,11 @@
         console.log('发票信息',newInvoiceList);
         this.openInv=1;
         this.invoiceId=newInvoiceList.invId;
-        if(newInvoiceList.invState==1){
+        if(newInvoiceList.invState==2){
           this.invoiceType='普通发票 个人';
-        }else if(newInvoiceList.invState==2 && newInvoiceList.invRecProvince==''){
+        }else if(newInvoiceList.invState==1 && newInvoiceList.invRecProvince==''){
           this.invoiceType='普通发票 公司';
-        }else if(newInvoiceList.invState==2 && newInvoiceList.invRecProvince!=''){
+        }else if(newInvoiceList.invState==1 && newInvoiceList.invRecProvince!=''){
           this.invoiceType='增值税专用发票';
         }
       }else{
