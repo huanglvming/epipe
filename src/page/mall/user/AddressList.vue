@@ -166,7 +166,11 @@
       showEdit(item){
         this.editing = true;
         if(item){
-          this.infoObj = item;
+          this.infoObj = this.areaObj = item;
+          this.address = item.address;
+          this.name = item.trueName;
+          this.area = item.areaInfo;
+          this.phone = item.telPhone;
         }
       },
       /*验证手机号码*/
@@ -190,7 +194,7 @@
       /*监听回调函数*/
       handleSelection(obj){
         console.log(obj);
-        this.infoObj.areaInfo = obj.provice+obj.city+obj.area;
+        this.area = obj.provice+obj.city+obj.area;
         this.areaObj = obj;
         this.showSelection = false;
       },
@@ -213,7 +217,8 @@
             console.log("提交结果",res);
             if(res.data.h.code === 200){
               console.log("修改成功");
-              this.$router.push("/malladdresslist");
+              this.editing = false;
+              this.getAddressList();
             }
           })
         }

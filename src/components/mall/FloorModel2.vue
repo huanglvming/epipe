@@ -4,7 +4,7 @@
       <img :src="imgPrefix + floorObj.floorTitleImg" alt="">
     </div>
     <div class="floor-2-view">
-      <div class="item" v-for="(item,index) in floorObj.floorAdvs">
+      <a :href="item.advUrl" class="item" v-for="(item,index) in floorObj.floorAdvs">
         <div class="item-des">
           <p class="des-title">{{item.advTitle}}</p>
           <p class="des-sub">{{item.advDescribe}}</p>
@@ -12,12 +12,14 @@
         <div class="item-img">
           <img :src="imgPrefix + item.advImg" alt="">
         </div>
-      </div>
+      </a>
     </div>
     <div class="floor-banner">
       <swiper :options="swiperOption">
         <swiper-slide v-for="(slide,index) in floorObj.floorBanners" :key="index">
-          <img :src="imgPrefix + slide.advImg" alt="">
+          <a :href="slide.advUrl">
+            <img :src="imgPrefix + slide.advImg" alt="">
+          </a>
         </swiper-slide>
         <div class="swiper-pagination-2" slot="pagination" v-if="floorObj.floorBanners.length>1"></div>
       </swiper>
@@ -50,13 +52,16 @@
 </script>
 <style lang="stylus" scoped="true">
   .floor{
+    overflow-x hidden;
     width 3.45rem;
   }
   .floor-title{
+    width 100%;
     height: 0.6rem;
     line-height 0.6rem;
     img{
       width 100%;
+      max-height 100%;
       vertical-align: middle;
     }
   }
@@ -128,5 +133,6 @@
   }
   .swiper-slide img{
     width: 100%;
+    max-height 100%;
   }
 </style>

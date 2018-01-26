@@ -31,11 +31,11 @@
       </div>
       <div class="has-search" v-else>
         <div class="selections">
-          <div class="selection-item">综合排序</div>
-          <div class="selection-item">销量优先</div>
-          <div class="selection-item">价格优先</div>
+          <div class="selection-item" @click="handleSorting('')">综合排序</div>
+          <div class="selection-item" @click="handleSorting('salenum')">销量优先</div>
+          <div class="selection-item" @click="handleSorting('goodsStorePrice')">价格优先</div>
         </div>
-        <div class="search-result">
+        <div class="search-result" ref="result">
           <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" class="result-item" v-for="(item,index) in resultList" :key="index" v-if="resultList.length>0">
             <div class="goods-picture">
               <img :src="imgPrefix + item.goodsImage" alt="商品">
@@ -51,7 +51,15 @@
               </div>
             </div>
           </router-link>
-          <div class="no-result" v-if="resultList.length<1">暂无搜索结果</div>
+          <infinite-loading spinner="bubbles" @distance="1" @infinite="loadMore" ref="infiniteLoading">
+        <span slot="no-more">
+          暂无更多数据
+        </span>
+            <span slot="no-results">
+          暂无结果
+        </span>
+          </infinite-loading>
+          <!--<div class="no-result" v-if="resultList.length<1">暂无搜索结果</div>-->
         </div>
       </div>
     </div>
@@ -59,8 +67,12 @@
 </template>
 
 <script>
+  const InfiniteLoading = () => import("vue-infinite-loading");
   export default{
     name: "Search",
+    components:{
+      InfiniteLoading
+    },
     data(){
       return{
         showSuggestion: true,
@@ -70,6 +82,12 @@
         imgPrefix: "",
         historyList: localStorage.getItem("historySearch") ? localStorage.getItem("historySearch").split(',') : [],
         hotList: [],
+        initOrder: true,
+        saleOrder: true,
+        priceOrder: true,
+        pageNo: 1,
+        order: "",
+        sortField: "",
       }
     },
     watch:{
@@ -105,6 +123,7 @@
       clearInput(){
         this.searchKey = "";
       },
+      /*搜索*/
       handleSearch(){
         if(this.searchKey){
           this.hasSearch = true;
@@ -117,17 +136,59 @@
           }
           this.historyList = arr;
           localStorage.setItem("historySearch",arr);
-          this.axios.get(this.baseURL.mall+"/m/search/goodsKeywordSearch?keyword="+this.searchKey).then(res =>{
+          this.pageNo = 1;
+        }
+      },
+      /*排序*/
+      handleSorting(field){
+        console.log("field",field);
+        this.sortField = field;
+        if(field === 'salenum'){
+          this.order = this.saleOrder ? 'asc' : 'desc';
+          this.saleOrder = !this.saleOrder;
+        }else if(field === 'goodsStorePrice'){
+          this.order = this.priceOrder ? 'asc' : 'desc';
+          this.priceOrder = !this.priceOrder;
+        }else{
+          this.order = "";
+        }
+        this.changeFilter();
+      },
+      /*加载更多*/
+      loadMore($state){
+        setTimeout(() =>{
+          this.axios.post(this.baseURL.mall+"/m/search/goodsKeywordSearch"+this.Service.queryString({
+            keyword: this.searchKey,
+            pageNo: this.pageNo,
+            sortField: this.sortField || "",
+            sortOrder: this.order || ""
+          })).then(res =>{
             console.log("搜索结果",res);
             if(res.data.h.code === 200){
-              this.resultList = res.data.b.goods;
-              this.imgPrefix = res.data.b.imgPrefix;
+              if(res.data.b.goods.length<1){
+                $state.complete();
+              }else{
+                this.pageNo ++;
+                this.imgPrefix = res.data.b.imgPrefix;
+                this.resultList = this.resultList.concat(res.data.b.goods);
+                $state.loaded();
+              }
+            }else{
+              $state.complete();
             }
           });
-        }
+        },200);
+      },
+      changeFilter() {
+        this.pageNo = 1;
+        this.resultList = [];
+        this.$nextTick(() => {
+          this.$refs.infiniteLoading.$emit('$InfiniteLoading:reset');
+        });
       },
       handleSuggestion(key){
         this.searchKey = key;
+        this.resultList = [];
         this.handleSearch();
       },
       /*请求热门搜索关键字*/
@@ -384,7 +445,6 @@
     color: white;
   }
   .search-result{
-    overflow scroll;
     -webkit-overflow-scrolling: touch;
     padding-top 40px;
   }
