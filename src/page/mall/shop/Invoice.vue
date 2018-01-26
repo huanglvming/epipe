@@ -67,7 +67,6 @@
         area:'',
         invState:'',
         invId:'',
-        InvoiceCon:'',
         CompanyName:'',
         IdentNnm:'',
         RegisterPhone:'',
@@ -111,7 +110,7 @@
         this.InvoiceType='普通发票';
         this.PerInvoiceHeaFun();
         this.invState=2;
-        this.InvoiceCon='';
+//        this.InvoiceCon='';
         this.CompanyName='';
         this.IdentNnm='';
         this.RegisterPhone='';
