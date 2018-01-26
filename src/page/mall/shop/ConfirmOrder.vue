@@ -2,7 +2,7 @@
   <div class="confirm-order">
     <div class="receiving-info">
       <a href="#/ReceivingAdress">
-        <div v-for="(obj,i) in addressList" :key="i" v-if="obj.isDefault==1">
+        <div v-for="(obj,i) in addressList" :key="i" v-if="i==0">
           <p class="p1">
             <span>{{obj.trueName}}</span>
             <span>{{obj.mobPhone}}</span>
@@ -50,9 +50,9 @@
       </a>
     </div>
     <div class="total-price">
-      <div><span>商品金额</span><span>￥{{goodsTotalPrice}}.00</span></div>
+      <div><span>商品金额</span><span>￥{{goodsTotalPrice}}</span></div>
       <div><span>运费</span><span>￥0.00</span></div>
-      <div><span></span><span><i>总价：</i>￥{{goodsTotalPrice}}.00</span></div>
+      <div><span></span><span><i>总价：</i>￥{{goodsTotalPrice}}</span></div>
     </div>
     <div class="wx-pay" @click="submitPay"><div>微信支付</div></div>
   </div>

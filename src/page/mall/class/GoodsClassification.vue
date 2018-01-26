@@ -113,8 +113,8 @@
   }
   .class-area{
     overflow hidden;
-    border-top 1px solid #e5e5e5;
     margin-top .45rem;
+    position relative;
     .class-area-l{
       width .8rem;
       float left;
@@ -126,13 +126,23 @@
           width 100%;
           height .45rem;
           line-height .45rem;
-          border-bottom 1px solid #e5e5e5;
+          position relative;
           font-size .12rem;
           color #666;
           text-align center;
           padding 0 .1rem;
           box-sizing border-box;
           overflow hidden;
+        }
+        li:after{
+          content: "";
+          position absolute;
+          left 0;
+          bottom 0;
+          width 100%;
+          height 1px;
+          background #e5e5e5;
+          transform scaleY(0.5);
         }
       }
       ul::-webkit-scrollbar {/*隐藏滚轮*/
@@ -143,8 +153,8 @@
         background #fff;
         color #ff8800;
       }
-      ul li:last-child{
-        border-bottom none;
+      ul li:last-child:after{
+       height 0;
       }
     }
     .class-area-r{
@@ -163,7 +173,17 @@
         line-height .4rem;
         font-size .12rem;
         color #333;
-        border-bottom 1px solid #e5e5e5;
+        position relative;
+      }
+      .class-tit:after{
+        content: "";
+        position absolute;
+        left 0;
+        bottom 0;
+        width 100%;
+        height 1px;
+        background #e5e5e5;
+        transform scaleY(0.5);
       }
       ul{
         overflow hidden;
@@ -178,4 +198,14 @@
     }
   }
  
+  .class-area:after{
+    content: "";
+    position absolute;
+    left 0;
+    top 0;
+    width 100%;
+    height 1px;
+    background #e5e5e5;
+    transform scaleY(0.5);
+  }
 </style>
