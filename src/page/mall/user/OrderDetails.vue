@@ -250,7 +250,7 @@
     }
   }
   .section-price{
-    margin-bottom 49px;
+    padding-bottom 49px;
   }
   .line{
     line-height 24px;

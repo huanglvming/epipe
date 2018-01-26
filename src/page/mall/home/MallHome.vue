@@ -196,4 +196,9 @@
     width: 100%;
     max-height 100%;
   }
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3){
+    .floor-container{
+      padding-bottom 84px;
+    }
+  }
 </style>

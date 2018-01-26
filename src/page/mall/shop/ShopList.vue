@@ -208,10 +208,10 @@
         }
         console.log("goodsIds:",this.goodsIds);
         console.log("cartIds:",this.cartIds);
-        
+
         this.allChecked = !this.allChecked;
       },
-  
+
       // 每个店铺全选
       chooseShopGoods ( index1) {
         let list = this.shopList[index1].list,
@@ -242,11 +242,11 @@
           console.log("cartIds:",this.cartIds);
         }
         this.shopList[index1].checked = !this.shopList[index1].checked;
-    
+
         // 判断是否选择所有商品的全选
         this.isChooseAll();
       },
-  
+
       // 单个选择
       chooseOne ( index1, index) {
         let list = this.shopList[index1].list,
@@ -678,6 +678,11 @@
       border: 1px solid #e5e5e5;
       transform scale(0.5);
       transform-origin 0 0;
+    }
+  }
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3){
+    .shop-cart .settlement{
+      bottom: 83px;
     }
   }
 </style>

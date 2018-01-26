@@ -223,9 +223,18 @@
     }
   }
   .links{
+    position relative;
     margin-top 0.1rem;
-    margin-bottom 49px;
     background white;
+    &::after{
+      content: "";
+      position absolute;
+      left 0;
+      bottom -49px;
+      width 100%;
+      height 49px;
+      background #F4F4F4;
+    }
   }
   .link-item{
     position relative;
