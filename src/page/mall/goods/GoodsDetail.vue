@@ -90,12 +90,12 @@
       <ul>
         <li>
           <div @click="collection">
-            <p><i class="iconfont icon-shoucang-weixuan"></i></p>
+            <p><i class="iconfont icon-shoucang-weixuan" :class="collectNum==0 ? 'color999' : 'colorff8800'"></i></p>
             <p>收藏</p>
           </div>
           <div>
             <a href="#/ShopList">
-              <p><i class="iconfont icon-gouwucheicon"></i></p>
+              <p><i class="iconfont icon-gouwucheicon color999"></i></p>
               <p>购物车</p>
             </a>
           </div>
@@ -136,6 +136,7 @@
         specId:'',    //规格组合id
         specIdArr:[],
         goodsSpecObj:'', //组合
+        collectNum:0
       }
     },
     components: {
@@ -194,16 +195,23 @@
           this.buyValue--;
         }
       },
-      //收藏商品
+      //收藏商品&取消收藏
       collection(){
         console.log(this.goodsId);
-        this.axios.post(this.baseURL.mall + "/m/favorite/collectGoods"+this.Service.queryString({
+        let url='';
+        if(this.collectNum==0){
+          url='/m/favorite/collectGoods';
+        }else{
+          url='/m/favorite/deleteFavGoods';
+        }
+        this.axios.post(this.baseURL.mall + url +this.Service.queryString({
           token:this.mallToken.getToken(),
           goodsIds:this.goodsId
         })).then(res=>{
           console.log(res);
           if(res.data.h.code===200){
-            this.$toast("收藏成功");
+            this.$toast(res.data.b.msg);
+            this.getGoodsDetail();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
             this.$router.push("/accountlogin");
           }else{
@@ -276,7 +284,7 @@
       },
       //获取商品信息与详情
       getGoodsDetail(){
-        this.axios.get(this.baseURL.mall + '/m/goods/goodsInfo?goodsId='+this.$route.query.goodsId).then(res =>{
+        this.axios.get(this.baseURL.mall + '/m/goods/goodsInfo?goodsId='+this.$route.query.goodsId+'&token='+this.mallToken.getToken()).then(res =>{
           console.log("商品详情",res);
           if(res.data.h.code === 200){
             let goodsData=res.data.b;
@@ -286,6 +294,7 @@
             if(goodsData.goodsSpecObj){
               this.goodsSpecObj=goodsData.goodsSpecObj;
             }
+            this.collectNum=goodsData.goods[0].collectState;
             if(goodsData.specList){
               this.specList=goodsData.specList;
               this.specIdArr=new Array(goodsData.specList.length);
@@ -343,6 +352,12 @@
   ::-webkit-scrollbar {/*隐藏滚轮*/
     display: none;
     width: 0px;
+  }
+  .color999{
+    color #999;
+  }
+  .colorff8800{
+    color #ff8800;
   }
   .detail-tab{
     width 100%;

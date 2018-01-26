@@ -156,123 +156,7 @@
 </script>
 
 <style lang="stylus" scoped="true">
-  .search-container{
-    z-index 9;
-    box-sizing border-box;
-    display flex;
-    justify-content space-between;
-    align-items center;
-    position fixed;
-    left 0;
-    top 0;
-    width: 100%;
-    height: 45px;
-    padding: 0 0.15rem;
-    background: white;
-    border-bottom 1px solid #e5e5e5;
-    .search-bar{
-      width: 3.25rem;
-      height: 29px;
-      margin 0 auto;
-      line-height 29px;
-      padding 0 0.1rem;
-      background: rgba(255,255,255,0.7);
-      border-radius 0.145rem;
-    }
-    .icon-search{
-      width: 14px;
-      height: 15px;
-    }
-    .search-input{
-      width: 3rem;
-      height inherit;
-      font-size 0.14rem;
-      color: #ccc;
-      outline none;
-      background transparent;
-    }
-  }
-  .search-bar-vice{
-    width: 2.65rem;
-    height: 29px;
-    white-space nowrap;
-    line-height 29px;
-    padding 0 0.1rem;
-    border-radius 0.145rem;
-    background: #f2f2f5;
-    .search-input-vice{
-      width 2.25rem;
-      height inherit;
-      font-size 0.14rem;
-      color: #ccc;
-      outline none;
-      background transparent;
-    }
-  }
-  .search-btn{
-    width: 0.5rem;
-    height: 29px;
-    border-radius 4px;
-    background: #d74a45;
-    color: white;
-    line-height 29px;
-    text-align center;
-  }
-  .suggestion-content{
-    margin-top 46px;
-    padding 0.2rem 0.15rem;
-    background: white;
-    border-bottom 1px solid #e5e5e5;
-  }
-  .sub-title{
-    font-size: 0.11rem;
-    color: #666;
-    margin-bottom 0.15rem;
-  }
-  .hot .sub-title{
-    margin-top 0.2rem;
-  }
-  .suggestions{
-    font-size 0;
-  }
-  .suggestion-item{
-    display inline-block;
-    height: 0.3rem;
-    line-height 0.3rem;
-    padding: 0 4px;
-    margin-right: 0.1rem;
-    margin-bottom: 0.1rem;
-    text-align center;
-    font-size 0.12rem;
-    color #666;
-    border: 1px solid #e5e5e5;
-    background #efefef;
-    cursor pointer;
-  }
-  .related-search{
-    margin-top: 46px;
-    background: white;
-    border-bottom: 1px solid #e5e5e5;
-  }
-  .related-title,.related-item{
-    height: 40px;
-    margin-left 0.15rem;
-    line-height: 40px;
-    font-size: 14px;
-  }
-  .related-title{
-    color: #666;
-    border-bottom: 1px dotted #e5e5e5;
-  }
-  .related-item{
-    color: #d74745;
-  }
-  .related-item:not(:last-child){
-    border-bottom: 1px dotted #e5e5e5;
-  }
-  .icon-guanbiicon{
-    color: #b3b3b3;
-  }
+
   .has-search{
     background: white;
   }
@@ -288,8 +172,17 @@
     height: 40px;
     line-height 40px;
     text-align center;
-    border-bottom 1px solid #e5e5e5;
     background: white;
+  }
+  .selections:after{
+    content: "";
+    position absolute;
+    left 0;
+    bottom 0;
+    width 100%;
+    height 1px;
+    background #e5e5e5;
+    transform scaleY(0.5);
   }
   .selection-item{
     flex: 1;
@@ -317,7 +210,17 @@
     justify-content space-between;
     width: 2.25rem;
     padding-right 0.15rem;
-    border-bottom 1px solid #e5e5e5;
+    position relative;
+  }
+  .goods-details:after{
+    content: "";
+    position absolute;
+    left 0;
+    bottom 0;
+    width 100%;
+    height 1px;
+    background #e5e5e5;
+    transform scaleY(0.5);
   }
   .goods-desc{
     display: -webkit-box;
@@ -334,7 +237,7 @@
     justify-content space-between;
   }
   .price{
-    margin-bottom 0.18rem;
+    margin-top .06rem;
     font-size: 0.18rem;
     line-height: 1;
     color: #d74845;

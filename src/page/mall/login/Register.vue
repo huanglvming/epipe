@@ -45,7 +45,7 @@
             console.log(res);
             if(res.data.h.code==200){
               this.time=60;
-              this.disabled=true;
+              this.btndisabled=true;
               this.btnclass="verifi-code-true";
               this.timer();
               this.axios.post(this.baseURL.mall+"/m/user/sendMessage"+this.Service.queryString({
@@ -82,7 +82,7 @@
         } else{
           this.time=0;
           this.btntxt="获取验证码";
-          this.disabled=false;
+          this.btndisabled=false;
           this.btnclass="verifi-code-false";
         }
       },

@@ -39,7 +39,7 @@
         </div>
         <div class="tot-price" v-if="showIndex==0">
           <div class="tot-price-btn" @click="settlement">去结算<i>({{selGoodsNum}}件)</i></div>
-          <div class="tot-price-num">总计：<i>￥{{totalPrice}}.00</i></div>
+          <div class="tot-price-num">总计：<i>￥{{totalPrice}}</i></div>
         </div>
         <div class="tot-price" v-if="showIndex==1">
           <div class="manage-shops" @click="delect">删除</div>
@@ -408,7 +408,6 @@
         line-height .45rem;
         font-size .16rem;
         color #333;
-        border-bottom 1px solid #e5e5e5;
         position relative;
         input{
           position absolute;
@@ -425,10 +424,20 @@
           vertical-align middle;
         }
       }
+      .seller-shop-name:after{
+        content: "";
+        position absolute;
+        left 0;
+        bottom 0;
+        width 100%;
+        height 1px;
+        background #e5e5e5;
+        transform scaleY(0.5);
+      }
       .shop-goods{
         overflow hidden;
         height 1.35rem;
-        border-bottom 1px solid #e5e5e5;
+        position relative;
         div{
           float left;
           margin-right .1rem;
@@ -533,15 +542,24 @@
           }
         }
       }
-      .shop-goods:last-child{
-        border-bottom none;
+      .shop-goods:after{
+        content: "";
+        position absolute;
+        left 0;
+        bottom 0;
+        width 100%;
+        height 1px;
+        background #e5e5e5;
+        transform scaleY(0.5);
+      }
+      .shop-goods:last-child:after{
+        height 0;
       }
     }
     .settlement{
       width 100%;
       height .49rem;
       background #fff;
-      border-top 1px solid #e5e5e5;
       position fixed;
       bottom 49px;
       z-index 11;
@@ -626,6 +644,16 @@
           background #999;
         }
       }
+    }
+    .settlement:after{
+      content: "";
+      position absolute;
+      left 0;
+      top 0;
+      width 100%;
+      height 1px;
+      background #e5e5e5;
+      transform scaleY(0.5);
     }
   }
   .select-ccc{
