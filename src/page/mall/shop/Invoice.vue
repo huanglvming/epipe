@@ -33,7 +33,7 @@
         <section><span class="sp1">注册地址</span><span class="sp2"><input type="text" v-model="RegisterAddress"></span></section>
         <section><span class="sp1">注册电话</span><span class="sp2"><input type="tel" v-model="RegisterPhone"></span></section>
         <section><span class="sp1">开户银行</span><span class="sp2"><input type="text" v-model="OpenBank"></span></section>
-        <section><span class="sp1">银行账号</span><span class="sp2"><input type="text" onkeyup="this.value = this.value.replace(/[^\d]/g, '')" v-model="BankAccount"></span></section>
+        <section><span class="sp1">银行账号</span><span class="sp2"><input type="tel" onkeyup="this.value = this.value.replace(/[^\d]/g, '')" v-model="BankAccount"></span></section>
         <section><span class="sp1">发票内容</span><span class="sp2"><input type="text" v-model="InvoiceCon"></span></section>
         <section><span class="sp1">收票人姓名</span><span class="sp2"><input type="text" v-model="ReceiveName"></span></section>
         <section><span class="sp1">收票人手机</span><span class="sp2"><input type="tel" v-model="ReceivePhone"></span></section>
