@@ -15,7 +15,7 @@
     <router-link to="shoplist" tag="div" class="footer-tab-item" :class="{'tab-active': category===2}">
       <div class="icon-container">
         <i class="iconfont icon-car" :class="category===2 ? 'icon-gouwuche-xuanzhongicon':'icon-gouwucheicon'">
-          <div class="goods-number">5</div>
+          <div class="goods-number">{{goodsNum}}</div>
         </i>
       </div>
       <p class="tab-title">购物车</p>
@@ -33,11 +33,19 @@
   export default{
     name: 'FooterTab',
     props:["category"],
+    data(){
+      return{
+        goodsNum: 0,
+      }
+    },
     methods:{
       getGoodsNumber(){
-        this.axios.post(this.baseURL.mall + '/m/cart/myCart' + this.Service.queryString({
+        this.axios.post(this.baseURL.mall + '/m/cart/myCartGoodsNum' + this.Service.queryString({
           token: this.mallToken.getToken()
         })).then(res =>{
+          if(res.data.h.code === 200){
+            this.goodsNum = res.data.b.goodsNum;
+          }
           console.log("购物车",res);
         })
       },

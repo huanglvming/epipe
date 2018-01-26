@@ -96,6 +96,7 @@
     .item-des{
       margin-left 0.12rem;
       line-height 1;
+      overflow hidden;
     }
     .des-title{
       margin-bottom 0.1rem;
