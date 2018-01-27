@@ -101,7 +101,6 @@
           console.log("修改购物车",res);
           if(res.data.h.code==200){
             this.getCartList();
-            this.$refs.footertab.getGoodsNumber();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
             this.$router.push("/accountlogin");
           }else{
@@ -309,6 +308,7 @@
             console.log(res);
             if(res.data.h.code==200){
               this.$toast("删除成功");
+              this.$refs.footertab.getGoodsNumber();
               this.getCartList();
               this.reset();
             }else{
