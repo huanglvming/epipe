@@ -29,7 +29,7 @@
             </div>
             <div class="price-num">
               <div class="price">
-                <span>￥</span><span>{{item.goodsPrice}}</span>.
+                <span>￥</span><span>{{item.goodsPrice}}</span>
               </div>
               <div class="num">
                 <span>x</span><span>{{item.goodsNum}}</span>
