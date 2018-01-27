@@ -56,7 +56,6 @@
   </div>
 </template>
 <script>
-  document.title="购物车";
   import FooterTab from "../../../components/mall/FooterTab.vue";
   document.title="购物车";
   export  default{
@@ -367,6 +366,7 @@
       }
     },
     created(){
+      document.title="购物车";
       this.getCartList();
     }
   }

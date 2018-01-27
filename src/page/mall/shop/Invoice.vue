@@ -17,7 +17,7 @@
         </div>
         <div class="height-45" v-if="ComInvoiceHea">
           <span class="sp1"><i  class="iconfont"></i>纳税人识别号</span>
-          <span class="sp2"><input type="number" placeholder="请输入纳税人识别号" v-model="IdentNnm"></span>
+          <span class="sp2"><input type="tel" onkeyup="this.value = this.value.replace(/[^\d]/g, '')" placeholder="请输入纳税人识别号" v-model="IdentNnm"></span>
         </div>
         <div class="invoice-header height-45"><span class="sp1">普通商品发票内容</span><span class="sp2">{{InvoiceCon}}</span></div>
         <div class="height-45" v-for="(obj,index) in InvoiceConArr" @click="InvoiceConFun(index,obj)">
@@ -29,7 +29,7 @@
             <span class="sp1">增票资质</span><span class="sp2"></span>
         </div>
         <section><span class="sp1">单位名称</span><span class="sp2"><input type="text" v-model="CompanyName"></span></section>
-        <section><span class="sp1">纳税人识别号</span><span class="sp2"><input type="text" onkeyup="this.value = this.value.replace(/[^\d]/g, '')"  v-model="IdentNnm"></span></section>
+        <section><span class="sp1">纳税人识别号</span><span class="sp2"><input type="tel" onkeyup="this.value = this.value.replace(/[^\d]/g, '')"  v-model="IdentNnm"></span></section>
         <section><span class="sp1">注册地址</span><span class="sp2"><input type="text" v-model="RegisterAddress"></span></section>
         <section><span class="sp1">注册电话</span><span class="sp2"><input type="tel" v-model="RegisterPhone"></span></section>
         <section><span class="sp1">开户银行</span><span class="sp2"><input type="text" v-model="OpenBank"></span></section>
@@ -207,7 +207,6 @@
         })).then(res=>{
           console.log(res);
           if(res.data.h.code==200){
-            localStorage.setItem('invoiceListArr',JSON.stringify(res.data.b));
             this.$toast("保存成功");
             setTimeout(() =>{
               this.$router.push({path:'/ConfirmOrder'});
@@ -220,47 +219,43 @@
     },
     created(){
       document.title="发票";
-      if(localStorage.getItem("invoiceListArr")){
-        let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
-        console.log(newInvoiceList);
-        this.invId=newInvoiceList.invId;
-        this.axios.post(this.baseURL.mall + "/m/my/queryInvoiceByInvId"+this.Service.queryString({
-          token:this.mallToken.getToken(),
-          invId:this.invId
-        })).then(res=>{
-          console.log('已保存发票信息',res);
-          let dataB=res.data.b;
-          if(res.data.h.code===200){
-            if(dataB.invState==1 && dataB.invRecProvince==''){
-              this.NorInvoiceFun();
-              this.ComInvoiceHeaFun();
-              this.InvHeacon=dataB.invTitle;
-              this.IdentNnm=dataB.invCode;
-              this.InvoiceCon=dataB.invContent;
-              this.InvoiceConIndex=this.InvoiceConArr.indexOf(this.InvoiceCon);
-            }else if(dataB.invState==2){
-              this.NorInvoiceFun();
-              this.PerInvoiceHeaFun();
-              this.InvHeacon=dataB.invTitle;
-              this.InvoiceCon=dataB.invContent;
-              this.InvoiceConIndex=this.InvoiceConArr.indexOf(this.InvoiceCon);
-            }else if(dataB.invState==1 && dataB.invRecProvince!=''){
-              this.SpeInvoiceFun();
-              this.InvoiceCon=dataB.invContent;
-              this.CompanyName=dataB.invCompany;
-              this.IdentNnm=dataB.invCode;
-              this.RegisterPhone=dataB.invRegPhone;
-              this.RegisterAddress=dataB.invRegAddr;
-              this.OpenBank=dataB.invRegBname;
-              this.BankAccount=dataB.invRegBaccount;
-              this.ReceiveName=dataB.invRecName;
-              this.ReceivePhone=dataB.invRecMobphone;
-              this.area=dataB.invRecProvince;
-              this.DetailAddress=dataB.invGotoAddr;
-            }
+      this.invId=localStorage.getItem('setInvoiceId');
+      this.axios.post(this.baseURL.mall + "/m/my/queryInvoiceByInvId"+this.Service.queryString({
+        token:this.mallToken.getToken(),
+        invId:this.invId
+      })).then(res=>{
+        console.log('已保存发票信息',res);
+        let dataB=res.data.b;
+        if(res.data.h.code===200){
+          if(dataB.invState==1 && dataB.invRecProvince==''){
+            this.NorInvoiceFun();
+            this.ComInvoiceHeaFun();
+            this.InvHeacon=dataB.invTitle;
+            this.IdentNnm=dataB.invCode;
+            this.InvoiceCon=dataB.invContent;
+            this.InvoiceConIndex=this.InvoiceConArr.indexOf(this.InvoiceCon);
+          }else if(dataB.invState==2){
+            this.NorInvoiceFun();
+            this.PerInvoiceHeaFun();
+            this.InvHeacon=dataB.invTitle;
+            this.InvoiceCon=dataB.invContent;
+            this.InvoiceConIndex=this.InvoiceConArr.indexOf(this.InvoiceCon);
+          }else if(dataB.invState==1 && dataB.invRecProvince!=''){
+            this.SpeInvoiceFun();
+            this.InvoiceCon=dataB.invContent;
+            this.CompanyName=dataB.invCompany;
+            this.IdentNnm=dataB.invCode;
+            this.RegisterPhone=dataB.invRegPhone;
+            this.RegisterAddress=dataB.invRegAddr;
+            this.OpenBank=dataB.invRegBname;
+            this.BankAccount=dataB.invRegBaccount;
+            this.ReceiveName=dataB.invRecName;
+            this.ReceivePhone=dataB.invRecMobphone;
+            this.area=dataB.invRecProvince;
+            this.DetailAddress=dataB.invGotoAddr;
           }
-        })
-      }
+        }
+      })
     }
   }
 </script>
