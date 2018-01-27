@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <footer-tab :category="1"></footer-tab>
+    <footer-tab :category="1" ref="footertab"></footer-tab>
   </div>
 </template>
 
@@ -120,6 +120,7 @@
           console.log(res);
           if(res.data.h.code==200){
             this.$toast(res.data.b.msg);
+            this.$refs.footertab.getGoodsNumber();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
             this.$router.push("/accountlogin");
           }else{

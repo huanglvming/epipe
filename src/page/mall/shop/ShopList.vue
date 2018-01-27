@@ -308,6 +308,7 @@
             console.log(res);
             if(res.data.h.code==200){
               this.$toast("删除成功");
+              this.$refs.footertab.getGoodsNumber();
               this.getCartList();
               this.reset();
             }else{
