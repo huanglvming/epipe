@@ -52,7 +52,7 @@
       <p>哎呦，您的购物车空空如也～</p>
       <div class="goToShop"><a href="#/mallhome">去逛逛</a></div>
     </div>
-    <footer-tab :category="2"></footer-tab>
+    <footer-tab :category="2" ref="footertab"></footer-tab>
   </div>
 </template>
 <script>
@@ -102,6 +102,7 @@
           console.log("修改购物车",res);
           if(res.data.h.code==200){
             this.getCartList();
+            this.$refs.footertab.getGoodsNumber();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
             this.$router.push("/accountlogin");
           }else{

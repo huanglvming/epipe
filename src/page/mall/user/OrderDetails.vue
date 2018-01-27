@@ -53,14 +53,16 @@
           <span class="line-content line-price" v-if="invoice[1]">{{invoice[0]}}/{{invoice[1]}}</span>
           <span class="line-content line-price" v-else>{{invoice[0]}}</span>
         </p>
-        <p class="line" v-if="orderInvoice.invTitle">
-          <span class="line-title">发票抬头:</span>
-          <span class="line-content">{{orderInvoice.invTitle}}</span>
-        </p>
-        <p class="line" v-if="!orderInvoice.invRegBname">
-          <span class="line-title">发票内容:</span>
-          <span class="line-content">{{orderInvoice.invContent}}</span>
-        </p>
+        <div v-if="invoice != '不开发票'">
+          <p class="line" v-if="orderInvoice.invTitle">
+            <span class="line-title">发票抬头:</span>
+            <span class="line-content">{{orderInvoice.invTitle}}</span>
+          </p>
+          <p class="line" v-if="!orderInvoice.invRegBname">
+            <span class="line-title">发票内容:</span>
+            <span class="line-content">{{orderInvoice.invContent}}</span>
+          </p>
+        </div>
         <div v-if="orderInvoice.invRegBname">
           <p class="line">
             <span class="line-title">单位名称:</span>
@@ -137,7 +139,7 @@
         imgPrefix: this.$route.query.imgPrefix,
         orderSn: this.$route.query.orderSn,
         token: this.$route.query.token || this.mallToken.getToken(),
-        orderInvoice: null,
+        orderInvoice: {},
         invoice: {},
       }
     },

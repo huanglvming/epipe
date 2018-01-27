@@ -15,7 +15,7 @@
     <router-link to="shoplist" tag="div" class="footer-tab-item" :class="{'tab-active': category===2}">
       <div class="icon-container">
         <i class="iconfont icon-car" :class="category===2 ? 'icon-gouwuche-xuanzhongicon':'icon-gouwucheicon'">
-          <div class="goods-number">{{goodsNum}}</div>
+          <div class="goods-number" v-if="goodsNum>0">{{goodsNum}}</div>
         </i>
       </div>
       <p class="tab-title">购物车</p>
@@ -52,7 +52,7 @@
     },
     created(){
       this.getGoodsNumber();
-    }
+    },
   }
 </script>
 

@@ -171,7 +171,7 @@
           this.address = item.address;
           this.name = item.trueName;
           this.area = item.areaInfo;
-          this.phone = item.telPhone;
+          this.phone = item.telPhone || item.mobPhone;
         }
       },
       /*验证手机号码*/
@@ -218,6 +218,7 @@
             console.log("提交结果",res);
             if(res.data.h.code === 200){
               console.log("修改成功");
+              this.$toast("保存成功");
               this.editing = false;
               this.getAddressList();
             }
