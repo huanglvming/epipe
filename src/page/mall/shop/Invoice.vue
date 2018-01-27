@@ -17,7 +17,7 @@
         </div>
         <div class="height-45" v-if="ComInvoiceHea">
           <span class="sp1"><i  class="iconfont"></i>纳税人识别号</span>
-          <span class="sp2"><input type="number" placeholder="请输入纳税人识别号" v-model="IdentNnm"></span>
+          <span class="sp2"><input type="tel" onkeyup="this.value = this.value.replace(/[^\d]/g, '')" placeholder="请输入纳税人识别号" v-model="IdentNnm"></span>
         </div>
         <div class="invoice-header height-45"><span class="sp1">普通商品发票内容</span><span class="sp2">{{InvoiceCon}}</span></div>
         <div class="height-45" v-for="(obj,index) in InvoiceConArr" @click="InvoiceConFun(index,obj)">
