@@ -101,7 +101,6 @@
           console.log("修改购物车",res);
           if(res.data.h.code==200){
             this.getCartList();
-            this.$refs.footertab.getGoodsNumber();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
             this.$router.push("/accountlogin");
           }else{
