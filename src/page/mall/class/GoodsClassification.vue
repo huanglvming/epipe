@@ -27,7 +27,6 @@
   </div>
 </template>
 <script>
-  document.title="分类";
   import FooterTab from "../../../components/mall/FooterTab.vue";
   export  default {
     data:function () {
@@ -41,6 +40,7 @@
       FooterTab,
     },
     mounted () {
+      document.title="分类";
       this.axios.get(this.baseURL.mall+"/m/search/goodsClass",).then(res =>{
         console.log(res);
         if(res.data.h.code==200){

@@ -29,7 +29,7 @@
             </div>
             <div class="price-num">
               <div class="price">
-                <span>￥</span><span>{{item.goodsPrice}}</span>
+                <span>￥</span><span>{{item.goodsPrice}}</span>.
               </div>
               <div class="num">
                 <span>x</span><span>{{item.goodsNum}}</span>
@@ -108,30 +108,41 @@
         })).then(res=>{
           console.log(res);
           if(res.data.h.code==200) {
-            localStorage.removeItem('invoiceListArr');
+//            localStorage.removeItem('invoiceListArr');
             window.location.href = res.data.b;
+          }
+        })
+      },
+      queryInvoice(){
+        this.axios.post(this.baseURL.mall + "/m/my/queryInvoice"+this.Service.queryString({
+          token:this.mallToken.getToken()
+        })).then(res=>{
+          console.log('发票信息',res);
+          if(res.data.h.code==200){
+            if(res.data.b){
+              localStorage.setItem("setInvoiceId",res.data.b.invId);
+              let dataInvoice=res.data.b;
+              this.openInv=1;
+              this.invoiceId=dataInvoice.invId;
+              if(dataInvoice.invState==2){
+                this.invoiceType='普通发票 个人';
+              }else if(dataInvoice.invState==1 && dataInvoice.invRecProvince==''){
+                this.invoiceType='普通发票 公司';
+              }else if(dataInvoice.invState==1 && dataInvoice.invRecProvince!=''){
+                this.invoiceType='增值税专用发票';
+              }
+            }else{
+              localStorage.setItem("setInvoiceId",'');
+              this.openInv=0;
+              this.invoiceId='';
+            }
           }
         })
       }
     },
     created(){
       this.getSettlement();
-      if(localStorage.getItem("invoiceListArr")){
-        let newInvoiceList=JSON.parse(localStorage.getItem("invoiceListArr"));
-        console.log('发票信息',newInvoiceList);
-        this.openInv=1;
-        this.invoiceId=newInvoiceList.invId;
-        if(newInvoiceList.invState==2){
-          this.invoiceType='普通发票 个人';
-        }else if(newInvoiceList.invState==1 && newInvoiceList.invRecProvince==''){
-          this.invoiceType='普通发票 公司';
-        }else if(newInvoiceList.invState==1 && newInvoiceList.invRecProvince!=''){
-          this.invoiceType='增值税专用发票';
-        }
-      }else{
-        this.openInv=0;
-        this.invoiceId='';
-      }
+      this.queryInvoice();
     }
   }
 </script>
