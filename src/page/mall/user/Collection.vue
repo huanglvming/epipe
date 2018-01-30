@@ -10,7 +10,7 @@
           <i class="iconfont" :class="checkedList[index] ? 'icon-xuanzhong1' : 'icon-weixuan'" v-if="edit" @click.stop.prevent="singleCheck(index)"></i>
           <img :src="imgPrefix+item.goodsImage" alt="">
         </div>
-        <div class="right">
+        <div class="right" :class="{'edit-right': edit}">
           <div class="desc">{{item.goodsName}}</div>
           <div class="sub">
             <div class="price">￥{{item.goodsStorePrice}}</div>
@@ -102,8 +102,8 @@
       },
       /*滚动加载*/
       infiniteHandler($state){
+        let vm = this;
         setTimeout(() =>{
-          let vm = this;
           vm.axios.post(vm.baseURL.mall + "/m/my/myFavGoods" + vm.Service.queryString({
             token: vm.mallToken.getToken(),
             pageSize: vm.pageSize || 10,
@@ -130,29 +130,31 @@
       },
       /*取消收藏*/
       deleteCollection(){
-        this.axios.post(this.baseURL.mall + "/m/favorite/deleteFavGoods" + this.Service.queryString({
-          token: this.mallToken.getToken(),
-          goodsIds: this.goodsIdList.join(','),
-        })).then(res =>{
-          console.log("取消收藏",res);
-          if(res.data.h.code === 200){
-            this.$toast(res.data.b.msg);
-            let deleteList = [];
-            let vm = this;
-            this.checkedList.map(function(item,index){
-              if(item){
-                deleteList.push(vm.itemList[index]);
-              }
-            });
-            deleteList.map(function(item){
-              vm.itemList.splice(vm.itemList.indexOf(item),1);
-            });
-            this.len = vm.itemList.length;
-            this.checkedList.splice(0,this.checkedList.length);
-            this.selectAll = false;
-            this.noData = vm.itemList.length === 0 ? true : false;
-          }
-        })
+        this.$confirm("确认取消收藏？").then(() =>{
+          this.axios.post(this.baseURL.mall + "/m/favorite/deleteFavGoods" + this.Service.queryString({
+            token: this.mallToken.getToken(),
+            goodsIds: this.goodsIdList.join(','),
+          })).then(res =>{
+            console.log("取消收藏",res);
+            if(res.data.h.code === 200){
+              this.$toast(res.data.b.msg);
+              let deleteList = [];
+              let vm = this;
+              this.checkedList.map(function(item,index){
+                if(item){
+                  deleteList.push(vm.itemList[index]);
+                }
+              });
+              deleteList.map(function(item){
+                vm.itemList.splice(vm.itemList.indexOf(item),1);
+              });
+              this.len = vm.itemList.length;
+              this.checkedList.splice(0,this.checkedList.length);
+              this.selectAll = false;
+              this.noData = vm.itemList.length === 0 ? true : false;
+            }
+          });
+        });
       },
     }
   }
@@ -203,10 +205,10 @@
       font-size 0.2rem;
     }
     img{
+      display block;
       width 1.1rem;
       /*height 1.1rem;*/
       margin-right 0.1rem;
-      background red;
     }
   }
   .right{
@@ -216,6 +218,7 @@
     justify-content space-between;
     height: 1rem;
     min-width 1rem;
+    max-width 2.45rem;
     padding: 0.1rem 0;
     padding-right 0.1rem;
     &::after{
@@ -266,6 +269,9 @@
       border-radius 2px;
       border: none;
     }
+  }
+  .edit-right{
+   max-width 2.15rem;
   }
   .operate{
     display flex;

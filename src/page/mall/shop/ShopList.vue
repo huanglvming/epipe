@@ -59,7 +59,6 @@
 </template>
 <script>
   import FooterTab from "../../../components/mall/FooterTab.vue";
-  document.title="购物车";
   export  default{
     components:{
       FooterTab,

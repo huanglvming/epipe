@@ -3,13 +3,13 @@
     <div class="receiving-adress" v-if="showState">
       <div class="adress" v-for="(obj,i) in addressList" :key="i">
         <div><i class="iconfont icon-xuanzhong1" :class="obj.isDefault==1 ? 'red' : 'gray'" @click="defalutAddress(i)"></i></div>
-        <div>
+        <div class="address-content">
           <p><span>{{obj.trueName}}</span><span>{{obj.telPhone}}</span></p>
           <p>{{obj.areaInfo}}{{obj.address}}</p>
         </div>
         <div @click="editAdress(i)"><i class="iconfont icon-bianji"></i></div>
       </div>
-      <div class="adress adress-add">
+      <div class="adress-add">
         <div class="add-address">新增收货地址</div>
         <div @click="addNewAddress"><i class="iconfont icon-jia"></i></div>
       </div>
@@ -56,7 +56,8 @@
         phone: "",
         address: "",
         showSelection: false,
-        addressId:''
+        addressId:'',
+        isDefault: 0,
       }
     },
     components:{
@@ -101,6 +102,7 @@
         this.area=this.addressList[index].areaInfo;
         this.address=this.addressList[index].address;
         this.addressId=this.addressList[index].addressId;
+        this.isDefault = this.addressList[index].isDefault;
       },
       //新增地址
       addNewAddress(){
@@ -130,7 +132,7 @@
             trueName: this.name,
             telPhone: this.phone,
             mobPhone:this.phone,
-            isDefault: 0,
+            isDefault: this.isDefault,
             provinceId: this.areaObj.proviceId,
             cityId: this.areaObj.cityId ? this.areaObj.cityId : "",
             areaId: this.areaObj.areaId ? this.areaObj.areaId : "",
@@ -140,6 +142,7 @@
           })).then(res =>{
             console.log("提交结果",res);
             if(res.data.h.code==200){
+              this.$toast("保存成功");
               this.showState=true;
               this.getAddressList();
             }else{
@@ -166,15 +169,22 @@
 </script>
 <style lang="stylus" scoped>
   .adress{
-    height .65rem;
+    display flex;
+    justify-content space-between;
+    align-items center;
+    align-content center;
+    min-height .65rem;
     padding 0 .1rem;
     background #fff;
     border-bottom 1px solid #e5e5e5;
+    .address-content{
+      flex 2;
+    }
     div{
-      float left;
-      position relative;
-      top 50%;
-      transform translateY(-50%);
+      /*float left;*/
+      /*position relative;*/
+      /*top 50%;*/
+      /*transform translateY(-50%);*/
       i{
         font-size .2rem;
       }
@@ -204,8 +214,12 @@
     }
   }
   .adress-add{
+    display flex;
+    justify-content space-between;
+    align-items center;
     height .45rem;
-    line-height .45rem;
+    padding 0 0.1rem;
+    background white;
     .add-address{
       font-size .12rem;
       color #ccc;

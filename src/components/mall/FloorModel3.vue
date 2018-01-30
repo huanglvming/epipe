@@ -5,8 +5,8 @@
     </div>
     <div class="floor-3-view">
       <a :href="item.advUrl" class="item" v-for="(item,index) in floorObj.floorAdvs" :key="index">
-        <p class="item-title">{{item.advTitle}}</p>
-        <p class="item-des">{{item.advDescribe}}</p>
+        <p class="item-title" v-html="item.advTitle"></p>
+        <p class="item-des" v-html="item.advDescribe"></p>
         <div class="item-img">
           <img :src="imgPrefix + item.advImg" alt="">
         </div>

@@ -14,7 +14,6 @@
   </div>
 </template>
 <script>
-  document.title="注册";
   export default{
     data: function () {
       return {
@@ -30,6 +29,9 @@
           
         }
       }
+    },
+    created(){
+    	document.title="注册";
     },
     methods:{
       sendcode(){

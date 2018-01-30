@@ -1,19 +1,17 @@
 <template>
   <div class="confirm-order">
-    <div class="receiving-info">
-      <a href="#/ReceivingAdress">
-        <div v-for="(obj,i) in addressList" :key="i" v-if="i==0">
-          <p class="p1">
-            <span>{{obj.trueName}}</span>
-            <span>{{obj.mobPhone}}</span>
-          </p>
-          <p class="p2">{{obj.areaInfo}}{{obj.address}}</p>
-        </div>
-        <div>
-          <i class="iconfont icon-jinru"></i>
-        </div>
-      </a>
-     </div>
+    <router-link to="ReceivingAdress" tag="div" class="receiving-info">
+      <div v-for="(obj,i) in addressList" :key="i" v-if="i==0">
+        <p class="p1">
+          <span>{{obj.trueName}}</span>
+          <span>{{obj.mobPhone}}</span>
+        </p>
+        <p class="p2">{{obj.areaInfo}}{{obj.address}}</p>
+      </div>
+      <div>
+        <i class="iconfont icon-jinru"></i>
+      </div>
+     </router-link>
     <div class="line"></div>
     <div class="order-list">
       <div class="settleOneStroe" v-for="(obj,i) in cartList" :key="i">
@@ -58,7 +56,6 @@
   </div>
 </template>
 <script>
-  document.title="确认订单";
   export default {
     data:function () {
       return{
@@ -70,7 +67,7 @@
         cartIds:[],
         openInv:0,
         invoiceId:''
-        
+
       }
     },
     methods:{
@@ -141,6 +138,7 @@
       }
     },
     created(){
+    	document.title="确认订单";
       this.getSettlement();
       this.queryInvoice();
     }
@@ -150,10 +148,11 @@
   .confirm-order{
     overflow hidden;
     .receiving-info{
-      height .65rem;
+      display flex;
+      justify-content space-between;
+      align-items baseline;
       padding .15rem .1rem;
       background #fff;
-      box-sizing border-box;
       a{
         display block;
         width 100%;
@@ -163,7 +162,6 @@
         height 100%;
       }
       div:first-child{
-        float left;
         p{
           font-size .15rem;
           color #333;
@@ -178,7 +176,7 @@
         }
       }
       div:last-child{
-        float right;
+        width 15px;
         i{
           color #ccc;
           font-size .12rem;
@@ -196,6 +194,7 @@
     .order-list{
       .settleOneStroe{
         overflow hidden;
+        width 100%;
       }
       .shop-name{
         height .45rem;
