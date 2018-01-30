@@ -100,7 +100,7 @@
         this.NorInvoiceSel=false;
         this.SpeInvoiceSel=false;
         this.InvoiceType='不开发票';
-        this.invState='';
+        this.invState=0;
       },
       //普通发票
       NorInvoiceFun(){
