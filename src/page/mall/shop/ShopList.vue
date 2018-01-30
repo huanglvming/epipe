@@ -7,10 +7,11 @@
           <i class="iconfont" :class="obj.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc' "  @click="chooseShopGoods(index1)"></i>{{obj.storeName}}
           <!--<input type="checkbox" name="oneStroe" v-model="obj.checked" @click="chooseShopGoods(index1)"/>-->
         </div>
-        <div class="shop-goods" v-for="(item,index) in obj.list" :key="index">
+        <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" v-for="(item,index) in obj.list" :key="index">
+          <div class="shop-goods" >
           <div class="goods-ope">
-            <i class="iconfont" :class="item.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc'" @click="chooseOne(index1,index)"></i>
-            <!--<input type="checkbox" name="one" v-model="item.checked" @click="chooseOne(index1,index)"/>-->
+            <i class="iconfont" :class="item.checked ? 'icon-xuanzhong1 select-d74a45' : 'icon-weixuan select-ccc'" @click.stop.prevent="chooseOne(index1,index)"></i>
+            <!--<input type="checkbox" name="one" v-model="item.checked" @click.stop.prevent="chooseOne(index1,index)"/>-->
           </div>
           <div class="goods-pho"><img :src="imgPrefix+item.goodsImages" alt=""></div>
           <div class="goods-class">
@@ -20,14 +21,15 @@
             <section class="price-num">
               <section class="price"><i>￥</i>{{item.goodsPrice}}</section>
               <section class="num">
-                <span @click="reduce(index1,index)"><i class="iconfont icon-jian"></i></span>
+                <span @click.stop.prevent="reduce(index1,index)"><i class="iconfont icon-jian"></i></span>
                 <span><input type="text" v-model="item.goodsNum" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
                  onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" @blur="blur(index1,index,Number(item.goodsNum))"></span>
-                <span @click="add(index1,index)"><i class="iconfont icon-jia1"></i></span>
+                <span @click.stop.prevent="add(index1,index)"><i class="iconfont icon-jia1"></i></span>
               </section>
             </section>
           </div>
         </div>
+        </router-link>
       </div>
       <div class="settlement">
         <div class="sel-all" >
@@ -467,7 +469,9 @@
           img{
             display block;
             width 100%;
-            height 100%;
+            position relative;
+            top 50%;
+            transform translateY(-50%);
           }
         }
         .goods-class{

@@ -73,7 +73,7 @@
     align-items: center;
     img{
       width: 1.1rem;
-      height: 1.1rem;
+      /*height: 1.1rem;*/
       margin-right: 0.1rem;
       background: #dedede;
     }
