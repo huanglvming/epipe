@@ -7,7 +7,7 @@
       <a :href="item.advUrl" class="item" v-for="(item,index) in floorObj.floorAdvs">
         <div class="item-des">
           <p class="des-title">{{item.advTitle}}</p>
-          <p class="des-sub">{{item.advDescribe}}</p>
+          <p class="des-sub" v-html="item.advDescribe"></p>
         </div>
         <div class="item-img">
           <img :src="imgPrefix + item.advImg" alt="">

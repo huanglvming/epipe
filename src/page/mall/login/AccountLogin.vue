@@ -21,7 +21,6 @@
   </div>
 </template>
 <script>
-  document.title="登录";
   export default{
     data:function () {
       return{
@@ -68,6 +67,7 @@
       }
     },
     created(){
+    	document.title="登录";
       this.phone=localStorage.getItem("preLoginPhone") || '';
     }
   }

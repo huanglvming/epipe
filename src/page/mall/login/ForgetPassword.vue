@@ -12,7 +12,6 @@
   </div>
 </template>
 <script>
-  document.title="忘记密码";
   export default{
     data: function () {
       return {
@@ -25,12 +24,16 @@
           verCode:this.verCode,
           password:this.password,
           repassword:this.repassword
-
-        }
+        },
+        sending: false,
       }
+    },
+    created(){
+      document.title="忘记密码";
     },
     methods:{
       sendcode(){
+        this.sending = true;
         var reg=11 && /^((13|14|15|17|18)[0-9]{1}\d{8})$/;
         //var url="/nptOfficialWebsite/apply/sendSms?mobile="+this.ruleForm.phone;
         if(this.phone==''||this.phone==undefined){
@@ -52,6 +55,9 @@
                 type:4
               })).then(res=>{
                 console.log(res);
+                if(res.data.h.code === 200){
+                  this.sending = false;
+                }
               })
             }else{
               this.tips="该用户尚未注册";
@@ -86,39 +92,43 @@
         }
       },
       confimSub(){
-        let mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
-        if(this.phone==undefined||this.phone.trim()==''){
-          this.tips="手机号不能为空";
-          return false;
-        }else if(this.verCode==undefined||this.verCode.trim()==''){
-          this.tips="验证码不能为空";
-          return false;
-        }else if(this.password==undefined||this.password.trim()==''){
-          this.tips="密码不能为空";
-          return false;
-        }else if(this.password.length<6){
-          this.tips="密码长度不能小于6个字符";
-          return false;
-        }else if(this.password != this.repassword) {
-          this.tips="两次输入的密码不一致";
-          return false;
-        }else if(!mediumRegex.test(this.password)){
-          this.tips="密码应为字母、数字、标点符号至少包含2种组合";
-          return false;
+        if(this.sending){
+          this.$toast("正在获取验证码");
         }else{
-          this.axios.post(this.baseURL.mall+"/m/user/setNewPassword"+this.Service.queryString({
+          let mediumRegex = new RegExp("^(?=.{7,})(((?=.*[A-Z])(?=.*[a-z]))|((?=.*[A-Z])(?=.*[0-9]))|((?=.*[a-z])(?=.*[0-9]))).*$", "g");
+          if(this.phone==undefined||this.phone.trim()==''){
+            this.tips="手机号不能为空";
+            return false;
+          }else if(this.verCode==undefined||this.verCode.trim()==''){
+            this.tips="验证码不能为空";
+            return false;
+          }else if(this.password==undefined||this.password.trim()==''){
+            this.tips="密码不能为空";
+            return false;
+          }else if(this.password.length<6){
+            this.tips="密码长度不能小于6个字符";
+            return false;
+          }else if(this.password != this.repassword) {
+            this.tips="两次输入的密码不一致";
+            return false;
+          }else if(!mediumRegex.test(this.password)){
+            this.tips="密码应为字母、数字、标点符号至少包含2种组合";
+            return false;
+          }else{
+            this.axios.post(this.baseURL.mall+"/m/user/setNewPassword"+this.Service.queryString({
               mobile: this.phone,
               code: this.verCode,
               password:this.password
             })).then(res =>{
-            console.log(res);
-            if(res.data.h.code==200){
-              this.$toast('修改密码成功');
-              this.$router.push({path:'/accountlogin'});
-            }else{
-              this.tips=res.data.h.msg;
-            }
-          });
+              console.log(res);
+              if(res.data.h.code==200){
+                this.$toast('修改密码成功');
+                this.$router.push({path:'/accountlogin'});
+              }else{
+                this.tips=res.data.h.msg;
+              }
+            });
+          }
         }
       }
     }

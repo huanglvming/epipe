@@ -36,7 +36,7 @@
         <section><span class="sp1">银行账号</span><span class="sp2"><input type="tel" onkeyup="this.value = this.value.replace(/[^\d]/g, '')" v-model="BankAccount"></span></section>
         <section><span class="sp1">发票内容</span><span class="sp2"><input type="text" v-model="InvoiceCon"></span></section>
         <section><span class="sp1">收票人姓名</span><span class="sp2"><input type="text" v-model="ReceiveName"></span></section>
-        <section><span class="sp1">收票人手机</span><span class="sp2"><input type="tel" v-model="ReceivePhone"></span></section>
+        <section><span class="sp1">收票人手机</span><span class="sp2"><input type="tel" v-model="ReceivePhone" @blur="handleBlur(ReceivePhone)"></span></section>
         <section><span class="sp1">所在地区</span><span class="sp2"  @click="handleSelect"><input type="text" readonly v-model="area"><i class="iconfont icon-jinru"></i></span></section>
         <section><span class="sp1">详细地址</span><span class="sp2"><input type="text" v-model="DetailAddress"></span></section>
       </article>
@@ -159,10 +159,13 @@
         this.InvoiceCon=obj;
       },
       InvoiceSubmit(){
+        if( this.InvoiceType == "增值税专用发票" && !this.checkPhone(this.ReceivePhone)){
+          this.$toast("请输出正确的手机号码");
+          return false;
+        }
         if(this.NoInvoiceSel==true){                          //不开发票
           localStorage.removeItem('invoiceListArr');
-          this.$router.push({path:'/ConfirmOrder'});
-          return false;
+          this.invState = 0;
         }
         if(this.NorInvoiceSel==true && this.PerInvoiceHea==true){         //普通发票个人
           if(this.InvHeacon==''){
@@ -215,7 +218,21 @@
             this.$toast(res.data.h.msg);
           }
         })
-      }
+      },
+      /*验证手机号码*/
+      checkPhone(phone){
+        if(!(/^1(3|4|5|7|8)\d{9}$/.test(phone))){
+          return false;
+        }else{
+          return true;
+        }
+      },
+      handleBlur(phone){
+        console.log(phone);
+        if(!(/^1(3|4|5|7|8)\d{9}$/.test(phone))){
+          this.$toast("手机号码有误");
+        }
+      },
     },
     created(){
       document.title="发票";
