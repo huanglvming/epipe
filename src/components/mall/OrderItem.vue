@@ -7,7 +7,8 @@
           <div class="status">{{obj.orderState | handleStatus}}</div>
         </div>
         <div class="item-sub">
-          <div class="item-row" v-for="(item,index) in obj.orderGoodsList" :key="index">
+          <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" v-for="(item,index) in obj.orderGoodsList" :key="index">
+            <div class="item-row" >
             <div class="goods-picture">
               <img :src="imgPrefix + item.goodsImage" alt="">
             </div>
@@ -22,6 +23,7 @@
               </div>
             </div>
           </div>
+          </router-link>
         </div>
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-if="obj.orderState === 0">
