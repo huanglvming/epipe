@@ -486,6 +486,9 @@
             height .4rem;
             overflow hidden;
             word-break break-all;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
           }
           .p2{
             font-size .14rem;
@@ -494,6 +497,8 @@
             height .2rem;
             overflow hidden;
             word-break break-all;
+            text-overflow:ellipsis;
+            white-space: nowrap;
           }
           .price-num{
             overflow hidden;

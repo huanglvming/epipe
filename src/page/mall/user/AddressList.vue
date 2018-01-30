@@ -155,6 +155,9 @@
             if(res.data.h.code === 200){
               this.selected = null;
               this.getAddressList();
+              setTimeout(()=>{
+                this.$toast('删除成功');
+              },100);
             }else{
               this.$toast(res.data.h.msg);
             }
