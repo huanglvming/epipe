@@ -367,8 +367,7 @@
       history_back: function () {
         if(this.states=='pro'){
             let str = JSON.stringify(this.chose_array)
-            console.log(str)
-            window.location.href = "epipe://?&data="+str
+            window.location.href = "epipe://?&data="+str;
         }else{
           window.history.back()
         }
@@ -452,8 +451,6 @@
             }
           }
           that.datalist = JSON.parse(JSON.stringify(data.data.b))
-          console.log(data.data.b)
-          console.log(that.datalist)
         }
       });
     },

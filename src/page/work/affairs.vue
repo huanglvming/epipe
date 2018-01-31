@@ -9,43 +9,69 @@
             </div>
             {{title}}
         </div>
-        <div class="affairs_content">
-            <div :class='boxShadow' v-for="item in 5">
+        <div class="affairs_content" v-show='this.btnShow'>
+            <div :class='boxShadow' v-for="(item,index) in leaveData">
                 <div class="affirs_child">
                     <div class="affairs_title">
-                        <img src="../../assets/tou.png"/>
-                        <h2>Forward的请假审批</h2>
-                        <time>2017-6-6</time>
+                        <img :src="item[0]?item[3].value:item.profileImg"/>
+                        <h2 v-text="item[0]?item[2].value+'的请假审批':'我的请假审批'"></h2>
+                        <time v-if="item[0]">{{item[9].value | timeFormat}}</time>
+                        <time v-if="!item[0]">{{item.applyTime | timeFormat}}</time>
                     </div>
                     <div class="affairs_infor">
-                        <p>请假类型:<span style="color:#609ef6">事假</span></p>
-                        <p v-if="flag">开始时间:<span>2017-12-26 &nbsp 09:35</span></p>
-                        <p v-if="flag">结束时间:<span>2017-12-27 &nbsp 08:25</span></p>
-                        <p v-if="!flag">审批时间:<span>2017-12-27 &nbsp 08:25</span></p>
-                        <p v-if="flag" class="result">待审批</p>
+                        <p>请假类型:<span style="color:#609ef6" v-text='item[0]?item[4].value:item.leaveType'></span></p>
+                        <p v-if="num&&!item[0]">开始时间:<span>{{item.beginTime | slice}}</span></p>
+                        <p v-if="num&&item[0]">开始时间:<span>{{item[6].value | slice}}</span></p>
+                        <p v-if="num&&!item[0]">结束时间:<span>{{item.endTime |slice}}</span></p>
+                        <p v-if="num&&item[0]">结束时间:<span>{{item[7].value | slice}}</span></p>
+                        <p v-if="!num">审批时间:<span>{{item[10].value}}</span></p>
+                        <p v-if="num&&num!=3" class="result">待审批</p>
                     </div>
                 </div>
                 <div class="skip">
-                    参看详情>
+                    参看详情 
                 </div>
             </div>
         </div>
-        <div class="footLine">
+        <div class="affairs_content" v-show='!this.btnShow'>
+             <div :class='boxShadow' v-for="(item,index) in draftsData">
+                <div class="affirs_child">
+                    <div class="affairs_title">
+                        <img :src="item.profileImg"/>
+                        <h2>我的请假审批</h2>
+                        <time>{{item.applyTime | timeFormat}}</time>
+                    </div>
+                    <div class="affairs_infor">
+                        <p>请假类型:<span style="color:#609ef6" v-text='item[0]?item[4].value:item.leaveType'></span></p>
+                        <p>开始时间:<span>{{item.beginTime |slice}}</span></p>
+                        <p>结束时间:<span>{{item.endTime |slice}}</span></p>
+                    </div>
+                </div>
+                <div class="skip">
+                    参看详情 
+                </div>
+            </div>
+        </div>
+
+        <div :class="types=='myApply'?'footLine marginBot':'footLine'" v-if="leaveData.length>3&&btnShow">
             <span>我是有底线的</span>
         </div>
-        <div class="footer" v-if='types = "myaffairs"'>
-            <div :class='btnShow?"tab tab_user":"tab tab_user active"' @click="tabEven()">
+        <div :class="types=='myApply'?'footLine marginBot':'footLine'" v-if="draftsData.length>3&&!btnShow">
+            <span>我是有底线的</span>
+        </div>
+        <div class="footer" v-if='types == "myApply"'>
+            <div :class='btnShow?"tab tab_user active":"tab tab_user"' @click="tabEven()">
 
                 <svg class="icon icon-user" aria-hidden="false">
-                    <use v-show="btnShow" xlink:href="#icon-wodeshenqing-line"></use>
-                    <use v-show="!btnShow" xlink:href="#icon-wodeshenqing-mian"></use>
+                    <use v-show="!btnShow" xlink:href="#icon-wodeshenqing-line"></use>
+                    <use v-show="btnShow" xlink:href="#icon-wodeshenqing-mian"></use>
                 </svg>
                 <span>我的申请</span>
             </div>
-            <div :class='!btnShow?"tab tab_drafts":"tab tab_drafts active"' @click="tabEven()">
+            <div :class='btnShow?"tab tab_drafts":"tab tab_drafts active"' @click="tabEven()">
                 <svg class="icon icon-drafts" aria-hidden="false">
-                    <use v-show="!btnShow"  xlink:href="#icon-caogaoxiang-line"></use>
-                    <use v-show="btnShow" xlink:href="#icon-caogaoxiang-mian"></use>
+                    <use v-show="btnShow"  xlink:href="#icon-caogaoxiang-line"></use>
+                    <use v-show="!btnShow" xlink:href="#icon-caogaoxiang-mian"></use>
                 </svg>
                 <span>草稿箱</span>                
             </div>
@@ -60,31 +86,63 @@
                 types :'',
                 typeClass : '',
                 boxShadow : '',
-                btnShow : false,
-            }
+                btnShow : true,
+                num : 0,
+                leaveData : [],
+                draftsData : [],
+            }   
         },
         mounted(){
             this.types = 'myApply'
             // this.title = location.href.slice(location.href.indexOf('?')+1)
             if(this.types == 'finishAffairs'){
+                this.num = 0;
                 this.title = '已办事宜';
                 this.typeClass = 'header finish_head';
                 this.boxShadow = 'affairs_item finish_shadow';
+                let that = this;
+                this.axios.get('/work/unhandle/list').then(function(res){
+                        res.data.b.data.forEach((item,index) => {
+                            if(item.extend[8].value!=0&&item.extend[8].value!='00')  that.leaveData.push(item.extend)
+                            console.log(that.leaveData)   
+                            that.leaveData.length                    
+                        });
+                 })
+            
                 return
             }
 
             if(this.types == 'unfinishAffairs'){
+                this.num = 1;                
                 this.title = '待办事宜';
                 this.typeClass = 'header unfinish_head';
                 this.boxShadow = 'affairs_item unfinish_shadow';
+                let that = this;
+                this.axios.get('/work/unhandle/list').then(function(res){
+                        res.data.b.data.forEach((item,index) => {
+                            if(item.extend[8].value==0&&item.extend[8].value!='00')  that.leaveData.push(item.extend)     
+                            console.log(that.leaveData)                                                                 
+                        });
+                 })
                 return
             }
 
             if(this.types == 'myApply'){
+                this.num = 2;                                
                 this.title = '我的申请';
                 this.typeClass = 'header myaffairs_head';
-                this.boxShadow = 'affairs_item myaffairs_shadow'
-                return
+                this.boxShadow = 'affairs_item myaffairs_shadow';
+                let that = this;
+                this.axios.get('/work/my/apply/list').then(function(res){
+                        that.leaveData = res.data.b.data
+                            console.log(that.leaveData)   
+                        
+                 })
+                 this.axios.get('/work/apply/draft/list').then(function(res){
+                        that.draftsData = res.data.b.data
+                            console.log(that.leaveData)   
+                        
+                 })
             }
 
         },
@@ -94,16 +152,43 @@
             },
             tabEven(flag){
                 this.btnShow = !this.btnShow
-                if(this.btnShow){
-                    this.title = '草稿箱'
+                if(!this.btnShow){
+                    this.title = '草稿箱';
+                    this.num = 3;
                     return
                 }
-                this.title = '我的申请'
-            }
+                this.num = 2;
+                this.title = '我的申请';
+            },
         },
 
         computer : {
 
+        },
+        filters : {
+            timeFormat : function(value) {
+                let odate = value.split(" ")[0];
+                let time = new Date() - new Date(odate);
+                time = parseInt( time/(24*60*60*1000))
+
+                if(!time){
+                    return value.slice(-8,-4)
+                }else if(time == 1){
+                    return '昨天'
+                }else{ 
+                    return value.slice(0,10)
+                }
+            },
+            
+            slice : function(value){
+            //     value = value.slice(0,-3)
+                
+            //    let str = value.split(' ')
+
+            //     return  str[0]+' '+str[1]
+
+            return value.slice(0,-3)
+            }
         }
         
     }
@@ -256,7 +341,7 @@
        text-align center;
        color #999;
        padding 0 0.15rem;
-       margin-bottom:0.8rem;
+       margin-bottom:0.3rem;
        margin-top:0.15rem;
 
        span{
@@ -269,6 +354,10 @@
            margin auto;
            background-color #f5f5f5;
        }
+    }
+
+    .marginBot{
+        margin-bottom 0.8rem;
     }
 
     .footLine:after{

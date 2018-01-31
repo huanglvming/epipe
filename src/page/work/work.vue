@@ -536,12 +536,12 @@
             if(obj.type == 1 || obj.type == 2){  //待审核，跳转到待审核页面
               this.$router.push({path:'/pending'});
             }else if(obj.type == 3){  //无组织，跳转到申请加入组织页面
-              // this.$router.push({path:'/Nologin'});
+              this.$router.push({path:'/Nologin'});
             }
             this.mask = false;  //有组织，展示工作台
           }else{
             this.mask = false;
-            // this.$router.push({path:'/Nologin'});
+            this.$router.push({path:'/Nologin'});
           }
         }).catch(err =>{
           this.mask = false;

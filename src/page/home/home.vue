@@ -42,6 +42,40 @@
           </div>
           <div>招投标</div>
         </li>
+        <li @click="go_tender">
+          <div style="background: -webkit-linear-gradient(top, #fac370 0%,#ffa51e 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-hangqing"></use>
+            </svg>
+          </div>
+          <div>行情</div>
+        </li>
+        </ul>
+        <ul class="home_nav_top">
+        <li @click="go_tender">
+          <div style="background: -webkit-linear-gradient(top, #45e3b5 0%,#22be8e 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-fangtan"></use>
+            </svg>
+          </div>
+          <div>访谈</div>
+        </li>
+        <li @click="go_tender">
+          <div style="background: -webkit-linear-gradient(top, #51cdfc 0%,#27b1eb 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-zhuanjiaku"></use>
+            </svg>
+          </div>
+          <div>专家库</div>
+        </li>
+        <li @click="go_tender">
+          <div style="background: -webkit-linear-gradient(top, #fd535b 0%,#fc757e 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-zhuanyejigou"></use>
+            </svg>
+          </div>
+          <div>专业机构</div>
+        </li>
       </ul>
       <div class="home_title_con1">
         <div></div>
@@ -348,7 +382,7 @@
   }
 
   .home_nav_top li {
-    flex: 1;
+    width:25%;
     font-size: 0.14rem;
     align-items: center;
     display: flex;

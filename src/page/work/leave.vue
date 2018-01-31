@@ -6,19 +6,18 @@
         bgcolor
         title="请假" 
          ></TopHead>
-        <div class="content">
-        
-            <div class="styles">
+        <div class="content">          
+            <router-link :to="{ path:'/option', query: {indexs:leaveIndex}}" class="styles" tag="div">
                 <div class="items">
                     请假类型
                     <p>
-                        <span class="nullValue">请选择</span>
+                        <span class="nullValue">{{leaveName}}</span>
                     <svg class="icon icon-back" aria-hidden="false">
                             <use xlink:href="#icon-right"></use>
                     </svg>
                     </p>
                 </div>
-            </div>
+           </router-link>
             <div class="styles inp_ul">
                 <div class="items">
                     开始时间
@@ -103,7 +102,8 @@ export default {
         return {
             work_value :'',
             chosed_list: [], //抄送人
-
+            leaveIndex : '2', //假期类型
+            leaveName : '请选择',
         }
     },
     components: {
@@ -112,8 +112,6 @@ export default {
       TopHead
     },
     methods : {
-
-
         save_btn(){ //保存草稿
             console.log('保存')
         },
@@ -121,7 +119,21 @@ export default {
             console.log('提交')
         },
 
-    }
+    },
+    created(){
+        eventBus.$on('leaveType', res =>{
+            console.log(res);
+            this.leaveIndex = res.index;
+            this.leaveName = res.name;
+         
+        });
+    },
+    mounted : function(){
+        let that = this;
+    },
+     beforeDestroy() {
+      eventBus.$off('leaveType');
+    },
 }
 </script>
 

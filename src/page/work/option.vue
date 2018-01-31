@@ -7,13 +7,12 @@
         bgcolor='#fd545c'
         title='请假类型'
         ></TopHead>
-        
         <div class="main">
             <ul class="list">
-                <li v-for="(item,index) in 5" @click="indexs=index">
+                <li v-for="(item,index) in data" @click="clickEvent(index,item.name)">
                     <div class="li">
                         <span>
-                            病假
+                        {{item.name}} 
                         </span>
                         <svg class="icon icon-back" aria-hidden="false" v-if="index==indexs">
                             <use xlink:href="#icon-xuanzhong1"></use>
@@ -32,13 +31,40 @@ export default {
         data(){
             return{
             indexs : -1,
+            data : [],
+            t_index: 0,
+            t_name: "",
          }
         },
-        props :['data'],
-
         components : {
             TopHead
-        }
+        },
+        methods : {          
+            clickEvent(index,name){
+                this.t_index = index;
+                this.t_name = name;
+                window.history.back(-1);
+            },
+            updata(){
+                let vm = this;
+                eventBus.$emit('leaveType',{
+                    index: vm.t_index,
+                    name: vm.t_name
+                });
+            }
+            
+        },
+        mounted : function(){
+          this.indexs = this.$route.query.indexs
+          let that = this;
+           this.axios.get('/work/leave/type/list').then(function(res){
+                if(res.data.h.code =200 ) that.data = res.data.b.data;
+            })
+        },
+        beforeDestroy() {
+            this.updata();
+        },
+
 }
 </script>
 
