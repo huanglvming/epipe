@@ -102,7 +102,7 @@
           </p>
           <p class="line">
             <span class="line-title">地址:</span>
-            <span class="line-content">{{orderInvoice.invRegAddr}}{{orderInvoice.invGotoAddr}}</span>
+            <span class="line-content">{{orderInvoice.invRecProvince}}{{orderInvoice.invGotoAddr}}</span>
           </p>
         </div>
       </div>

@@ -207,7 +207,7 @@
           invRegBaccount:this.BankAccount,
           invRecName:this.ReceiveName,
           invRecMobphone:this.ReceivePhone,
-          invRecProvince:this.area,
+          invRecProvince:this.areaObj.proviceId+","+this.areaObj.cityId+","+this.areaObj.areaId,
           invGotoAddr:this.DetailAddress,
         })).then(res=>{
           console.log(res);
@@ -244,9 +244,9 @@
         invId:this.invId
       })).then(res=>{
         console.log('已保存发票信息',res);
-        let dataB=res.data.b;
+        let dataB=res.data.b.invoice;
         if(res.data.h.code===200){
-          if(dataB.invState==1 && dataB.invRecProvince==''){
+          if(dataB.invState==1 && dataB.invRegBname==''){
             this.NorInvoiceFun();
             this.ComInvoiceHeaFun();
             this.InvHeacon=dataB.invTitle;
@@ -259,7 +259,7 @@
             this.InvHeacon=dataB.invTitle;
             this.InvoiceCon=dataB.invContent;
             this.InvoiceConIndex=this.InvoiceConArr.indexOf(this.InvoiceCon);
-          }else if(dataB.invState==1 && dataB.invRecProvince!=''){
+          }else if(dataB.invState==1 && dataB.invRegBname!=''){
             this.SpeInvoiceFun();
             this.InvoiceCon=dataB.invContent;
             this.CompanyName=dataB.invCompany;
@@ -270,8 +270,14 @@
             this.BankAccount=dataB.invRegBaccount;
             this.ReceiveName=dataB.invRecName;
             this.ReceivePhone=dataB.invRecMobphone;
-            this.area=dataB.invRecProvince;
+            this.area=res.data.b.province;
             this.DetailAddress=dataB.invGotoAddr;
+            this.areaObj.provice = res.data.b.province.split(" ")[0];
+            this.areaObj.city = res.data.b.province.split(" ")[1];
+            this.areaObj.area = res.data.b.province.split(" ")[2];
+            this.areaObj.proviceId = res.data.b.provinceIds.split(",")[0];
+            this.areaObj.cityId = res.data.b.provinceIds.split(",")[1];
+            this.areaObj.areaId = res.data.b.provinceIds.split(",")[2];
           }
         }
       })

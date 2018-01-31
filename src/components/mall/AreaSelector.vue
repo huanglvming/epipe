@@ -100,7 +100,7 @@
         this.areaShow = false;
         this.proviceShow = true;
         this.areaObj.area = this.areaList[index].areaName;
-        this.areaObj.areaId = this.cityList[index].areaId;
+        this.areaObj.areaId = this.areaList[index].areaId;
         this.$emit('selectArea',this.areaObj);
         this.areaObj = {};
       },
