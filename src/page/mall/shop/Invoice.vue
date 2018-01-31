@@ -101,6 +101,8 @@
         this.SpeInvoiceSel=false;
         this.InvoiceType='不开发票';
         this.invState=0;
+        this.InvoiceCon='';
+        this.InvHeacon='';
       },
       //普通发票
       NorInvoiceFun(){

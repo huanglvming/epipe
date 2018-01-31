@@ -71,6 +71,7 @@
     -webkit-box-align: center;
     -ms-flex-align: center;
     align-items: center;
+    width 1.2rem;
     img{
       width: 1.1rem;
       /*height: 1.1rem;*/
@@ -93,6 +94,7 @@
     height: 1rem;
     padding: 0.1rem 0;
     padding-right: 0.1rem;
+    width calc(100% - 1.3rem);
     &::after{
       content: "";
       position: absolute;

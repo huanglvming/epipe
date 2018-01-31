@@ -119,14 +119,19 @@
             if(res.data.b){
               localStorage.setItem("setInvoiceId",res.data.b.invId);
               let dataInvoice=res.data.b;
-              this.openInv=1;
               this.invoiceId=dataInvoice.invId;
               if(dataInvoice.invState==2){
                 this.invoiceType='普通发票 个人';
+                this.openInv=1;
               }else if(dataInvoice.invState==1 && dataInvoice.invRecProvince==''){
                 this.invoiceType='普通发票 公司';
+                this.openInv=1;
               }else if(dataInvoice.invState==1 && dataInvoice.invRecProvince!=''){
                 this.invoiceType='增值税专用发票';
+                this.openInv=1;
+              }else if(dataInvoice.invState==''){
+                this.openInv=0;
+                this.invoiceType='不开发票';
               }
             }else{
               localStorage.setItem("setInvoiceId",'');

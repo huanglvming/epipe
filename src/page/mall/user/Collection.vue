@@ -200,6 +200,7 @@
     display flex;
     justify-content space-between;
     align-items center;
+    width 1.2rem;
     .iconfont{
       margin-right 0.1rem;
       font-size 0.2rem;
@@ -221,6 +222,7 @@
     max-width 2.45rem;
     padding: 0.1rem 0;
     padding-right 0.1rem;
+    width calc(100% - 1.3rem);
     &::after{
       content: "";
       position absolute;
