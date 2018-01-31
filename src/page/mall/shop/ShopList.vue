@@ -22,8 +22,8 @@
               <section class="price"><i>￥</i>{{item.goodsPrice}}</section>
               <section class="num">
                 <span @click.stop.prevent="reduce(index1,index)"><i class="iconfont icon-jian"></i></span>
-                <span><input type="text" v-model="item.goodsNum" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
-                 onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" @blur="blur(index1,index,Number(item.goodsNum))"></span>
+                <span><input type="text" v-model="item.goodsNum" @click.stop.prevent="" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}"
+                 onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" @blur.stop.prevent="blur(index1,index,Number(item.goodsNum))"></span>
                 <span @click.stop.prevent="add(index1,index)"><i class="iconfont icon-jia1"></i></span>
               </section>
             </section>
