@@ -5,7 +5,7 @@ Vue.use(Router)
 const Home = r => require.ensure([], () => r(require('@/page/home/home.vue')), 'group-foo')
 const Work = r => require.ensure([], () => r(require('@/page/work/work.vue')), 'group-foo')
 const Find = r => require.ensure([], () => r(require('@/page/find/find.vue')), 'group-foo')
-const User = r => require.ensure([], () => r(require('@/page/user/user.vue')), 'group-foo')
+const User = r => require.ensure([], () => r(require('@/page/user/User.vue')), 'group-foo')
 const Record = r => require.ensure([], () => r(require('@/page/work/record.vue')), 'group-foo')
 const Total = r => require.ensure([], () => r(require('@/page/work/total.vue')), 'group-foo')
 const Exhibition = r => require.ensure([], () => r(require('@/page/home/exhibition.vue')), 'group-foo')
@@ -55,6 +55,34 @@ const DetailsList = r => require.ensure([], () => r(require('@/page/work/MES/equ
 const EnergyMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/EnergyMonitoring.vue')), 'group-mes')
 const TrendMonitoring = r => require.ensure([], () => r(require('@/page/work/MES/energymonitor/TrendMonitoring.vue')), 'group-mes')
 
+const AccountLogin = r => require.ensure([], () => r(require('@/page/mall/login/AccountLogin.vue')), 'group-mall')
+const VerificationLogin = r => require.ensure([], () => r(require('@/page/mall/login/VerificationLogin.vue')), 'group-mall')
+const ForgetPassword = r => require.ensure([], () => r(require('@/page/mall/login/ForgetPassword.vue')), 'group-mall')
+const Register = r => require.ensure([], () => r(require('@/page/mall/login/Register.vue')), 'group-mall')
+const MallAgreement = r => require.ensure([], () => r(require('@/page/mall/login/MallAgreement.vue')), 'group-mall')
+const MallHome = r => require.ensure([], () => r(require('@/page/mall/home/MallHome.vue')), 'group-mall')
+const GoodsClassification = r => require.ensure([], () => r(require('@/page/mall/class/GoodsClassification.vue')), 'group-mall')
+const ClassSearch = r => require.ensure([], () => r(require('@/page/mall/class/ClassSearch.vue')), 'group-mall')
+const GoodsDetail = r => require.ensure([], () => r(require('@/page/mall/goods/GoodsDetail.vue')), 'group-mall')
+const TestDetail = r => require.ensure([], () => r(require('@/page/mall/goods/TestDetail.vue')), 'group-mall')
+const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
+const ShopList = r => require.ensure([], () => r(require('@/page/mall/shop/ShopList.vue')), 'group-mall')
+const ConfirmOrder = r => require.ensure([], () => r(require('@/page/mall/shop/ConfirmOrder.vue')), 'group-mall')
+const ReceivingAdress = r => require.ensure([], () => r(require('@/page/mall/shop/ReceivingAdress.vue')), 'group-mall')
+const Invoice = r => require.ensure([], () => r(require('@/page/mall/shop/Invoice.vue')), 'group-mall')
+const SpecialInvoice = r => require.ensure([], () => r(require('@/page/mall/shop/SpecialInvoice.vue')), 'group-mall')
+const ManageAddress = r => require.ensure([], () => r(require('@/page/mall/shop/ManageAddress.vue')), 'group-mall')
+
+const MallUser = r => require.ensure([], () => r(require('@/page/mall/user/User.vue')), 'mall-user')
+const MallSetting = r => require.ensure([], () => r(require('@/page/mall/user/Setting.vue')), 'mall-user')
+const MallAddress = r => require.ensure([], () => r(require('@/page/mall/user/Address.vue')), 'mall-user')
+const MallPassword = r => require.ensure([], () => r(require('@/page/mall/user/Password.vue')), 'mall-user')
+const MallUserInfo = r => require.ensure([], () => r(require('@/page/mall/user/Info.vue')), 'mall-user')
+const MallAddressList = r => require.ensure([], () => r(require('@/page/mall/user/AddressList.vue')), 'mall-user')
+const MallCollection = r => require.ensure([], () => r(require('@/page/mall/user/Collection.vue')), 'mall-user')
+const MyOrder = r => require.ensure([], () => r(require('@/page/mall/user/MyOrder.vue')), 'mall-user')
+const OrderDetails = r => require.ensure([], () => r(require('@/page/mall/user/OrderDetails.vue')), 'mall-user')
+const RecentHistory = r => require.ensure([], () => r(require('@/page/mall/user/RecentHistory.vue')), 'mall-user')
 
 export default new Router({
   routes: [
@@ -265,6 +293,115 @@ export default new Router({
     {
       path: '/trendmonitoring',  //趋势监控
       component: TrendMonitoring,
+    },
+    //下面为商城部分
+    {
+      path: '/accountlogin',  //账号密码登录
+      component: AccountLogin,
+    },
+    {
+      path: '/verificationlogin',  //动态密码登录
+      component: VerificationLogin,
+    },
+    {
+      path: '/forgetpassword',  //忘记密码
+      component: ForgetPassword,
+    },
+    {
+      path: '/register',  //注册
+      component: Register,
+    },
+    {
+      path: '/mallagreement',  //注册协议
+      component: MallAgreement,
+    },
+    {
+      path: '/mallhome',  //商城首页
+      component: MallHome,
+    },
+    {
+      path: '/goodsclassification',  //分类
+      component: GoodsClassification,
+    },
+    {
+      path: '/classsearch',  //分类搜索
+      component: ClassSearch,
+    },
+    {
+      path: '/goodsdetail',  //商品详情
+      component: GoodsDetail,
+    },
+    {
+      path: '/testdetail',  //商品详情测试
+      component: TestDetail,
+    },
+    {
+      path: '/mallsearch',  //商城搜索
+      component: MallSearch,
+    },
+    {
+      path: '/shoplist',  //购物车列表
+      component: ShopList,
+    },
+    {
+      path: '/malluser',  //商城个人中心
+      component: MallUser,
+    },
+    {
+      path: '/mallsetting',  //商城设置
+      component: MallSetting,
+    },
+    {
+      path: '/malladdress',  //商城收货地址设置
+      component: MallAddress,
+    },
+    {
+      path: '/mallpassword',  //商城修改密码
+      component: MallPassword,
+    },
+    {
+      path: '/malluserinfo',  //商城个人信息
+      component: MallUserInfo,
+    },
+    {
+      path: '/malladdresslist',  //商城地址列表
+      component: MallAddressList,
+    },
+    {
+      path: '/mallcollection',  //商城商品收藏
+      component: MallCollection,
+    },
+    {
+      path: '/confirmorder',  //确认订单
+      component: ConfirmOrder,
+    },
+    {
+      path: '/receivingadress',  //收货地址
+      component: ReceivingAdress,
+    },
+    {
+      path: '/invoice',  //发票
+      component: Invoice,
+    },
+    {
+      path: '/specialinvoice',  //专用发票
+      component: SpecialInvoice,
+    },
+    {
+      path: '/myorder',  //我的订单
+      component: MyOrder,
+    },
+    {
+      path: '/manageaddress',  //专用发票
+      component: ManageAddress,
+    },
+    {
+      path: '/orderdetails',  //订单详情
+      component: OrderDetails,
+    },
+    {
+      path: '/recenthistory',  //最近浏览
+      component: RecentHistory,
     },
   ]
 })

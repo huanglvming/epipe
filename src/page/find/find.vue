@@ -47,7 +47,7 @@
     <div @click="go_newsdetail(supplyData)">
       <ul class="tender_div1" v-for="(item,index) in supplyData" :key="index">
         <li v-html="item.title" class="item-title"></li>
-        <li class="simple-ellipsis" v-html="item.content"></li>
+        <li class="simple-ellipsis">{{item.content | escape2Html}}</li>
       </ul>
     </div>
 
@@ -70,7 +70,7 @@
     <div @click="go_newsdetail(tenderData)">
       <ul class="tender_div1" v-for="(item,index) in tenderData" :key="index">
         <li v-html="item.title" class="item-title"></li>
-        <li class="simple-ellipsis" v-html="item.content"></li>
+        <li class="simple-ellipsis">{{item.content | escape2Html}}</li>
       </ul>
     </div>
   </section>
@@ -87,7 +87,8 @@
         exhibitionData: {},
         supplyData: [],
         tenderData: [],
-        loading: false
+        loading: false,
+        test: `<div><span style="background-color: transparent;">　　</span><span style="background-color: transparent;">发布时间：2017.12.14</span></div><div><span style="background-color: transparent;">&nbsp; &nbsp; &nbsp; &nbsp; 所在地：浙江杭州</span><br></div><div><span style="background-color: transparent;">&nbsp; &nbsp; &nbsp; &nbsp; 有效期：360天</span><br></div><div><br></div><div>　　浙江华丰新材料股份有限公司</div><div>　　联系人：郑珊红（来电时请说是从中国管道商务网看到我的）</div><div>　　电话：86-571-63328628</div><div>　　手机：15968855076</div><div>　　传真：86-571-63331088</div><div>　　地址：富阳市富春街道金秋大道37号</div><div>　　邮编：311400</div><div>　　E-mail：kaifabu@zjhfgy.com</div><div><br></div><div>　　详细说明：</div><div>　　玻璃纤维增强树脂混凝土-沉井施工法筒体</div><div>　　产品介绍</div><div>　　以玻璃纤维增强热固性树脂为内外层，以颗粒石英砂增强热固性树脂为中间层，采用振动工艺方法制成。</div><div>　　管道的直径范围为DN1200-DN4000，管道每根2米，采用经喷涂处理的不锈钢套筒连接。</div><div>　　产品代替钢筋水泥沉井、玻璃钢预制泵站，用于海绵城市雨水收集、城市污水收集一体预制泵站或保护筒体。</div><div><br></div><div>　　产品特点</div><div>　　1、耐腐蚀性优良，无需任何防腐，使用寿命长。</div><div>　　2、轻质高强度：是传统预制钢筋混凝土沉井重量的1/2，抗压强度高出2倍多；</div><div>　　3、密封性好：内外结构层采用玻纤与树脂增强，内外表面不会出现如钢筋水泥沉井那样细小裂纹；</div><div>　　4、无需大开挖，无需基坑围护，作业面积小，施工安全度高。</div><div>　　5、施工快捷，周期短，如4米口径，10米深，施工周期3-5天。而水泥混凝土沉井施工2-3个月。</div>`,
       }
     },
     components: {},
@@ -140,11 +141,16 @@
             that.exhibitionData = exhibitionData.data.b.data[0];
           }
           if (supplyData.data.b) {
-            supplyData.data.b.data[0].content = Util.HTMLDecode(supplyData.data.b.data[0].content).replace(/<[^>]+>/g, "").replace(/\s/g, "")
+            supplyData.data.b.data.map(function(item,index){
+              item.content = Util.HTMLDecode(item.content).replace(/<[^>]+>/g, "").replace(/\s/g, "");
+            });
             that.supplyData = supplyData.data.b.data
           }
           if (tenderData.data.b) {
-            tenderData.data.b.data[0].content = Util.HTMLDecode(tenderData.data.b.data[0].content).replace(/<[^>]+>/g, "").replace(/\s/g, "")
+//            tenderData.data.b.data[0].content = Util.HTMLDecode(tenderData.data.b.data[0].content).replace(/<[^>]+>/g, "").replace(/\s/g, "")
+            tenderData.data.b.data.map(function(item,index){
+              item.content = Util.HTMLDecode(item.content).replace(/<[^>]+>/g, "").replace(/\s/g, "");
+            });
             that.tenderData = tenderData.data.b.data;
           }
         }

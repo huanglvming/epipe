@@ -8,7 +8,6 @@ axios.defaults.timeout = 5000;
 
 const dev = 'http://192.168.3.166:8280/member/v1'; //测试
 const product = "http://app.epipe.cn:18080/member/v1"; //正式
-// axios.defaults.baseURL = 'http://192.168.3.29:8280/member/v1';  //研发
 axios.defaults.baseURL = window.location.href.indexOf("app.epipe.cn")>0 ? product : dev;
 
 function getCookie(name) {
@@ -31,8 +30,7 @@ axios.interceptors.request.use(
       window.localStorage.setItem("auth_token",getCookie("auth_token"));
     }else{
       if(!config.headers.auth_token){
-        // config.headers.auth_token = window.localStorage.auth_token;
-        config.headers.auth_token = "bc0b43b3-c9b2-49a5-b1c9-72c029580437";
+        config.headers.auth_token = window.location.href.indexOf("app.epipe.cn")>0 ? window.localStorage.auth_token : "b2e18163-9b2b-45f5-a1ef-8e72eef808ff";
       }
     }
     return config;
@@ -43,10 +41,15 @@ axios.interceptors.request.use(
 
 // http响应拦截器
 axios.interceptors.response.use(data => {// 如果code是10  就是token过期了
-  if (data.data.h.code == 10) {
-    window.location.href = "epipe://?&mark=login_out"
+  try{
+    if (data.data.h.code == 10) {
+      window.location.href = "epipe://?&mark=login_out"
+    }
+  }catch (err){
+    console.log(err);
+  }finally{
+    return data
   }
-  return data
 }, error => {
   return Promise.reject(error)
 })

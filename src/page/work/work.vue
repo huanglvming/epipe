@@ -13,7 +13,9 @@
   }
   .tab_work_2con {
     display: flex;
+    display: -webkit-flex;
     flex-direction: row;
+    -webkit-flex-direction: row;
     height: 0.53rem;
     align-items: center;
   }
@@ -30,20 +32,20 @@
   }
   .tab_work_3con {
     display: flex;
+    display: -webkit-flex;
     flex-direction: row;
+    -webkit-flex-direction: row;
     flex-wrap: wrap;
+    -webkit-flex-wrap: wrap;
     width: 100%;
   }
   .tab_work_3con li{
     width: 25%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding-bottom 0.2rem;
     padding-top 0.1rem;
     margin-top -0.15rem;
     -webkit-tap-highlight-color: transpranet;
+    text-align center;
   }
   .tab_work_3con li:nth-child(n + 5){
     margin-top 0;
@@ -84,7 +86,9 @@
   }
   .broadcast{
     display: flex;
+    display: -webkit-flex;
     align-items center;
+    -webkit-align-items center;
     padding: 0.15rem;
     margin-top: -0.3rem;
     box-shadow: 0 0 20px rgba(0,143,87,0.15);
@@ -180,25 +184,6 @@
           </div>
         </div>
       </div>
-      <!--<div class="tab_work_con">-->
-        <!--<ul class="tab_work_2con">-->
-          <!--<li></li>-->
-          <!--<li>智能报表</li>-->
-        <!--</ul>-->
-        <!--<ul class="tab_work_3con">-->
-          <!--<li @click="go_daily">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-qiyeribao"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div>企业日报</div>-->
-          <!--</li>-->
-          <!--<li></li>-->
-          <!--<li></li>-->
-          <!--<li></li>-->
-        <!--</ul>-->
-      <!--</div>-->
       <div class="tab_work_con">
         <ul class="tab_work_2con">
           <li></li>
@@ -480,12 +465,12 @@
             if(obj.type == 1 || obj.type == 2){  //待审核，跳转到待审核页面
               this.$router.push({path:'/pending'});
             }else if(obj.type == 3){  //无组织，跳转到申请加入组织页面
-              this.$router.push({path:'/Nologin'});
+               this.$router.push({path:'/Nologin'});
             }
             this.mask = false;  //有组织，展示工作台
           }else{
             this.mask = false;
-            this.$router.push({path:'/Nologin'});
+             this.$router.push({path:'/Nologin'});
           }
         }).catch(err =>{
           this.mask = false;
@@ -495,13 +480,16 @@
       },
       /*获取用户信息*/
       getUserInfo(){
-        const userToken = getCookie("auth_token") ? getCookie("auth_token") : "bc0b43b3-c9b2-49a5-b1c9-72c029580437";
-        this.axios.get('/user/info/by/token',{params: {token: userToken}}).then(res =>{
-          console.log("用户信息",res);
-          if(res.data.h.code === 200){
-            this.getFactory(res.data.b.centerGroupId);
-          }
-        })
+        //const userToken = getCookie("auth_token") ? getCookie("auth_token") : "bc0b43b3-c9b2-49a5-b1c9-72c029580437";
+        const userToken = getCookie("auth_token");
+        if(userToken){
+          this.axios.get('/user/info/by/token',{params: {token: userToken}}).then(res =>{
+            console.log("用户信息",res);
+            if(res.data.h.code === 200 && res.data.b.centerGroupId){
+              this.getFactory(res.data.b.centerGroupId);
+            }
+          });
+        }
       },
       /*获取工厂ID*/
       getFactory(id){
