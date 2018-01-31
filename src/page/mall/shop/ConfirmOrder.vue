@@ -96,6 +96,7 @@
         })
       },
       submitPay(){
+        //alert(this.openInv);
         this.axios.post(this.baseURL.mall + "/m/my/getCode"+this.Service.queryString({
           token:this.mallToken.getToken(),
           cartIds:this.cartIds.join(','),
