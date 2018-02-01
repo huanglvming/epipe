@@ -1,6 +1,12 @@
 <template>
     <section>
-        <div class="item">
+        <TopHead
+        bgcolor='#fc535b'
+        title='专业机构'
+        v-on:history_back="history_back"
+        native='native'
+         ></TopHead>
+        <div class="item topMargin">
             <div class="item-title">
                 <h2>政府部门</h2>
                 <router-link :to="{path:'/agenciesList',query:{type: '政府部门'}}" class="more" tag="div">
@@ -10,7 +16,7 @@
                 </router-link>
             </div>
             <div class="item-content">
-                <div class="cont"  v-for="(item,index) in governmentArr" v-if="index<2">
+                <div class="cont"  v-for="(item,index) in governmentArr" v-if="index<2" @click="go_newsdetail(item)">
                     <div class="img-show">
                        
                         <img :src="item.coverImgUrl"/>
@@ -38,7 +44,7 @@
                 </router-link>
             </div>
             <div class="item-content">
-                <div class="cont" v-for="(item,index) in cientificArr" v-if="index<2">
+                <div class="cont" v-for="(item,index) in cientificArr" v-if="index<2" @click="go_newsdetail(item)">
                     <div class="img-show">
                         <img :src="item.coverImgUrl"/>
                     </div>
@@ -58,32 +64,42 @@
 </template>
 
 <script>
+import TopHead  from '../../components/topheader.vue'  //header导航栏
 export default {
     data(){
         return{
         cientificArr : [],
         governmentArr : [],
      }}, 
-    methods :{
-
-
-    },
+    methods:{
+            go_newsdetail(item){
+            let obj = {};
+            obj.title = item.title;
+            obj.imageUrl = item.coverImgUrl;
+            obj.text = item.summary;
+            let data = JSON.stringify(obj)
+            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+            },
+        },
     mounted(){
         let  that = this;
-        this.axios.get('http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=政府部门',)
+        this.axios.get(this.Service.resource + '政府部门',)
             .then(function(res){
                   if(res.data.h.code == 200){
                     that.governmentArr = res.data.b;
                   }  
             })
 
-            this.axios.get('http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=科研机构',)
+            this.axios.get(this.Service.resource + '科研机构',)
             .then(function(res){
                   if(res.data.h.code == 200){               
                     that.cientificArr = res.data.b;
                   }  
             })
 
+    },
+     components : {
+            TopHead
     }
     
 }
@@ -182,5 +198,8 @@ export default {
             background-color #e6e6e6;
         }
     }
+.topMargin{
+    margin-top 0.59rem;
+}
 
 </style>

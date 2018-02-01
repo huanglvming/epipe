@@ -46,7 +46,7 @@
     data () {
       return {}
     },
-    props: ["title", "native", "mark", "bgcolor", "is_button",'show'],
+    props: ["title", "native", "mark", "bgcolor", "is_button",'show','bgColor'],
     methods: {
       history_back: function () {
         if (this.mark == "mark") {
@@ -66,7 +66,7 @@
       }
     },
     mounted(){
-      console.log(this.show)
+      // console.log(this.show)
     }
   }
 </script>

@@ -1,21 +1,21 @@
 <template>
     <section>
         <TopHead
-        bgcolor='#fc435b'
+        bgcolor='#fc535b'
         :title='this.$route.query.type'
          ></TopHead>
         <div class="item-content">
-                <div class="cont"  v-for="item in dataArr">
+                <div class="cont"  v-for="item in dataArr" @click="go_newsdetail(item)">
                     <div class="img-show">
                        
                         <img :src="item.coverImgUrl"/>
                     </div>
                     <div class="item-text">
                         <h2 v-html="item.title"></h2>
-                        <article v-html="item.summary">
-                        </article>
+                        <article v-html="item.summary"></article>
                     </div>
                 </div>
+                <div class="no-more">暂无更多加载</div>
         </div>
 
     </section>
@@ -28,10 +28,20 @@ export default {
             return{
               dataArr : [],
         }},
+        methods:{
+            go_newsdetail(item){
+            let obj = {};
+            obj.title = item.title;
+            obj.imageUrl = item.coverImgUrl;
+            obj.text = item.summary;
+            let data = JSON.stringify(obj)
+            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+            }
+        },
         mounted(){
         let  that = this;
         let value = this.$route.query.type;
-        this.axios.get('http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes='+value)
+        this.axios.get(this.Service.resource + value)
             .then(function(res){
                   if(res.data.h.code == 200){
                     that.dataArr = res.data.b;
@@ -62,6 +72,7 @@ export default {
         box-shadow 0 0 0.2rem rgba(252,83,91,0.1);   
         border-radius  4px;
     }
+
 
     .item-text{
         width 2.25rem;
@@ -95,6 +106,13 @@ export default {
             height 100%;
             border-radius 4px;
         }
+    }
+
+    .no-more{
+        text-align center;
+        color #666;
+        heigh 0.2rem;
+        line-height 0.2rem;
     }
 
 </style>

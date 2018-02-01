@@ -42,7 +42,7 @@
           </div>
           <div>招投标</div>
         </li>
-        <li @click="go_tender">
+        <li @click="go_market">
           <div style="background: -webkit-linear-gradient(top, #fac370 0%,#ffa51e 100%);">
             <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
               <use xlink:href="#icon-hangqing"></use>
@@ -52,7 +52,7 @@
         </li>
         </ul>
         <ul class="home_nav_top">
-        <li @click="go_tender">
+        <li @click="go_interview">
           <div style="background: -webkit-linear-gradient(top, #45e3b5 0%,#22be8e 100%);">
             <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
               <use xlink:href="#icon-fangtan"></use>
@@ -60,7 +60,7 @@
           </div>
           <div>访谈</div>
         </li>
-        <li @click="go_tender">
+        <li @click="go_expert">
           <div style="background: -webkit-linear-gradient(top, #51cdfc 0%,#27b1eb 100%);">
             <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
               <use xlink:href="#icon-zhuanjiaku"></use>
@@ -68,7 +68,7 @@
           </div>
           <div>专家库</div>
         </li>
-        <li @click="go_tender">
+        <li @click="go_specialistAgencies">
           <div style="background: -webkit-linear-gradient(top, #fd535b 0%,#fc757e 100%);">
             <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
               <use xlink:href="#icon-zhuanyejigou"></use>
@@ -175,6 +175,18 @@
       go_tender(){  //首页跳招投标
         window.location.href = "epipe://?&mark=tender"
       },
+      go_market(){ //首页跳行情
+        window.location.href = "epipe://?&mark=market"
+      },
+      go_interview(){ //首页跳访谈
+        window.location.href = "epipe://?&mark=interview"
+      },
+      go_expert(){ //首页跳专家库
+        window.location.href = "epipe://?&mark=expert"
+      },
+      go_specialistAgencies(){ //首页跳专业机构
+        window.location.href = "epipe://?&mark=specialistAgencies"
+      },
       go_newsdetail(item){
         if (item.h5Uri != "" && item.h5Uri) {
           let title = Util.Title_format(item.title)
@@ -195,7 +207,12 @@
       },
       go_news(item){
         let title = Util.Title_format(item.resTitle);
-        window.location.href = `epipe://?&mark=newsdetail&title=${title}&_id=${item.resId}TTTTTT`
+        let obj = {};
+        obj.title = title;
+        obj.imageUrl = item.coverImgUrl;
+        obj.text = Util.HTMLDecode(item.summary);
+        let data = JSON.stringify(obj)
+        window.location.href = `epipe://?&mark=newsdetail&title=${title}&_id=${item.resId}TTTTTT`+'&data='+data;
       },
       transitionend (current) {
         this.currentSlide = current;
@@ -207,6 +224,7 @@
       }
       if (window.localStorage.newsData) {
         this.newsData = JSON.parse(window.localStorage.newsData)
+        console.log(this.newsData)
       }
       /*根据屏幕分辨率设置轮播图大小*/
       const deviceWidth = document.body.clientWidth;

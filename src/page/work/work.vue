@@ -184,67 +184,28 @@
           </div>
         </div>
       </div>
-      <!--<div class="tab_work_con">-->
-        <!--<ul class="tab_work_2con">-->
-          <!--<li></li>-->
-          <!--<li>智能报表</li>-->
-        <!--</ul>-->
-        <!--<ul class="tab_work_3con">-->
-          <!--<li @click="go_daily">-->
-            <!--<div>-->
-              <!--<svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">-->
-                <!--<use xlink:href="#icon-qiyeribao"></use>-->
-              <!--</svg>-->
-            <!--</div>-->
-            <!--<div>企业日报</div>-->
-          <!--</li>-->
-          <!--<li></li>-->
-          <!--<li></li>-->
-          <!--<li></li>-->
-        <!--</ul>-->
-      <!--</div>-->
-      <div class="tab_work_con">
-        <ul class="tab_work_3con first_tab_work_3con">
-          <li @click="go_unfinishAffairs">
-            <div>
-              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
-                <use xlink:href="#icon-daibanshiyi"></use>
-              </svg>
-            </div>
-            <div style="font-size:0.14rem;margin-top: 0.05rem">待办事宜</div>
-          </li> 
-          <li @click="go_finishAffair">
-            <div>
-              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
-                <use xlink:href="#icon-yibanshiyi"></use>
-              </svg>
-            </div>
-            <div style="font-size:0.14rem;margin-top: 0.05rem">已办事宜</div>
-          </li> 
-          <li @click="go_myApply">
-            <div>
-              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
-                <use xlink:href="#icon-wodeshenqing-mian"></use>
-              </svg>
-            </div>
-            <div style="font-size:0.14rem;margin-top: 0.05rem">我的申请</div>
-          </li> 
-          <li @click="go_daily">
-            <div>
-              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
-                <use xlink:href="#icon-qiyeribao"></use>
-              </svg>
-            </div>
-            <div>企业日报</div>
-          </li>
-        </ul>
-      </div>
-      <div class="tab_work_con">
+ 			<div class="tab_work_con">
         <ul class="tab_work_2con">
           <li></li>
           <li>企业管理</li>
         </ul>
         <ul class="tab_work_3con">
+          <li @click="go_Maillist">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-tongxunlu"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">通讯录</div>
+          </li>
+          <li @click="go_Grouplist">
+            <div>
+              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
+                <use xlink:href="#icon-qunzu"></use>
+              </svg>
+            </div>
+            <div style="font-size:0.14rem;margin-top: 0.05rem">群组</div>
+          </li>
           <li @click="go_record">
             <div>
               <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
@@ -261,30 +222,14 @@
             </div>
             <div>外勤</div>
           </li>
-          <li @click="go_leave">
+          <li @click="go_daily">
             <div>
               <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
-                <use xlink:href="#icon-qingjia"></use>
+                <use xlink:href="#icon-qiyeribao"></use>
               </svg>
             </div>
-            <div style="font-size:0.14rem;margin-top: 0.05rem">请假</div>
+            <div>企业日报</div>
           </li>
-          <li @click="go_Grouplist">
-            <div>
-              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
-                <use xlink:href="#icon-qunzu"></use>
-              </svg>
-            </div>
-            <div style="font-size:0.14rem;margin-top: 0.05rem">群组</div>
-          </li>
-          <li @click="go_Maillist">
-            <div>
-              <svg style="width: 0.27rem;height: 0.27rem" class="icon" aria-hidden="false">
-                <use xlink:href="#icon-tongxunlu"></use>
-              </svg>
-            </div>
-            <div style="font-size:0.14rem;margin-top: 0.05rem">通讯录</div>
-          </li>  
         </ul>
       </div>
       <div class="tab_work_con">
@@ -391,6 +336,9 @@
           </li>
         </ul>
       </div>
+    </div>
+  </section>
+      
     </div>
   </section>
 </template>

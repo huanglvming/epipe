@@ -25,8 +25,8 @@ const Util = {
   },
   Title_format: function (str) {  //去除标题里面的乱码
     // return sStr.replace("mdash;", "").replace("&ldquo;", "“").replace("&quot;", "”").replace("%", "%25").replace("+", "%2B").replace(" ", "%20").replace("/", "%2F").replace("?", "%3F").replace("#", "%23").replace("&", "%26").replace("=", "%3D")
-    var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"','ldquo':'"','rdquo':'"','mdash':'_'};
-    return str.replace(/&(lt|gt|nbsp|amp|quot|ldquo|rdquo|mdash);/ig,function(all,t){
+    var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"','ldquo':'"','rdquo':'"','mdash':'_','middot':'·'};
+    return str.replace(/&(lt|gt|nbsp|amp|quot|ldquo|rdquo|mdash|middot);/ig,function(all,t){
       return arrEntities[t]});
   },
   GetPreMonth: function (mydate) {  //前一个月

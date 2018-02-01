@@ -31,7 +31,12 @@
     methods: {
       go_newsdetail(item){
         let title = Util.Title_format(item.title)
-        window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id;
+        let obj = {};
+        obj.title = item.title;
+        obj.imageUrl = item.coverImg;
+        obj.text = item.content.slice(0,40);;
+        let data = JSON.stringify(obj)
+        window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id+'&data='+data;
       }, onInfinite(){
         let that = this;
         //招投标

@@ -1,6 +1,12 @@
 <template>
     <section>
-        <div class="item">
+        <TopHead
+        bgcolor='#26afeb'
+        title='专家库'
+        v-on:history_back="history_back"
+        native='native'
+         ></TopHead>
+        <div class="item topMargin">
             <div class="item-title">
                 <h2>著名专家</h2>
                 <router-link class="more" :to="{path:'/expertList',query:{type: '著名专家'}}" tag="div">
@@ -10,7 +16,7 @@
                 </router-link>
             </div>
             <div class="item-content">
-                <div class="cont" v-for="item in fameArr">
+                <div class="cont" v-for="item in fameArr" @click="go_newsdetail(item)">
                         <img :src="item.coverImgUrl"/>                    
                     <h4>{{item.title}}</h4>
                     <!-- <p>{{item.title}}</p> -->
@@ -27,7 +33,7 @@
                 </router-link>
             </div>
             <div class="item-content">
-                <div class="cont" v-for="item in consultArr">
+                <div class="cont" v-for="item in consultArr" @click="go_newsdetail(item)">
                         <img :src="item.coverImgUrl"/>                    
                     <h4>{{item.title}}</h4>
                     <!-- <p>{{item.title}}</p> -->
@@ -38,6 +44,7 @@
 </template>
 
 <script>
+import TopHead  from '../../components/topheader.vue'  //header导航栏
 export default {
     data(){
         return{
@@ -45,10 +52,20 @@ export default {
             consultArr : [],
         }        
     },
+    methods:{
+            go_newsdetail(item){
+            let obj = {};
+            obj.title = item.title;
+            obj.imageUrl = item.coverImgUrl;
+            obj.text = item.summary;
+            let data = JSON.stringify(obj)
+            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+            },
+        },
     mounted(){
         let that = this;
 
-       this.axios.get('http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=著名专家').then(function(res){
+       this.axios.get( this.Service.resource + '著名专家').then(function(res){
           if(res.data.h.code==200){
               var arr = res.data.b;
               that.fameArr.push(arr[0])
@@ -56,14 +73,17 @@ export default {
           }
        })
 
-       this.axios.get('http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=咨询专家').then(function(res){
+       this.axios.get(this.Service.resource + '咨询专家').then(function(res){
           if(res.data.h.code==200){
               var arr = res.data.b;
               that.consultArr.push(arr[0])
               that.consultArr.push(arr[1])
           }
        })
-    }
+    },
+    components : {
+            TopHead
+        }
 }
 </script>
 
@@ -133,5 +153,9 @@ export default {
             font-size 0.14rem;
             color #999;
         }
+
+    .topMargin{
+        margin-top:0.59rem;
+    }
 
 </style>

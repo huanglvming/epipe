@@ -1,18 +1,19 @@
 <template>
   <section class="main">
-      <div class="item" v-for="value in arrs">
+      <div class="item" v-for="value in arrs" @click="go_newsdetail(value)">
           <h2>{{value.title}}</h2>
           <div class="item_infor">
-              <span class='item_tag'>TAG</span>
               <span>{{value.createDate|time}}</span>
               <span class="spanRight">
                   <svg style="width: 0.2rem;height: 0.14rem" class="icon" aria-hidden="false">
                     <use xlink:href="#icon-yuedu"></use>
-                 </svg>{{value.clicks}}
+                 </svg>{{value.clicks + value.addClicks}}
               </span>
           </div>
       </div>
-
+     <div class="no-more">
+         暂无更多加载
+     </div>
   </section>
 </template>
 
@@ -24,11 +25,22 @@ export default {
             arrs:[],
         }
     },
+    methods:{
+            go_newsdetail(item){
+            let obj = {};
+            obj.title = item.title;
+            obj.imageUrl = item.coverImgUrl;
+            obj.text = item.summary;
+            let data = JSON.stringify(obj)
+            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'&data='+data;
+            }
+        },
     mounted(){
         let that = this;
-        this.axios.get('http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=价格行情',)
+        this.axios.get(this.Service.resource + '价格行情',)
         .then(function(res){
-                if(res.data.h.code == 200){               
+                if(res.data.h.code == 200){          
+                console.log(res.data.b)     
                 that.arrs = res.data.b;
             }  
         })
@@ -37,7 +49,7 @@ export default {
             time : function(value){
                 let date = new Date(value)
                 let year = date.getFullYear();
-                let mon = date.getMonth()+'';
+                let mon = (date.getMonth()+1)+'';
                 let days = date.getDate()+'';
                 mon =  mon.length<2? '0'+mon : mon 
 
@@ -80,6 +92,13 @@ export default {
         font-size 0.15rem;
         color #333;
         line-height 0.24rem;
+    }
+    .no-more{
+        text-align center;
+        color #666;
+        heigh 0.2rem;
+        line-height 0.2rem;
+        padding 0.1rem 0;
     }
 
 </style>

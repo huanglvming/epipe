@@ -6,12 +6,14 @@
          ></TopHead>
     <div class="item">
         <div class="item-content" v-for=" i in 5 ">
-            <div class="cont" v-for="(item,index) in dataArr" v-if="index==(i*2-2)||index==(i*2-1)">
+            <div class="cont" v-for="(item,index) in dataArr" v-if="index==(i*2-2)||index==(i*2-1)" @click="go_newsdetail(item)">
                     <img :src="item.coverImgUrl"/>
                     <h4>{{item.title}}</h4>
             </div>
         </div>
-
+        <div class="no-more">
+            暂无更多加载
+        </div>
     </div>
 </section>
 </template>
@@ -24,10 +26,20 @@
             return{
                 dataArr : [],
         }},
+        methods:{
+            go_newsdetail(item){
+            let obj = {};
+            obj.title = item.title;
+            obj.imageUrl = item.coverImgUrl;
+            obj.text = item.summary;
+            let data = JSON.stringify(obj)
+            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+            }
+        },
         mounted(){
             let value = this.$route.query.type;
             let that = this;
-            this.axios.get('http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes='+value).then(function(res){
+            this.axios.get(this.Service.resource + value).then(function(res){
                 if(res.data.h.code==200){
                     that.dataArr = res.data.b;
                 }
@@ -79,6 +91,12 @@
             overflow: hidden;
             margin-top 0.1rem;
         }
+    }
+    .no-more{
+        text-align center;
+        color #666;
+        heigh 0.2rem;
+        line-height 0.2rem;
     }
 
 </style>
