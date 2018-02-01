@@ -76,14 +76,14 @@
           </div>
           <div>专业机构</div>
         </li>
-        <router-link to="/mallhome" tag="li">
+        <li @click="go_mall">
           <div style="background: -webkit-linear-gradient(top, #fd535b 0%,#fc757e 100%);">
             <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
               <use xlink:href="#icon-zhuanyejigou"></use>
             </svg>
           </div>
           <div>商城</div>
-        </router-link>
+        </li>
       </ul>
       <div class="home_title_con1">
         <div></div>
@@ -221,6 +221,10 @@
         obj.text = Util.HTMLDecode(item.summary);
         let data = JSON.stringify(obj)
         window.location.href = `epipe://?&mark=newsdetail&title=${title}&_id=${item.resId}TTTTTT`+'&data='+data;
+      },
+      /*跳转商城*/
+      go_mall(){
+        window.location.href = `epipe://?&mark=mallhome&title=优商城`;
       },
       transitionend (current) {
         this.currentSlide = current;
