@@ -89,7 +89,7 @@
           if(res.data.h.code==200){
             this.addressList=res.data.b;
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            this.$router.replace("/accountlogin");
           }else{
             this.$toast(res.data.h.msg);
           }
