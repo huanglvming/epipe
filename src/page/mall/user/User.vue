@@ -119,7 +119,7 @@
             this.userInfo = res.data.b;
           }
           if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            this.$router.replace("/accountlogin");
           }
         })
       },

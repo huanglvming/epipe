@@ -103,7 +103,7 @@
           if(res.data.h.code==200){
             this.getCartList();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            this.$router.replace("/accountlogin");
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -126,7 +126,7 @@
           if(res.data.h.code==200){
             this.getCartList();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            this.$router.replace("/accountlogin");
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -150,7 +150,7 @@
           if(res.data.h.code==200){
             this.getCartList();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            this.$router.replace("/accountlogin");
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -174,7 +174,7 @@
             console.log(this.shopList);
             this.imgPrefix=res.data.b.imgPrefix;
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            this.$router.replace("/accountlogin");
           }
         })
       },
