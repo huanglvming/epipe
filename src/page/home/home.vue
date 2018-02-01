@@ -220,6 +220,7 @@
         obj.imageUrl = item.coverImgUrl;
         obj.text = Util.HTMLDecode(item.summary);
         let data = JSON.stringify(obj)
+        console.log(item.resId)
         window.location.href = `epipe://?&mark=newsdetail&title=${title}&_id=${item.resId}TTTTTT`+'&data='+data;
       },
       /*跳转商城*/

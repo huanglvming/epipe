@@ -53,11 +53,11 @@
         _id=_id.replace("TTTTTT",'');
         this.home = true;
         //改版头条
+        console.log(_id)
         this.axios.get(this.Service.host + this.Service.detailNewHomeNews + _id).then(function (data) {
           console.log(data.data)
           if (data.data.b) {
             that.is_show = true;
-            console.log("detail",data.data.b);
             that.detail = data.data.b
             that.content =data.data.b.contents
           }

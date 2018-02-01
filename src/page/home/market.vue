@@ -32,7 +32,7 @@ export default {
             obj.imageUrl = item.coverImgUrl;
             obj.text = item.summary;
             let data = JSON.stringify(obj)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'&data='+data;
+            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
             }
         },
     mounted(){
@@ -52,9 +52,7 @@ export default {
                 let mon = (date.getMonth()+1)+'';
                 let days = date.getDate()+'';
                 mon =  mon.length<2? '0'+mon : mon 
-
-                days =  days.length<2? '0'+days : days
-                
+                days =  days.length<2? '0'+days : days             
                 return year+'-'+mon+'-'+days;
 
             }

@@ -36,6 +36,7 @@ export default {
             obj.imageUrl = item.coverImgUrl;
             obj.text = item.summary.slice(0,40);
             let data = JSON.stringify(obj)
+            console.log(item)
             window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
             }
         },
