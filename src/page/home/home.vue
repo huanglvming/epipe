@@ -76,6 +76,14 @@
           </div>
           <div>专业机构</div>
         </li>
+        <router-link to="/mallhome" tag="li">
+          <div style="background: -webkit-linear-gradient(top, #fd535b 0%,#fc757e 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-zhuanyejigou"></use>
+            </svg>
+          </div>
+          <div>商城</div>
+        </router-link>
       </ul>
       <div class="home_title_con1">
         <div></div>
