@@ -110,12 +110,12 @@
         </ul>
       </div>
       <infinite-loading spinner="bubbles" :on-infinite="onInfinite" ref="infiniteLoading">
-    <span slot="no-more">
-      暂无更多加载
-    </span>
+        <span slot="no-more">
+          暂无更多加载
+        </span>
         <span slot="no-results">
-      暂无结果
-    </span>
+          暂无结果
+        </span>
       </infinite-loading>
     </section>
   </div>

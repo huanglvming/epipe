@@ -2,7 +2,7 @@
 import $ from "jquery";
 
 const dev = 'http://192.168.3.166:8580/mes-webapi/v1';  //测试
-const product = "http://39.108.160.163:9002/mes-webapi/v1";  //正式
+const product = "http://cmesapi.epipe.cn/mes-webapi/v1";  //正式
 const baseURL = window.location.href.indexOf("app.epipe.cn")>0 ? product : dev;
 function getCookie(name) {
   var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");

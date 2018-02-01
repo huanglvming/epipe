@@ -7,7 +7,7 @@
     <input type="text" class="inputpart" placeholder="请输入收到的验证码" v-model="verCode">
     <div class="warn-tip">{{tips}}</div>
     <input type="button" value="确认登录" id="sub" @click="confimSubmit">
-    <div class="operate">账号密码登录</div>
+    <div class="operate"><a href="#/AccountLogin">账号密码登录</a></div>
   </div>
 </template>
 <script>
@@ -33,14 +33,25 @@
         } else if (!reg.test(this.phone)) {
           this.tips = "手机格式不正确";
         } else {
-          this.time = 60;
-          this.disabled = true;
-          this.btnclass = "verifi-code-true";
-          this.timer();
-          /*axios.post(url).then(
-              res=>{
-              this.phonedata=res.data;
-          })*/
+          this.axios.post(this.baseURL.mall+"/m/user/checkUser"+this.Service.queryString({
+            mobile:this.phone
+          })).then(res=>{
+            console.log(res);
+            if(res.data.h.code!=200){
+              this.time=60;
+              this.btndisabled=true;
+              this.btnclass="verifi-code-true";
+              this.timer();
+              this.axios.post(this.baseURL.mall+"/m/user/sendMessage"+this.Service.queryString({
+                mobile:this.phone,
+                type:5
+              })).then(res=>{
+                console.log(res);
+              })
+            }else{
+              this.tips="该用户尚未注册";
+            }
+          })
         }
       },
       handleInput(e){
@@ -55,7 +66,7 @@
         } else{
           this.time=0;
           this.btntxt="获取验证码";
-          this.disabled=false;
+          this.btndisabled=false;
           this.btnclass="verifi-code-false";
         }
       },
@@ -68,12 +79,35 @@
           return false;
         }else{
           this.tips="";
+          this.axios.post(this.baseURL.mall+"/m/user/codeLogin"+this.Service.queryString({
+              mobile: this.phone,
+              code: this.verCode
+            })).then(res =>{
+            console.log(res);
+            let dataMes=res.data.h;
+            if(dataMes.code==200){
+              this.mallToken.setToken(res.data.b.token);
+              localStorage.setItem('preLoginPhone',this.phone);
+              console.log("new_token",res.data.b.token);
+              this.$router.push({path:'/mallhome'});
+            }else{
+              this.tips=dataMes.msg;
+            }
+          });
         }
       }
+    },
+    created(){
+      this.phone=localStorage.getItem("preLoginPhone") || '';
     }
   }
 </script>
 <style lang="stylus" scoped>
+  input{
+    -webkit-appearance: none;
+    outline none;
+    background transparent;
+  }
   .phone-div{
     width 100%;
     position relative;
@@ -134,8 +168,10 @@
   }
   .operate{
     font-size .14rem;
-    color #6699ff;
     float right;
     margin-top .15rem;
+    a{
+      color #6699ff;
+    }
   }
 </style>

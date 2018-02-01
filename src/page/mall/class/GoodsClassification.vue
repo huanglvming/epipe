@@ -1,137 +1,71 @@
 <template>
   <div class="goods-class">
     <div class="search-container" ref="search">
-      <div class="search-bar">
-        <svg class="icon icon-search" aria-hidden="false">
-          <use xlink:href="#icon-sousuoicon"></use>
-        </svg>
+      <div class="search-bar"  @click="linkSearch">
+        <i class="iconfont icon-sousuoicon"></i>
         <input type="text" class="search-input">
       </div>
     </div>
     <div class="class-area">
       <div class="class-area-l">
         <ul ref="classpart">
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>手机数码</li>
-          <li>电脑办公</li>
+          <li v-for="(item,index) in goodClassList" :key="index" :class="{calssActive:selected==index}" @click="changeClass(index)">{{item.gcName}}</li>
         </ul>
       </div>
-      <div class="class-area-r">
-        <div class="con-class"  ref="conClass">
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
-          <div class="class-tit">手机</div>
-          <ul>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>商务手机</li>
-            <li>儿童手机</li>
-          </ul>
+      <div class="class-area-r"  ref="conClass">
+        <div class="con-class"  v-for="(items,index) in goodClassList" :key="index" v-if="showIndex===index">
+          <div  v-for="(item,index) in items.classList" :key="index">
+            <div class="class-tit">{{item.gcName}}</div>
+            <ul>
+              <li  v-for="(obj,index) in item.classList" :key="index" @click="classSearch(obj.gcId)">{{obj.gcName}}</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
+    <footer-tab :category="1"></footer-tab>
   </div>
-  
 </template>
 <script>
+  import FooterTab from "../../../components/mall/FooterTab.vue";
   export  default {
+    data:function () {
+      return{
+        goodClassList:'',
+        selected:0,
+        showIndex:0
+      }
+    },
+    components:{
+      FooterTab,
+    },
     mounted () {
+      document.title="分类";
+      this.axios.get(this.baseURL.mall+"/m/search/goodsClass",).then(res =>{
+        console.log(res);
+        if(res.data.h.code==200){
+          this.goodClassList=res.data.b.goodsClass;
+        }
+      });
       let searchH=window.getComputedStyle(this.$refs.search).height.replace("px","");
       console.log(searchH);
       let winH = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
       console.log(winH);
-      let classH=winH-searchH;
+      let classH=winH-searchH-50;
       this.$refs.classpart.style.height = classH +'px';
       this.$refs.conClass.style.height = classH +'px';
+    },
+    methods:{
+      changeClass(index){
+        this.selected = index;
+        this.showIndex = index;
+      },
+      classSearch(gcId){
+        this.$router.push("/ClassSearch?gcId="+gcId);
+      },
+      linkSearch(){
+        this.$router.push({path:'/mallsearch'});
+      },
     }
   }
 </script>
@@ -179,41 +113,56 @@
   }
   .class-area{
     overflow hidden;
-    border-top 1px solid #e5e5e5;
     margin-top .45rem;
+    position relative;
     .class-area-l{
       width .8rem;
       float left;
       ul{
         overflow-y scroll;
+        -webkit-overflow-scrolling touch;
+        background #f0f0f5;
         li{
           width 100%;
           height .45rem;
           line-height .45rem;
-          border-bottom 1px solid #e5e5e5;
-          background #f0f0f5;
+          position relative;
           font-size .12rem;
           color #666;
           text-align center;
+          padding 0 .1rem;
+          box-sizing border-box;
+          overflow hidden;
+        }
+        li:after{
+          content: "";
+          position absolute;
+          left 0;
+          bottom 0;
+          width 100%;
+          height 1px;
+          background #e5e5e5;
+          transform scaleY(0.5);
         }
       }
       ul::-webkit-scrollbar {/*隐藏滚轮*/
         display: none;
         width: 0px;
       }
-      ul li:first-child{
+      ul li.calssActive{
         background #fff;
         color #ff8800;
       }
-      ul li:last-child{
-        border-bottom none;
+      ul li:last-child:after{
+       height 0;
       }
     }
     .class-area-r{
-      width 100%;
       margin-left .95rem;
+      overflow-y scroll;
+      -webkit-overflow-scrolling touch;
       .con-class{
-        overflow-y scroll;
+      
       }
       .con-class::-webkit-scrollbar {/*隐藏滚轮*/
         display: none;
@@ -224,7 +173,17 @@
         line-height .4rem;
         font-size .12rem;
         color #333;
-        border-bottom 1px solid #e5e5e5;
+        position relative;
+      }
+      .class-tit:after{
+        content: "";
+        position absolute;
+        left 0;
+        bottom 0;
+        width 100%;
+        height 1px;
+        background #e5e5e5;
+        transform scaleY(0.5);
       }
       ul{
         overflow hidden;
@@ -239,4 +198,14 @@
     }
   }
  
+  .class-area:after{
+    content: "";
+    position absolute;
+    left 0;
+    top 0;
+    width 100%;
+    height 1px;
+    background #e5e5e5;
+    transform scaleY(0.5);
+  }
 </style>

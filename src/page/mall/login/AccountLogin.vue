@@ -1,18 +1,26 @@
 <template>
   <div class="account-login">
-    <input type="text"  @input="handleInput" class="inputpart"  placeholder="请输入手机号" v-model="phone">
-    <input type="password" class="inputpart"  placeholder="请输入密码" v-model="password">
+    <div class="input-container">
+      <input type="text"  @input="handleInput" class="inputpart"  placeholder="请输入手机号" v-model="phone">
+    </div>
+    <div class="input-container">
+      <input type="password" class="inputpart"  placeholder="请输入密码" v-model="password">
+    </div>
     <div class="warn-tip">{{tips}}</div>
     <input type="button" value="确认登录" id="sub" @click="confimSubmit">
     <div class="operate">
-      <span>忘记密码</span>
-      <span>|</span>
-      <span>验证登录</span>
+      <div>
+        <span><a href="#/ForgetPassword">忘记密码</a></span>
+        <span>|</span>
+        <span><a href="#/VerificationLogin">验证登录</a></span>
+      </div>
+      <div>
+        <span><a href="#/Register">注册</a></span>
+      </div>
     </div>
   </div>
 </template>
 <script>
-  import {baseURL} from "../../../js/IPconfig";
   export default{
     data:function () {
       return{
@@ -40,43 +48,56 @@
           return false;
         }else{
           this.tips="";
-          this.axios.post(baseURL.mall+"/m/user/login",
-            {
-              account: this.phone,
-              password: this.password
-            }).then(res =>{
+          this.axios.post(this.baseURL.mall+"/m/user/login"+this.Service.queryString({
+            account: this.phone,
+            password: this.password
+          })).then(res =>{
             console.log(res);
             let dataMes=res.data.h;
             if(dataMes.code==200){
-              window.location.href="";
+              this.mallToken.setToken(res.data.b.token);
+              localStorage.setItem('preLoginPhone',this.phone);
+              console.log("new_token",res.data.b.token);
+              this.$router.push({path:'/mallhome'});
             }else{
               this.tips=dataMes.msg;
             }
           });
         }
       }
+    },
+    created(){
+    	document.title="登录";
+      this.phone=localStorage.getItem("preLoginPhone") || '';
     }
   }
 </script>
 <style lang="stylus" scoped>
+  input{
+    -webkit-appearance: none;
+    outline none;
+    background transparent;
+  }
   .account-login {
+    width 100%;
     height: 100%;
     background: #fff;
     padding: .35rem .275rem 0 .275rem;
     box-sizing: border-box;
     position: absolute
   }
+  .input-container{
+    border-bottom: .01rem solid #ccc;
+  }
   .inputpart {
     height: .49rem;
     border: none;
-    border-bottom: .01rem solid #ccc;
     font-size: .16rem;
     width: 100%;
     color: #333;
   }
   .inputpart:focus{
     outline none;
-    border-bottom .01rem solid #ff8800;
   }
   .warn-tip {
     font-size .13rem;
@@ -93,21 +114,27 @@
     margin-top .5rem;
   }
   .operate{
-    display inline-block;
-    position relative;
-    left 50%;
-    transform translateX(-50%);
     margin-top .15rem;
-    span{
-      margin-right .05rem;
-      font-size .14rem;
-      color #6699ff;
+    div{
+      span{
+        margin-right .05rem;
+        font-size .14rem;
+        a{
+          color #6699ff;
+        }
+      }
+      span:last-child{
+        margin-right 0;
+      }
+      span:nth-child(2){
+        color #999;
+      }
     }
-    span:last-child{
-      margin-right 0;
+    div:first-child{
+      float left;
     }
-    span:nth-child(2){
-      color #999;
+    div:last-child{
+      float right;
     }
   }
 </style>

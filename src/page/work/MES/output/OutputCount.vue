@@ -527,6 +527,7 @@
     width 3.45rem;
     max-height 4.8rem;
     margin 0 auto;
+    -webkit-overflow-scrolling touch;
   }
   .result{
     box-shadow: rgba(15, 194, 124, 0.15) 0px 0px 20px;
@@ -582,5 +583,10 @@
   .no-selection{
     top: 1.15rem;
     max-height: 4.9rem;
+  }
+  @media only screen and (device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3){
+    .result-wrapper{
+      max-height 6.2rem;
+    }
   }
 </style>
