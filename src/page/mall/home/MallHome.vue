@@ -54,7 +54,7 @@
         swiperOption: {
           autoplay:true,
           pagination: {
-            el: '.swiper-pagination'
+            el: '.swiper-pagination',
           }
         },
         banner: [],
@@ -124,6 +124,11 @@
     }
   }
 </script>
+<style>
+  .swiper-pagination-bullet-active{
+    background: white;
+  }
+</style>
 <style lang="stylus" scoped>
   .mall-index{
     background: #f5f5f8;
