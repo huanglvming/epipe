@@ -49,7 +49,7 @@
             this.userInfo = res.data.b;
           }
           if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            this.$router.replace("/accountlogin");
           }
         })
       },
@@ -60,7 +60,7 @@
         })).then(res =>{
           console.log("退出登录",res);
           if(res.data.h.code === 200){
-            this.$router.push("/accountlogin");
+            this.$router.replace("/accountlogin");
           }
         })
       }
