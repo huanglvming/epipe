@@ -6,7 +6,7 @@
     <div class="floor-2-view">
       <a :href="item.advUrl" class="item" v-for="(item,index) in floorObj.floorAdvs">
         <div class="item-des">
-          <p class="des-title">{{item.advTitle}}</p>
+          <p class="des-title des-title-oneline">{{item.advTitle}}</p>
           <p class="des-sub" v-html="item.advDescribe"></p>
         </div>
         <div class="item-img">
@@ -100,6 +100,11 @@
       margin-left 0.12rem;
       line-height 1.27;
       overflow hidden;
+      .des-title-oneline{
+        overflow hidden;
+        text-overflow ellipsis;
+        white-space nowrap;
+      }
     }
     .des-title{
       margin-bottom 0.1rem;
@@ -120,6 +125,9 @@
     .item-des{
       overflow hidden;
       max-width 0.88rem;
+      .des-title-oneline{
+        white-space normal;
+      }
     }
   }
   .floor-2-view .item:nth-child(n + 5){
