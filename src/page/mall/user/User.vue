@@ -62,30 +62,30 @@
       </div>
     </div>
     <div class="links">
-      <div class="link-item">
+      <router-link to="returnlist" tag="div" class="link-item">
         <div class="link-title">我的退货单</div>
         <div class="link-icon">
           <i class="iconfont icon-jinru"></i>
         </div>
-      </div>
-      <div class="link-item">
+      </router-link>
+      <router-link to="refundlist" tag="div" class="link-item">
         <div class="link-title">我的退款单</div>
         <div class="link-icon">
           <i class="iconfont icon-jinru"></i>
         </div>
-      </div>
-      <div class="link-item">
-        <div class="link-title">商品评价</div>
-        <div class="link-icon">
-          <i class="iconfont icon-jinru"></i>
-        </div>
-      </div>
-      <div class="link-item">
-        <div class="link-title">我的咨询</div>
-        <div class="link-icon">
-          <i class="iconfont icon-jinru"></i>
-        </div>
-      </div>
+      </router-link>
+      <!--<div class="link-item">-->
+        <!--<div class="link-title">商品评价</div>-->
+        <!--<div class="link-icon">-->
+          <!--<i class="iconfont icon-jinru"></i>-->
+        <!--</div>-->
+      <!--</div>-->
+      <!--<div class="link-item">-->
+        <!--<div class="link-title">我的咨询</div>-->
+        <!--<div class="link-icon">-->
+          <!--<i class="iconfont icon-jinru"></i>-->
+        <!--</div>-->
+      <!--</div>-->
     </div>
     <footer-tab :category="3"></footer-tab>
   </div>

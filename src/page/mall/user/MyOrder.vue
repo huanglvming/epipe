@@ -4,7 +4,7 @@
       <div class="menu-item" :class="{'menu-active': index === selected}" v-for="(item,index) in menuList" :key="index" @click="tab(index)">{{item.title}}</div>
     </div>
     <div class="order-list">
-      <order-item v-for="(item,index) in orderList" :key="index" :obj="item" :imgPrefix="imgPrefix" @click.native="linkDetails(item)"></order-item>
+      <order-item v-for="(item,index) in orderList" :key="index" :obj="item" :imgPrefix="imgPrefix" @click.native.prevent="linkDetails(item)" @childCall="handleChildCall"></order-item>
       <infinite-loading spinner="bubbles" @distance="0" @infinite="infiniteHandler" ref="infiniteLoading">
         <span slot="no-more">
           暂无更多数据
@@ -48,6 +48,10 @@
       }
     },
     methods:{
+      /*监听子组件*/
+      handleChildCall(value){
+        this.tab(value);
+      },
       /*菜单切换*/
       tab(i){
         this.selected = i;
@@ -145,6 +149,10 @@
   .order-list{
     margin-top 60px;
     margin-bottom 50px;
+  }
+  .item-container{
+    z-index 99;
+    position relative;
   }
   @media screen and (max-width: 320px) {
     .menu-item {

@@ -4,31 +4,32 @@
       <div class="store-item">
         <div class="item-sup">
           <div class="store">{{obj.storeName}}</div>
-          <div class="status">{{obj.orderState | handleStatus}}</div>
+          <div class="status" v-if="!obj.returnGoodsState && !obj.returnRefundState">{{obj.orderState | handleStatus}}</div>
+          <div class="status" v-else>{{statusTitle}}</div>
         </div>
         <div class="item-sub">
-          <router-link :to="{path:'/goodsdetail',query:{goodsId: item.goodsId}}" v-for="(item,index) in obj.orderGoodsList" :key="index">
+          <div v-for="(item,index) in obj.orderGoodsList" :key="index">
             <div class="item-row" >
-            <div class="goods-picture">
-              <img :src="imgPrefix + item.goodsImage" alt="">
-            </div>
-            <div class="goods-details">
-              <div class="goods-desc">
-                <p class="desc-title">{{item.goodsName}}</p>
-                <p class="desc-sub" v-html="item.specInfo"></p>
+              <div class="goods-picture">
+                <img :src="imgPrefix + item.goodsImage" alt="">
               </div>
-              <div class="goods-price">
-                <p class="price">￥{{item.goodsPrice}}</p>
-                <p class="number">x{{item.goodsNum}}</p>
+              <div class="goods-details">
+                <div class="goods-desc">
+                  <p class="desc-title">{{item.goodsName}}</p>
+                  <p class="desc-sub" v-html="item.specInfo"></p>
+                </div>
+                <div class="goods-price">
+                  <p class="price">￥{{item.goodsPrice}}</p>
+                  <p class="number">x{{item.goodsNum}}</p>
+                  <p class="link-comment" v-if="obj.orderState === 50" @click.stop.prevent="linkToComment(item.recId)">评价</p>
+                </div>
               </div>
             </div>
           </div>
-          </router-link>
         </div>
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-if="obj.orderState === 0">
         <div class="btn btn-pay">订单详情</div>
-        <!--<div class="btn btn-pay">重新下单</div>-->
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 10">
         <div class="btn">订单详情</div>
@@ -36,18 +37,26 @@
         <div class="btn btn-pay" @click.stop.prevent="wepay">微信支付</div>
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 20">
-        <!--<div class="btn" @click.stop.prevent="refund">申请退款</div>-->
-        <div class="btn btn-pay">订单详情</div>
+        <div class="btn" @click.stop.prevent="refund" v-if="!obj.returnRefundState && !obj.returnGoodsState">申请退款</div>
+        <div class="btn">订单详情</div>
+        <div class="btn btn-pay btn-scale" v-if="obj.returnRefundState === 3" @click.stop.prevent="againRefund">重新申请退款</div>
+        <div class="btn btn-pay" v-else-if="obj.returnGoodsState === 2 && !obj.returnRefundState" @click.stop.prevent="refund">申请退款</div>
+        <div class="btn btn-pay btn-scale" v-else-if="obj.returnGoodsState === 3" @click.stop.prevent="againReturn">重新申请退货</div>
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 40">
         <div class="btn">订单详情</div>
-        <!--<div class="btn" @click.stop.prevent="refund">申请退款</div>-->
-        <div class="btn btn-pay">确认收货</div>
+        <div class="btn" @click.stop.prevent="returnGoods" v-if="!obj.returnRefundState && !obj.returnGoodsState">申请退货</div>
+        <div class="btn btn-pay" @click.stop.prevent="confirmReceipt" v-if="!obj.returnRefundState && !obj.returnGoodsState">确认收货</div>
+        <div class="btn btn-pay btn-scale" v-if="obj.returnRefundState === 3" @click.stop.prevent="againRefund">重新申请退款</div>
+        <div class="btn btn-pay" v-else-if="obj.returnGoodsState === 2 && !obj.returnRefundState" @click.stop.prevent="refund">申请退款</div>
+        <div class="btn btn-pay btn-scale" v-else-if="obj.returnGoodsState === 3" @click.stop.prevent="againReturn">重新申请退货</div>
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-else-if="obj.orderState === 50">
-        <div class="btn btn-pay">订单详情</div>
-        <!--<div class="btn" @click.stop.prevent="refund">申请退款</div>-->
-        <!--<div class="btn btn-pay">我要评价</div>-->
+        <div class="btn" @click.stop.prevent="returnGoods" v-if="!obj.returnRefundState && !obj.returnGoodsState">申请退货</div>
+        <div class="btn">订单详情</div>
+        <div class="btn btn-pay btn-scale" v-if="obj.returnRefundState === 3" @click.stop.prevent="againRefund">重新申请退款</div>
+        <div class="btn btn-pay" v-else-if="obj.returnGoodsState === 2 && !obj.returnRefundState" @click.stop.prevent="refund">申请退款</div>
+        <div class="btn btn-pay btn-scale" v-else-if="obj.returnGoodsState === 3" @click.stop.prevent="againReturn">重新申请退货</div>
       </div>
       <div class="btn-wrapper" v-show="showBtn" v-else>
         <div class="btn">订单详情</div>
@@ -71,6 +80,11 @@
         default: true,
       }
     },
+    data(){
+      return{
+        statusTitle: "",
+      }
+    },
     filters:{
       handleStatus(state){
         switch (state){
@@ -92,6 +106,36 @@
         }
       }
     },
+    mounted(){
+      if(this.obj.returnRefundState){
+        switch (this.obj.returnRefundState){
+          case 1:
+            this.statusTitle = "申请退款中";
+            break;
+          case 2:
+            this.statusTitle = "审核通过";
+            break;
+          case 3:
+            this.statusTitle = "审核不通过";
+            break;
+          case 4:
+            this.statusTitle = "退款完成";
+            break;
+        }
+      }else{
+        switch (this.obj.returnGoodsState){
+          case 1:
+            this.statusTitle = "申请退货中";
+            break;
+          case 2:
+            this.statusTitle = "审核通过";
+            break;
+          case 3:
+            this.statusTitle = "审核不通过";
+            break;
+        }
+      }
+    },
     methods:{
       /*微信支付*/
       wepay(){
@@ -108,12 +152,73 @@
       },
       /*申请退款*/
       refund(){
+        console.log(this.obj.orderId);
+        this.$confirm("确定要申请退款").then(() =>{
+          this.axios.post(this.baseURL.mall + "/m/my/applyRefund" + this.Service.queryString({
+            token: this.mallToken.getToken(),
+            orderId: this.obj.orderId
+          })).then(res =>{
+            console.log("申请退款",res);
+            if(res.data.h.success){
+              this.$toast("申请成功");
+              this.$router.replace("refundlist");
+            }else{
+              this.$toast(res.data.h.msg);
+            }
+          });
+        }).catch(() =>{
+          console.log("取消操作");
+        })
+      },
+      /*申请退货*/
+      returnGoods(){
+        console.log(this.obj.orderId);
+        this.$confirm("确定要申请退货").then(() =>{
+          this.axios.post(this.baseURL.mall + "/m/my/applyGoodsReturn" + this.Service.queryString({
+            token: this.mallToken.getToken(),
+            orderId: this.obj.orderId
+          })).then(res =>{
+            console.log("申请退货",res);
+            if(res.data.h.success){
+              this.$toast("申请成功");
+              this.$router.replace("returnlist");
+            }else{
+              this.$toast(res.data.h.msg);
+            }
+          });
+        }).catch(() =>{
+          console.log("取消操作");
+        })
+      },
+      /*重新申请退款*/
+      againRefund(){
         this.axios.post(this.baseURL.mall + "/m/my/applyRefund" + this.Service.queryString({
           token: this.mallToken.getToken(),
-          orderSn: this.obj.orderSn
+          orderId: this.obj.orderId
         })).then(res =>{
-          console.log("申请退款",res);
-        })
+          console.log("重新申请退款",res);
+          if(res.data){
+            this.$toast("申请成功");
+            this.$emit("childCall",1);
+          }else{
+            this.$toast("申请失败");
+          }
+        });
+      },
+      /*重新申请退货*/
+      againReturn(){
+        this.axios.post(this.baseURL.mall + "/m/my/applyAgain4Goods" + this.Service.queryString({
+          token: this.mallToken.getToken(),
+          orderId: this.obj.orderId
+        })).then(res =>{
+          console.log("重新申请退货",res);
+          if(res.data){
+            this.$toast("申请成功");
+            this.$emit("childCall",1);
+          }else{
+            this.$toast("申请失败");
+          }
+        });
       },
       /*取消订单*/
       cancleOrder(){
@@ -137,6 +242,31 @@
           console.log("failed");
         });
       },
+      /*确认收货*/
+      confirmReceipt(){
+        this.axios.post(this.baseURL.mall + "/m/my/orderConfirm" + this.Service.queryString({
+          token: this.mallToken.getToken(),
+          orderId: this.obj.orderId
+        })).then(res =>{
+          console.log("确认收货",res);
+          if(res.data.h.code === 200){
+            this.$toast("已确认收货");
+            this.$emit("childCall",4);
+          }else{
+            this.$toast(res.data.h.msg);
+          }
+        });
+      },
+      /*跳转评价*/
+      linkToComment(id){
+        console.log(id);
+        this.$router.push({path: 'goodscomment',query:{id:id}});
+      },
+      /*跳转商品*/
+      linkItem(){
+        console.log("111111");
+//        this.$router.push({path:'/goodsdetail',query:{goodsId: item.goodsId}});
+      },
     }
   }
 </script>
@@ -157,6 +287,12 @@
     padding-left 0.1rem;
     margin-bottom 0.1rem;
     background white;
+    &::after{
+      borderBottom();
+    }
+  }
+  .status-done{
+    position relative;
     &::after{
       borderBottom();
     }
@@ -274,7 +410,7 @@
     }
   }
   .btn{
-    width 75px;
+    min-width 75px;
     height 30px;
     margin-right 0.1rem;
     text-align center;
@@ -284,8 +420,16 @@
     border: 1px solid #bfbfbf;
     background #bfbfbf;
   }
+  .btn-scale{
+    font-size 12px;
+  }
   .btn-pay{
     border: 1px solid #d74a45;
     background #d74a45;
+  }
+  .link-comment{
+    color: #ff8800;
+    white-space nowrap;
+    margin-top 5px;
   }
 </style>

@@ -83,6 +83,9 @@ const MallCollection = r => require.ensure([], () => r(require('@/page/mall/user
 const MyOrder = r => require.ensure([], () => r(require('@/page/mall/user/MyOrder.vue')), 'mall-user')
 const OrderDetails = r => require.ensure([], () => r(require('@/page/mall/user/OrderDetails.vue')), 'mall-user')
 const RecentHistory = r => require.ensure([], () => r(require('@/page/mall/user/RecentHistory.vue')), 'mall-user')
+const GoodsComment = r => require.ensure([], () => r(require('@/page/mall/user/GoodsComment.vue')), 'mall-user')
+const ReturnList = r => require.ensure([], () => r(require('@/page/mall/user/ReturnList.vue')), 'mall-user')
+const RefundList = r => require.ensure([], () => r(require('@/page/mall/user/RefundList.vue')), 'mall-user')
 
 export default new Router({
   routes: [
@@ -402,6 +405,18 @@ export default new Router({
     {
       path: '/recenthistory',  //最近浏览
       component: RecentHistory,
+    },
+    {
+      path: '/goodscomment',  //商品评价
+      component: GoodsComment,
+    },
+    {
+      path: '/returnlist',  //退货单列表
+      component: ReturnList,
+    },
+    {
+      path: '/refundlist',  //退款单列表
+      component: RefundList,
     },
   ]
 })

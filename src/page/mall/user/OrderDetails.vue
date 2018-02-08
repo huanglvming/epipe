@@ -3,11 +3,12 @@
     <section class="section-item">
       <p class="line">
         <span class="line-title">订单状态:</span>
-        <span class="line-content line-status">{{objData.orderState | filterStatus}} </span>
+        <span class="line-content line-status" v-if="!objData.returnGoodsState && !objData.returnRefundState">{{objData.orderState | filterStatus}} </span>
+        <span class="line-content line-status" v-else>{{statusTitle}}</span>
       </p>
       <p class="line">
         <span class="line-title">订单编号:</span>
-        <span class="line-content">{{objData.orderSn}}</span>
+        <span class="line-content">{{objData.orderId}}</span>
       </p>
       <p class="line">
         <span class="line-title">下单时间:</span>
@@ -21,15 +22,18 @@
         <div class="btn btn-pay" @click="wepay">微信支付</div>
       </div>
       <div class="btn-wrapper" v-else-if="objData.orderState === 20">
-        <div class="btn btn-refund">申请退款</div>
+        <div class="btn btn-refund" @click="refund" v-if="!objData.returnGoodsState && !objData.returnRefundState">申请退款</div>
+        <div class="btn btn-refund" @click="againRefund" v-else-if="objData.returnRefundState === 3">重新申请退款</div>
+        <div class="btn btn-return" @click="againReturn" v-else-if="objData.returnGoodsState === 3">重新申请退货</div>
       </div>
       <div class="btn-wrapper" v-else-if="objData.orderState === 40">
-        <!--<div class="btn btn-return" @click="goodsReturn">申请退货</div>-->
-        <div class="btn btn-comment">确认收货</div>
+        <div class="btn btn-return" @click="goodsReturn" v-if="!objData.returnGoodsState && !objData.returnRefundState">申请退货</div>
+        <div class="btn btn-comment" @click="confirmReceipt" v-if="!objData.returnGoodsState && !objData.returnRefundState">确认收货</div>
+        <div class="btn btn-return" @click="againReturn" v-else-if="objData.returnGoodsState === 3">重新申请退货</div>
       </div>
       <div class="btn-wrapper" v-else-if="objData.orderState === 50">
-        <!--<div class="btn btn-return" @click="goodsReturn">申请退货</div>-->
-        <div class="btn btn-comment">我要评价</div>
+        <div class="btn btn-return" @click="goodsReturn" v-if="objData.returnGoodsState === 2 && !objData.returnRefundState">申请退款</div>
+        <div class="btn btn-return" @click="againReturn" v-else-if="objData.returnGoodsState === 3">重新申请退货</div>
       </div>
     </section>
     <section class="section-item">
@@ -108,7 +112,7 @@
       </div>
     </section>
     <section>
-      <order-item :obj="objData" :imgPrefix="imgPrefix" :showBtn="false"></order-item>
+      <order-item :obj="objData" :imgPrefix="imgPrefix" :showBtn="false" @click.native="linkItem"></order-item>
     </section>
     <section class="section-item section-price">
       <div class="price-line">
@@ -141,6 +145,7 @@
         token: this.$route.query.token || this.mallToken.getToken(),
         orderInvoice: {},
         invoice: {},
+        statusTitle: "",
       }
     },
     created(){
@@ -191,6 +196,34 @@
             if(res.data.b.orderInvoice){
               this.orderInvoice = res.data.b.orderInvoice;
             }
+            if(this.objData.returnRefundState){
+              switch (this.objData.returnRefundState){
+                case 1:
+                  this.statusTitle = "申请退款中";
+                  break;
+                case 2:
+                  this.statusTitle = "审核通过";
+                  break;
+                case 3:
+                  this.statusTitle = "审核不通过";
+                  break;
+                case 4:
+                  this.statusTitle = "退款完成";
+                  break;
+              }
+            }else{
+              switch (this.objData.returnGoodsState){
+                case 1:
+                  this.statusTitle = "申请退货中";
+                  break;
+                case 2:
+                  this.statusTitle = "审核通过";
+                  break;
+                case 3:
+                  this.statusTitle = "审核不通过";
+                  break;
+              }
+            }
           }
         }).catch(err =>{
           console.log(err);
@@ -225,16 +258,85 @@
       },
       /*申请退货*/
       goodsReturn(){
-        this.axios.post(this.baseURL.mall + "/m/my/applyGoodsReturn" + this.Service.queryString({
+        this.$confirm("确定要申请退货?").then(() =>{
+          this.axios.post(this.baseURL.mall + "/m/my/applyGoodsReturn" + this.Service.queryString({
+            token: this.token,
+            orderId: this.objData.orderId
+          })).then(res =>{
+            console.log("申请退货",res);
+            if(res.data.h.code === 200){
+              this.$toast("申请成功");
+              this.$router.replace("returnlist");
+            }else{
+              this.$toast(res.data.h.msg);
+            }
+          })
+        }).catch(() =>{
+          console.log("取消退款");
+        })
+      },
+      /*申请退款*/
+      refund(){
+        this.$confirm("确定要申请退款?").then(() =>{
+          this.axios.post(this.baseURL.mall + "/m/my/applyRefund" + this.Service.queryString({
+            token: this.token,
+            orderId: this.objData.orderId
+          })).then(res =>{
+            console.log("申请退款",res);
+            if(res.data.h.code === 200){
+              this.$toast("申请成功");
+              this.$router.replace("refundlist");
+            }else{
+              this.$toast(res.data.h.msg);
+            }
+          })
+        }).catch(() =>{
+          console.log("取消退款");
+        })
+      },
+      /*确认收货*/
+      confirmReceipt(){
+        this.axios.post(this.baseURL.mall + "/m/my/orderConfirm" + this.Service.queryString({
           token: this.token,
-          orderSn: this.orderSn
+          orderId: this.objData.orderId
         })).then(res =>{
-          console.log("申请退货",res);
+          console.log("确认收货",res);
           if(res.data.h.code === 200){
-
+            this.$toast("已确认收货");
+            window.location.reload();
           }
         })
-      }
+      },
+      /*重新申请退款*/
+      againRefund(){
+        this.axios.post(this.baseURL.mall + "/m/my/applyRefund" + this.Service.queryString({
+          token: this.mallToken.getToken(),
+          orderId: this.objData.orderId
+        })).then(res =>{
+          console.log("重新申请退款",res);
+          if(res.data){
+            this.$toast("申请成功");
+            this.$router.go(-1);
+          }else{
+            this.$toast("申请失败");
+          }
+        });
+      },
+      /*重新申请退货*/
+      againReturn(){
+        this.axios.post(this.baseURL.mall + "/m/my/applyAgain4Goods" + this.Service.queryString({
+          token: this.mallToken.getToken(),
+          orderId: this.objData.orderId
+        })).then(res =>{
+          console.log("重新申请退货",res);
+          if(res.data){
+            this.$toast("申请成功");
+            this.$router.go(-1);
+          }else{
+            this.$toast("申请失败");
+          }
+        });
+      },
     }
   }
 </script>

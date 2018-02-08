@@ -134,6 +134,11 @@
       margin 0 auto;
       margin-top 0.1rem;
     }
+    .des-title{
+      overflow hidden;
+      text-overflow ellipsis;
+      white-space nowrap;
+    }
   }
   .swiper-slide img{
     width: 100%;
