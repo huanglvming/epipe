@@ -2,8 +2,8 @@
  * Created by lenovo on 2017/6/12.
  */
 const Service = {
-  // host: "http://3msapi.epipe.cn/api",
-  host: "http://192.168.3.166:8181/api",
+  host: "http://3msapi.epipe.cn/api",
+  // host: "http://192.168.3.166:8181/api",
   newHomeNews: "/topnews/getWaterfallPagedList",//新版首页新闻
   detailNewHomeNews: "/resourceMain/getDetails/",//新版首页新闻详情
   content_show: "/content/show/index", //首页广告图
@@ -40,8 +40,8 @@ const Service = {
   slogan: "/organ/work/setting",  //工作台信息设置
   like: "/check/report/daily/rank/zan",  //点赞
   message: "/company/message/tolist",  //消息助手
-  // resource : "http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=",  //首页的 专家库、专业机构、行情、访谈
-  resource : "http://192.168.3.166:8181/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=",
+  resource : "http://3msapi.epipe.cn/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=",  //首页的 专家库、专业机构、行情、访谈
+  // resource : "http://192.168.3.166:8181/api/resourceMain/getWaterfallPagedListByProgramCode?programCodes=",
   queryString: function (params, postFlag) {
     let paramUrl = "";
     for (let key in params) {

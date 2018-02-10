@@ -26,6 +26,7 @@ Vue.filter("home_time_format", function (value) {  //首页头条那边时间戳
 });
 
 Vue.filter("escape2Html", function (str) {  //解码html标签
+  if(str) return;
   var arrEntities={'lt':'<','gt':'>','nbsp':' ','amp':'&','quot':'"','ldquo':'"','rdquo':'"','mdash':'_'};
   return str.replace(/&(lt|gt|nbsp|amp|quot|ldquo|rdquo|mdash);/ig,function(all,t){
     return arrEntities[t]});

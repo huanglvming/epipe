@@ -12,7 +12,7 @@
                     <span class="spanRight">
                         <svg style="width: 0.2rem;height: 0.14rem" class="icon" aria-hidden="false">
                             <use xlink:href="#icon-yuedu"></use>
-                        </svg>{{item.addClicks}}534354123
+                        </svg>{{item.clicks + item.addClicks}}
                     </span>
                 </div>
             </div>
@@ -24,6 +24,7 @@
 </template>
 
 <script >
+import Util from '../../js/Util.js'
 export default {
         data(){
             return{
@@ -32,12 +33,11 @@ export default {
         methods:{
             go_newsdetail(item){
             let obj = {};
-            obj.title = item.title;
+            obj.title = Util.Title_format(item.title);
             obj.imageUrl = item.coverImgUrl;
-            obj.text = item.summary.slice(0,40);
+            obj.text = Util.Title_format(item.summary.slice(0,40));
             let data = JSON.stringify(obj)
-            console.log(item)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+            window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&_id=" + item.id+'TTTTTT&data='+data;
             }
         },
         mounted(){
@@ -46,6 +46,7 @@ export default {
             .then(function(res){
                   if(res.data.h.code == 200){               
                     that.intervewArr = res.data.b;
+                    console.log(that.intervewArr)
                   }  
             })
         },

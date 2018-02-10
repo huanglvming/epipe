@@ -34,9 +34,9 @@
       go_newsdetail(item){
         let title = Util.Title_format(item.title)
         let obj = {};
-        obj.title = item.title;
+        obj.title = title;
         obj.imageUrl = item.coverImg;
-        obj.text = item.content.slice(0,40);;
+        obj.text = Util.Title_format(item.content.slice(0,40));
         let data = JSON.stringify(obj)
         window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id+'&data='+data;
       },

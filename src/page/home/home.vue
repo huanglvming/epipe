@@ -99,12 +99,18 @@
           <div>
             <div class="home_title_con5 over_width" v-html="newsData_item.resTitle"></div>
             <div class="home_title_con6 simple-ellipsis" v-html="newsData_item.summary"></div>
-            <div class="home_title_con7 over_width">
-              <span>{{newsData_item.resTopNewsCategoryName}}</span>
-              <span>&nbsp {{newsData_item.resCreateDate | home_time_format}}</span>
-              <span>&nbsp <svg style="font-size: 0.15rem" class="icon" aria-hidden="false">
-              <use xlink:href="#icon-yuedu"></use>
-            </svg>：{{newsData_item.clicks}}</span>
+            <div class="home_title_con7 over_width sub-desc">
+              <div>
+                <span>{{newsData_item.resTopNewsCategoryName}}</span>
+                <span>&nbsp; {{newsData_item.resCreateDate | home_time_format}}</span>
+              </div>
+              <div>
+                <span>&nbsp; 
+                  <svg style="font-size: 0.15rem;" class="icon" aria-hidden="false">
+                    <use xlink:href="#icon-yuedu"></use>
+                  </svg> {{newsData_item.clicks}}
+                </span>
+              </div>
             </div>
           </div>
         </ul>
@@ -189,30 +195,37 @@
       },
       go_newsdetail(item){
         if (item.h5Uri != "" && item.h5Uri) {
+            console.log(2222222222)
+          
           let title = Util.Title_format(item.title)
           console.log("epipe://?&mark=newsdetail&title=" + title + "&url=" + item.h5Uri)
-          window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&url=" + item.h5Uri;
+          window.location.href = "epipe://?&mark=newsdetail&title=" + title+'&data='+ data + "&url=" + item.h5Uri;
         } else if (item.url) {
           if (item.url != "#") {
-            console.log(item)
             let title = Util.Title_format(item.title)
-            console.log("epipe://?&mark=newsdetail&title=" + title + "&url=" + item.url)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&url=" + item.url;
+            let obj = {};
+            obj.title = title;
+            obj.imageUrl = item.imgUrl;
+            obj.text = '';
+            let data = JSON.stringify(obj)
+            window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&url=" + item.url;
           }
         } else {
+          console.log(3333333)
           console.log("epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id)
           let title = Util.Title_format(item.title)
           window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id;
         }
       },
       go_news(item){
+        console.log(item)
         let title = Util.Title_format(item.resTitle);
         let obj = {};
         obj.title = title;
         obj.imageUrl = item.coverImgUrl;
-        obj.text = Util.HTMLDecode(item.summary);
+        obj.text = Util.Title_format(item.summary);
         let data = JSON.stringify(obj)
-        console.log(item.resId)
+        console.log(data)
         window.location.href = `epipe://?&mark=newsdetail&title=${title}&_id=${item.resId}TTTTTT`+'&data='+data;
       },
       transitionend (current) {
@@ -388,7 +401,7 @@
 
   .home_title_con1 div:last-child {
     margin-left: 0.08rem;
-    font-size: 0.17rem;
+    font-size: 0.15rem;
   }
 
   .home_nav_top {
@@ -439,5 +452,9 @@
     height 0.025rem
     width 0.14rem
     border-radius 0.6rem
+  }
+  .sub-desc{
+    display: flex;
+    justify-content space-between;
   }
 </style>

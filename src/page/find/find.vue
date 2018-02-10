@@ -44,10 +44,10 @@
         </li>
       </ul>
     </div>
-    <div @click="go_newsdetail(supplyData)">
-      <ul class="tender_div1" v-for="(item,index) in supplyData" :key="index">
+    <div>
+      <ul class="tender_div1" v-for="(item,index) in supplyData" :key="index"  @click="go_newsdetail(item)">
         <li v-html="item.title" class="item-title"></li>
-        <li class="simple-ellipsis">{{item.content | escape2Html}}</li>
+        <li class="simple-ellipsis" v-html="item.content"></li>
       </ul>
     </div>
 
@@ -67,10 +67,10 @@
         </li>
       </ul>
     </div>
-    <div @click="go_newsdetail(tenderData)">
-      <ul class="tender_div1" v-for="(item,index) in tenderData" :key="index">
+    <div>
+      <ul class="tender_div1" v-for="(item,index) in tenderData" :key="index" @click="go_newsdetail(item)">
         <li v-html="item.title" class="item-title"></li>
-        <li class="simple-ellipsis">{{item.content | escape2Html}}</li>
+        <li class="simple-ellipsis" v-html="item.content"></li>
       </ul>
     </div>
   </section>
@@ -128,10 +128,7 @@
     * 一次性的把展会 供需 招投标
     * */
       that.axios.all([getcontent_show(), exhibition(), supply(), tender()]).then(that.axios.spread(function (banner, exhibitionData, supplyData, tenderData) {
-        console.log("banner:",banner);
-        console.log("exhibitionData:",exhibitionData);
-        console.log("supplyData:",supplyData);
-        console.log("tenderData:",tenderData);
+      
         if (banner.data.b) {
             banner.data.b[0].imgUrl=banner.data.b[0].imgUrl+'?imageslim&imageView2/1/w/750/h/320'
             that.banner = banner.data.b[0]
@@ -147,7 +144,6 @@
             that.supplyData = supplyData.data.b.data
           }
           if (tenderData.data.b) {
-//            tenderData.data.b.data[0].content = Util.HTMLDecode(tenderData.data.b.data[0].content).replace(/<[^>]+>/g, "").replace(/\s/g, "")
             tenderData.data.b.data.map(function(item,index){
               item.content = Util.HTMLDecode(item.content).replace(/<[^>]+>/g, "").replace(/\s/g, "");
             });
@@ -169,16 +165,25 @@
         window.location.href = "epipe://?&mark=tender"
       },
       go_newsdetail(item){
-        console.log(item.url)
         if (item.url) {
+          console.log(item)
           if (item.url != "#") {
-            let title = Util.Title_format(item.title)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&url=" + item.url;
+            let obj = {};
+            obj.title = Util.Title_format(item.title);
+            obj.imageUrl = item.imgUrl;
+            obj.text =  '';
+            let data = JSON.stringify(obj)
+            window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title +'&data'+data+ "&url=" + item.url;
           }
         } else {
-          console.log(item.id)
-          let title = Util.Title_format(item.title)
-          window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id;
+          console.log(item)
+          let obj = {};
+          obj.title = Util.Title_format(item.title);
+          obj.imageUrl = item.coverImg;
+          console.log(item)
+          obj.text =  Util.Title_format(item.content.slice(0,40));
+          let data = JSON.stringify(obj)
+          window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&_id=" + item.id+'&data='+data;
         }
       }
     }
@@ -252,7 +257,6 @@
   .find_color_div22 {
     margin-left: 0.1rem;
     font-size: 0.15rem;
-    font-weight: bold;
   }
 
   .find_color_div33 {

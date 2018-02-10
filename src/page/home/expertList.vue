@@ -5,10 +5,10 @@
         :title='this.$route.query.type'
          ></TopHead>
     <div class="item">
-        <div class="item-content" v-for=" i in 5 ">
+        <div class="item-content" v-for=" i in num">
             <div class="cont" v-for="(item,index) in dataArr" v-if="index==(i*2-2)||index==(i*2-1)" @click="go_newsdetail(item)">
                     <img :src="item.coverImgUrl"/>
-                    <h4>{{item.title}}</h4>
+                    <h4 v-html="item.title"></h4>
             </div>
         </div>
         <div class="no-more">
@@ -20,20 +20,23 @@
 
 
 <script>
+    import Util from '../../js/Util.js'
     import TopHead  from '../../components/topheader.vue'  //header导航栏
     export default {
         data(){
             return{
                 dataArr : [],
+                num :0,
         }},
         methods:{
             go_newsdetail(item){
             let obj = {};
-            obj.title = item.title;
+            obj.title = Util.Title_format(item.title)
             obj.imageUrl = item.coverImgUrl;
-            obj.text = item.summary;
+            obj.text = Util.Title_format(item.summary)
             let data = JSON.stringify(obj)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+       
+            window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&_id=" + item.id+'TTTTTT&data='+data;
             }
         },
         mounted(){
@@ -41,7 +44,9 @@
             let that = this;
             this.axios.get(this.Service.resource + value).then(function(res){
                 if(res.data.h.code==200){
+                    console.log(res.data.b)
                     that.dataArr = res.data.b;
+                    that.num = Math.round(that.dataArr.length/2)
                 }
             })
         },
@@ -95,8 +100,9 @@
     .no-more{
         text-align center;
         color #666;
-        heigh 0.2rem;
+        height 0.2rem;
         line-height 0.2rem;
+        padding-bottom:0.15rem;
     }
 
 </style>

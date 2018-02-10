@@ -16,9 +16,9 @@
                 </router-link>
             </div>
             <div class="item-content">
-                <div class="cont" v-for="item in fameArr" @click="go_newsdetail(item)">
+                <div class="cont" v-for="(item,index) in fameArr" v-if="index<2" @click="go_newsdetail(item)">
                         <img :src="item.coverImgUrl"/>                    
-                    <h4>{{item.title}}</h4>
+                    <h4 v-html="item.title"></h4>
                     <!-- <p>{{item.title}}</p> -->
                 </div>
             </div>
@@ -33,9 +33,9 @@
                 </router-link>
             </div>
             <div class="item-content">
-                <div class="cont" v-for="item in consultArr" @click="go_newsdetail(item)">
+                <div class="cont" v-for="(item,index) in consultArr" v-if="index<2" @click="go_newsdetail(item)">
                         <img :src="item.coverImgUrl"/>                    
-                    <h4>{{item.title}}</h4>
+                    <h4 v-html="item.title"></h4>
                     <!-- <p>{{item.title}}</p> -->
                 </div>
             </div>
@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import Util from '../../js/Util.js'
 import TopHead  from '../../components/topheader.vue'  //header导航栏
 export default {
     data(){
@@ -55,31 +56,28 @@ export default {
     methods:{
             go_newsdetail(item){
             let obj = {};
-            obj.title = item.title;
+            obj.title = Util.Title_format(item.title );
             obj.imageUrl = item.coverImgUrl;
-            obj.text = item.summary;
+            obj.text = Util.Title_format(item.summary)
             let data = JSON.stringify(obj)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+            window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&_id=" + item.id+'TTTTTT&data='+data;
             },
         },
     mounted(){
-        let that = this;
 
-       this.axios.get( this.Service.resource + '著名专家').then(function(res){
-          if(res.data.h.code==200){
-              var arr = res.data.b;
-              that.fameArr.push(arr[0])
-              that.fameArr.push(arr[1])
-          }
-       })
-
-       this.axios.get(this.Service.resource + '咨询专家').then(function(res){
-          if(res.data.h.code==200){
-              var arr = res.data.b;
-              that.consultArr.push(arr[0])
-              that.consultArr.push(arr[1])
-          }
-       })
+       let  that = this;
+        function a(){
+            return that.axios.get(that.Service.resource + '著名专家');
+        } 
+        function b(){
+            return that.axios.get(that.Service.resource + '咨询专家');
+        }
+        this.axios.all([a(),b()]).then(this.axios.spread((a,b) =>{
+            if(a.data.h.code === 200){
+                that.fameArr = a.data.b;
+                that.consultArr = b.data.b;
+            }
+        }))
     },
     components : {
             TopHead

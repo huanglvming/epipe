@@ -19,6 +19,7 @@
 
 
 <script>
+import Util from '../../js/Util.js'
 export default {
     data(){
         return{
@@ -27,12 +28,12 @@ export default {
     },
     methods:{
             go_newsdetail(item){
-            let obj = {};
-            obj.title = item.title;
-            obj.imageUrl = item.coverImgUrl;
-            obj.text = item.summary;
-            let data = JSON.stringify(obj)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+                let obj = {};
+                obj.title = Util.Title_format(item.title);
+                obj.imageUrl = item.coverImgUrl;
+                obj.text = Util.Title_format(item.summary);
+                let data = JSON.stringify(obj)
+                window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&_id=" + item.id+'TTTTTT&data='+data;
             }
         },
     mounted(){

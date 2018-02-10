@@ -17,23 +17,21 @@
             </div>
             <div class="item-content">
                 <div class="cont"  v-for="(item,index) in governmentArr" v-if="index<2" @click="go_newsdetail(item)">
-                    <div class="img-show">
-                       
+                    <div class="img-show">               
                         <img :src="item.coverImgUrl"/>
                     </div>
                     <div class="item-text">
-                        <h2>{{item.title}}</h2>
-                        <article>
-                           {{item.summary}}
+                        <h2 v-html="item.title"></h2>
+                        <article v-html="item.summary">
                         </article>
                     </div>
                 </div>
             </div>
             <div class="label">
-                <a v-for="(item,index) in governmentArr" v-if="!(index<2)">{{item.title}}</a>
+                <a v-for="(item,index) in governmentArr" v-if="!(index<2)" v-html="item.title"></a>
             </div>
         </div>
-
+ 
         <div class="item">
             <div class="item-title">
                 <h2>科研机构</h2>
@@ -49,21 +47,21 @@
                         <img :src="item.coverImgUrl"/>
                     </div>
                     <div class="item-text">
-                        <h2>{{item.title}}</h2>
-                        <article>
-                            {{item.summary}}
+                        <h2 v-html="item.title"></h2>
+                        <article v-html="item.summary">
                         </article>
                     </div>
                 </div>
             </div>
             <div class="label">
-                <a v-for="(item,index) in cientificArr" v-if="!(index<2)">{{item.title}}</a>
+                <a v-for="(item,index) in cientificArr" v-if="!(index<2)&&index<10" v-html="item.title" ></a>
             </div>
         </div>
     </section>
 </template>
 
 <script>
+import Util from '../../js/Util.js'
 import TopHead  from '../../components/topheader.vue'  //header导航栏
 export default {
     data(){
@@ -74,29 +72,30 @@ export default {
     methods:{
             go_newsdetail(item){
             let obj = {};
-            obj.title = item.title;
+            obj.title = Util.Title_format(item.title);
             obj.imageUrl = item.coverImgUrl;
-            obj.text = item.summary;
+            obj.text = Util.Title_format(item.summary);
             let data = JSON.stringify(obj)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+            window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&_id=" + item.id+'TTTTTT&data='+data;
             },
+         
         },
     mounted(){
+      
         let  that = this;
-        this.axios.get(this.Service.resource + '政府部门',)
-            .then(function(res){
-                  if(res.data.h.code == 200){
-                    that.governmentArr = res.data.b;
-                  }  
-            })
-
-            this.axios.get(this.Service.resource + '科研机构',)
-            .then(function(res){
-                  if(res.data.h.code == 200){               
-                    that.cientificArr = res.data.b;
-                  }  
-            })
-
+        function a(){
+            return that.axios.get(that.Service.resource + '政府部门');
+        } 
+        function b(){
+            return that.axios.get(that.Service.resource + '科研机构');
+        }
+        this.axios.all([a(),b()]).then(this.axios.spread((a,b) =>{
+            console.log(a,b)
+            if(a.data.h.code === 200){
+                that.governmentArr = a.data.b;
+                that.cientificArr = b.data.b;
+            }
+        }));
     },
      components : {
             TopHead
@@ -188,14 +187,19 @@ export default {
         a{
             float left;
             height 0.24rem;
+            max-width 3rem;
             font-size 0.13rem;
             color #333;
+            word-wrap:break-word;
             line-height 0.24rem;
             padding 0 0.15rem;
             border-radius 0.12rem;
             margin-right 0.15rem;
             margin-bottom 0.1rem;
             background-color #e6e6e6;
+            overflow hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis
         }
     }
 .topMargin{

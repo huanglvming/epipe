@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import Util from '../../js/Util.js'
 import TopHead  from '../../components/topheader.vue'  //header导航栏
 export default {
         data(){
@@ -30,12 +31,14 @@ export default {
         }},
         methods:{
             go_newsdetail(item){
+
             let obj = {};
-            obj.title = item.title;
+            obj.title = Util.Title_format(item.title)
             obj.imageUrl = item.coverImgUrl;
-            obj.text = item.summary;
+            obj.text = Util.Title_format(item.summary);
             let data = JSON.stringify(obj)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + item.title + "&_id=" + item.id+'TTTTTT&data='+data;
+            console.log(item,data);
+            window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&_id=" + item.id+'TTTTTT&data='+data;
             }
         },
         mounted(){
