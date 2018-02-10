@@ -17,8 +17,7 @@
       </div>
     </div>
     <div v-show="is_show">
-      <div v-show="home" class="head_title" v-html="detail.title">
-        <!--{{detail.title | escape2Html}}-->
+      <div  v-show="home" class="head_title" v-html="detail.title">
       </div>
       <ul v-show="home" class="head_title_ul">
         <li v-if="detail.authorName">作者：<span>{{detail.authorName}}</span></li>
@@ -47,19 +46,24 @@
     },
     components: {},
     created(){
+
+    },
+    mounted() {
       let _id = this.$route.query.id
       let that = this;
       if (_id.indexOf("TTTTTT")>0) {
+        console.log(_id)
         _id=_id.replace("TTTTTT",'');
+        
         this.home = true;
         //改版头条
         this.axios.get(this.Service.host + this.Service.detailNewHomeNews + _id).then(function (data) {
           console.log(data.data)
           if (data.data.b) {
             that.is_show = true;
-            console.log("detail",data.data.b);
             that.detail = data.data.b
-            that.content =data.data.b.contents
+            that.content = data.data.b.contents
+            document.title = that.detail.title;
           }
         })
       } else {
@@ -69,16 +73,13 @@
             headlineId: _id
           }
         }).then(function (data) {
-          if (data.data.b) {
+          if (data.data.b) {      
             that.is_show = true;
-            console.log(data.data.b)
+            document.title = data.data.b.title;
             that.content = Util.HTMLDecode(data.data.b.content)
           }
         })
       }
-    },
-    mounted() {
-
     }
   }
 </script>
@@ -87,6 +88,7 @@
     font-size: 0.22rem;
     font-weight: bold;
     padding-bottom: 0.1rem;
+    word-wrap:break-word;
   }
 
   .head_title_ul {

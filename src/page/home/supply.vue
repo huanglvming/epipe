@@ -30,8 +30,13 @@
     },
     methods: {
       go_newsdetail(item){
-        let title = Util.Title_format(item.title)
-        window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id;
+        let obj = {};
+        obj.title = Util.Title_format(item.title)   
+        obj.imageUrl = item.coverImg;
+        obj.text = Util.Title_format(item.content.slice(0,40));
+        let data = JSON.stringify(obj)
+        console.log(item.id)
+        window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&_id=" + item.id+'&data='+data;
       }, onInfinite(){
         let that = this;
         //供需

@@ -13,9 +13,7 @@
   }
   .tab_work_2con {
     display: flex;
-    display: -webkit-flex;
     flex-direction: row;
-    -webkit-flex-direction: row;
     height: 0.53rem;
     align-items: center;
   }
@@ -32,20 +30,24 @@
   }
   .tab_work_3con {
     display: flex;
-    display: -webkit-flex;
     flex-direction: row;
-    -webkit-flex-direction: row;
     flex-wrap: wrap;
-    -webkit-flex-wrap: wrap;
     width: 100%;
+  }
+  .first_tab_work_3con{
+     height auto
+     padding-top 0.2rem;
   }
   .tab_work_3con li{
     width: 25%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     padding-bottom 0.2rem;
     padding-top 0.1rem;
     margin-top -0.15rem;
     -webkit-tap-highlight-color: transpranet;
-    text-align center;
   }
   .tab_work_3con li:nth-child(n + 5){
     margin-top 0;
@@ -86,9 +88,7 @@
   }
   .broadcast{
     display: flex;
-    display: -webkit-flex;
     align-items center;
-    -webkit-align-items center;
     padding: 0.15rem;
     margin-top: -0.3rem;
     box-shadow: 0 0 20px rgba(0,143,87,0.15);
@@ -184,7 +184,7 @@
           </div>
         </div>
       </div>
-      <div class="tab_work_con">
+ 			<div class="tab_work_con">
         <ul class="tab_work_2con">
           <li></li>
           <li>企业管理</li>
@@ -338,6 +338,9 @@
       </div>
     </div>
   </section>
+      
+    </div>
+  </section>
 </template>
 <script>
   let date = new Date();
@@ -424,8 +427,24 @@
       go_daily(){
         window.location.href = "epipe://?&mark=dailyreport";
       },
+      //已办事宜
+      go_finishAffairs(){
+        window.location.href = "epipe://?&mark=finishAffair"
+      },
+      //待办事宜
+      go_unfinishAffairs(){
+        window.location.href = "epipe://?&mark=unfinishAffair"
+      },
+      //我的申请
+      go_myApply(){
+        window.location.href = "epipe://?&mark=myApply"
+      },
+      //请假
+      go_leave(){
+        window.location.href = "epipe://?&mark=leave"
+      },
       //跳转群组
-      go_Grouplist(item){
+      go_Grouplist(){
         window.location.href = "epipe://?&mark=Grouplist"
       },
       //物料管理
@@ -465,12 +484,12 @@
             if(obj.type == 1 || obj.type == 2){  //待审核，跳转到待审核页面
               this.$router.push({path:'/pending'});
             }else if(obj.type == 3){  //无组织，跳转到申请加入组织页面
-               this.$router.push({path:'/Nologin'});
+              this.$router.push({path:'/Nologin'});
             }
             this.mask = false;  //有组织，展示工作台
           }else{
             this.mask = false;
-             this.$router.push({path:'/Nologin'});
+            this.$router.push({path:'/Nologin'});
           }
         }).catch(err =>{
           this.mask = false;

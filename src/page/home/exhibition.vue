@@ -33,7 +33,12 @@
     }, methods: {
       go_newsdetail(item){
         let title = Util.Title_format(item.title)
-        window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id;
+        let obj = {};
+        obj.title = title;
+        obj.imageUrl = item.coverImg;
+        obj.text = Util.Title_format(item.content.slice(0,40));
+        let data = JSON.stringify(obj)
+        window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id+'&data='+data;
       },
       onInfinite(){ //上拉加载更多
         let that = this;

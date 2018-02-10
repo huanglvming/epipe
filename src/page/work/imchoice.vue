@@ -205,8 +205,8 @@
 <template>
   <section>
     <div v-show="!is_search">
-      <TopHead mark="mark" v-on:history_back="history_back_click" :bgcolor="bgcolor" title="选择联系人"></TopHead>
-      <div style="margin-top: 0.44rem" @click="is_search=!is_search" class="im_top_div_2">
+      <TopHead mark="mark" v-on:history_back="history_back_click" :bgcolor="bgcolor" title="选择联系人" :show='states'></TopHead>
+      <div :style="states=='pro'?'':'margin-top: 0.44rem'" @click="is_search=!is_search" class="im_top_div_2">
         <div style="box-shadow: 0 10px 16px #ddd, 0 0 10px #ddd, 0 0 10px #ddd;  " class="im_top_div_3">
           <svg style="font-size: 0.17rem" class="icon"
                aria-hidden="false">
@@ -316,7 +316,8 @@
         chosed_list_mark: [], //抄送人 备份一个
         chose_array: [],  //抄送人
         name: '',
-        seach_list_man: [] //被搜索到的人
+        seach_list_man: [], //被搜索到的人
+        states : ''
       }
     },
     components: {
@@ -364,7 +365,12 @@
         this.change_man(this.chose_array)
       },
       history_back: function () {
-        window.history.back()
+        if(this.states=='pro'){
+            let str = JSON.stringify(this.chose_array)
+            window.location.href = "epipe://?&data="+str;
+        }else{
+          window.history.back()
+        }
       },
       history_back_click: function () {
         this.change_man(this.chosed_list_mark)
@@ -421,6 +427,9 @@
       }
     },
     mounted(){
+      this.states = location.href.slice(location.href.indexOf('state=')+6)
+      this.states = this.states.slice(0,(this.states.indexOf('&')))
+    console.log(this.states)
       this.bgcolor = this.$route.query.bgcolor
       this.chose_array = this.chosed_man_state
       this.chosed_list_mark = this.chosed_man_state
@@ -442,8 +451,6 @@
             }
           }
           that.datalist = JSON.parse(JSON.stringify(data.data.b))
-          console.log(data.data.b)
-          console.log(that.datalist)
         }
       });
     },

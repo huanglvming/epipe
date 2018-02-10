@@ -66,6 +66,7 @@ const ClassSearch = r => require.ensure([], () => r(require('@/page/mall/class/C
 const GoodsDetail = r => require.ensure([], () => r(require('@/page/mall/goods/GoodsDetail.vue')), 'group-mall')
 const TestDetail = r => require.ensure([], () => r(require('@/page/mall/goods/TestDetail.vue')), 'group-mall')
 const MallSearch = r => require.ensure([], () => r(require('@/page/mall/home/MallSearch.vue')), 'group-mall')
+
 const ShopList = r => require.ensure([], () => r(require('@/page/mall/shop/ShopList.vue')), 'group-mall')
 const ConfirmOrder = r => require.ensure([], () => r(require('@/page/mall/shop/ConfirmOrder.vue')), 'group-mall')
 const ReceivingAdress = r => require.ensure([], () => r(require('@/page/mall/shop/ReceivingAdress.vue')), 'group-mall')
@@ -86,6 +87,19 @@ const RecentHistory = r => require.ensure([], () => r(require('@/page/mall/user/
 const GoodsComment = r => require.ensure([], () => r(require('@/page/mall/user/GoodsComment.vue')), 'mall-user')
 const ReturnList = r => require.ensure([], () => r(require('@/page/mall/user/ReturnList.vue')), 'mall-user')
 const RefundList = r => require.ensure([], () => r(require('@/page/mall/user/RefundList.vue')), 'mall-user')
+
+const Affairs = r => require.ensure([], () => r(require('@/page/work/affairs.vue')), 'group-work')
+const Leave = r => require.ensure([], () => r(require('@/page/work/leave.vue')), 'group-work')
+const LeaveDetails = r => require.ensure([], () => r(require('@/page/work/leaveDetails.vue')), 'group-work')
+const Option= r => require.ensure([], () => r(require('@/page/work/option.vue')), 'group-work')
+const Opinion = r => require.ensure([], () => r(require('@/page/work/opinion.vue')), 'group-work')
+const Market = r => require.ensure([], () => r(require('@/page/home/market.vue')), 'group-foo')
+const Interview = r => require.ensure([], () => r(require('@/page/home/interview.vue')), 'group-foo')
+const Expert = r => require.ensure([], () => r(require('@/page/home/expert.vue')), 'group-foo')
+const SpecialistAgencies = r => require.ensure([], () => r(require('@/page/home/specialistagencies.vue')), 'group-foo')
+const GroupAgreement = r => require.ensure([], () => r(require('@/page/user/groupAgreement.vue')), 'group-foo')
+const ExpertList = r => require.ensure([], () => r(require('@/page/home/expertList.vue')), 'group-foo')
+const AgenciesList = r => require.ensure([], () => r(require('@/page/home/agenciesList.vue')), 'group-foo')
 
 export default new Router({
   routes: [
@@ -417,6 +431,54 @@ export default new Router({
     {
       path: '/refundlist',  //退款单列表
       component: RefundList,
+    },
+    {
+      path: '/affairs',  //OA事宜
+      component: Affairs
+    },
+    {
+      path: '/leave',  //请假
+      component: Leave
+    },
+    {
+      path: '/leaveDetails',  //请假
+      component: LeaveDetails
+    },
+    {
+      path: '/opinion',  //拒绝理由
+      component: Opinion
+    },
+    {
+      path: '/option',  //请假类型
+      component: Option
+    },
+    {
+      path: '/market',  //行情
+      component: Market
+    },
+    {
+      path: '/expert',  //专家库
+      component: Expert
+    },
+    {
+      path: '/interview',  //访谈
+      component: Interview
+    },
+    {
+      path: '/specialistAgencies',  //专业机构
+      component: SpecialistAgencies
+    },
+    {
+      path:'/groupAgreement',//群服务协议
+      component : GroupAgreement
+    },
+    {
+      path:'/expertList',//专家列表
+      component : ExpertList
+    },
+    {
+      path:'/agenciesList',//机构列表
+      component : AgenciesList
     },
   ]
 })

@@ -310,7 +310,7 @@
     computed: mapState(["chosed_man_state"]),
     /*
      * 被keep live了
-     * */
+     */
     activated(){
       this.chosed_list = this.chosed_man_state
       if (window.sessionStorage.work_value) {

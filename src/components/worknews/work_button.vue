@@ -13,6 +13,7 @@
     padding-bottom 0.3rem
     flex-direction row
     justify-content space-between
+    letter-spacing 2px
     li
       width 48%
       height 0.5rem
@@ -29,20 +30,23 @@
         background-color $bg_color
         color $font_color_6
         border 1px solid $font_color_6
+  svg{
+    margin-right 0.08rem;
+  }
 </style>
 <template>
   <section>
     <ul class="day_button">
       <li @click="left_click">
-        <svg class="icon" style="font-size: 0.22rem"
+        <svg v-if="noSvg" class="icon" style="font-size: 0.22rem"
                                    aria-hidden="false">
         <use xlink:href="#icon-chucun"></use>
-      </svg>&nbsp {{left_title}}</li>
+      </svg>{{left_title}}</li>
       <li @click="right_click" :style="{background:bgcolor}">
-        <svg class="icon" style="font-size: 0.22rem"
+        <svg v-if="noSvg" class="icon" style="font-size: 0.22rem"
              aria-hidden="false">
           <use xlink:href="#icon-fasong"></use>
-        </svg>&nbsp {{right_title}}</li>
+        </svg>{{right_title}}</li>
     </ul>
   </section>
 </template>
@@ -52,7 +56,7 @@
       return {}
     },
     props: [
-      "left_title", "right_title", "bgcolor"
+      "left_title", "right_title", "bgcolor","noSvg","leftBgColor"
     ],
     methods: {
       left_click: function () {

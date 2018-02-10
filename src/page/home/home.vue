@@ -42,6 +42,40 @@
           </div>
           <div>招投标</div>
         </li>
+        <li @click="go_market">
+          <div style="background: -webkit-linear-gradient(top, #fac370 0%,#ffa51e 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-hangqing"></use>
+            </svg>
+          </div>
+          <div>行情</div>
+        </li>
+        </ul>
+        <ul class="home_nav_top">
+        <li @click="go_interview">
+          <div style="background: -webkit-linear-gradient(top, #45e3b5 0%,#22be8e 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-fangtan"></use>
+            </svg>
+          </div>
+          <div>访谈</div>
+        </li>
+        <li @click="go_expert">
+          <div style="background: -webkit-linear-gradient(top, #51cdfc 0%,#27b1eb 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-zhuanjiaku"></use>
+            </svg>
+          </div>
+          <div>专家库</div>
+        </li>
+        <li @click="go_specialistAgencies">
+          <div style="background: -webkit-linear-gradient(top, #fd535b 0%,#fc757e 100%);">
+            <svg style="width: 0.22rem;height: 0.22rem" class="icon" aria-hidden="false">
+              <use xlink:href="#icon-zhuanyejigou"></use>
+            </svg>
+          </div>
+          <div>专业机构</div>
+        </li>
       </ul>
       <div class="home_title_con1">
         <div></div>
@@ -65,12 +99,18 @@
           <div>
             <div class="home_title_con5 over_width" v-html="newsData_item.resTitle"></div>
             <div class="home_title_con6 simple-ellipsis" v-html="newsData_item.summary"></div>
-            <div class="home_title_con7 over_width">
-              <span>{{newsData_item.resTopNewsCategoryName}}</span>
-              <span>&nbsp {{newsData_item.resCreateDate | home_time_format}}</span>
-              <span>&nbsp <svg style="font-size: 0.15rem" class="icon" aria-hidden="false">
-              <use xlink:href="#icon-yuedu"></use>
-            </svg>：{{newsData_item.clicks}}</span>
+            <div class="home_title_con7 over_width sub-desc">
+              <div>
+                <span>{{newsData_item.resTopNewsCategoryName}}</span>
+                <span>&nbsp; {{newsData_item.resCreateDate | home_time_format}}</span>
+              </div>
+              <div>
+                <span>&nbsp; 
+                  <svg style="font-size: 0.15rem;" class="icon" aria-hidden="false">
+                    <use xlink:href="#icon-yuedu"></use>
+                  </svg> {{newsData_item.clicks}}
+                </span>
+              </div>
             </div>
           </div>
         </ul>
@@ -141,27 +181,52 @@
       go_tender(){  //首页跳招投标
         window.location.href = "epipe://?&mark=tender"
       },
+      go_market(){ //首页跳行情
+        window.location.href = "epipe://?&mark=market"
+      },
+      go_interview(){ //首页跳访谈
+        window.location.href = "epipe://?&mark=interview"
+      },
+      go_expert(){ //首页跳专家库
+        window.location.href = "epipe://?&mark=expert"
+      },
+      go_specialistAgencies(){ //首页跳专业机构
+        window.location.href = "epipe://?&mark=specialistAgencies"
+      },
       go_newsdetail(item){
         if (item.h5Uri != "" && item.h5Uri) {
+            console.log(2222222222)
+          
           let title = Util.Title_format(item.title)
           console.log("epipe://?&mark=newsdetail&title=" + title + "&url=" + item.h5Uri)
-          window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&url=" + item.h5Uri;
+          window.location.href = "epipe://?&mark=newsdetail&title=" + title+'&data='+ data + "&url=" + item.h5Uri;
         } else if (item.url) {
           if (item.url != "#") {
-            console.log(item)
             let title = Util.Title_format(item.title)
-            console.log("epipe://?&mark=newsdetail&title=" + title + "&url=" + item.url)
-            window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&url=" + item.url;
+            let obj = {};
+            obj.title = title;
+            obj.imageUrl = item.imgUrl;
+            obj.text = '';
+            let data = JSON.stringify(obj)
+            window.location.href = "epipe://?&mark=newsdetail&title=" + obj.title + "&url=" + item.url;
           }
         } else {
+          console.log(3333333)
           console.log("epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id)
           let title = Util.Title_format(item.title)
           window.location.href = "epipe://?&mark=newsdetail&title=" + title + "&_id=" + item.id;
         }
       },
       go_news(item){
+        console.log(item)
         let title = Util.Title_format(item.resTitle);
-        window.location.href = `epipe://?&mark=newsdetail&title=${title}&_id=${item.resId}TTTTTT`
+        let obj = {};
+        obj.title = title;
+        obj.imageUrl = item.coverImgUrl;
+        obj.text = Util.Title_format(item.summary);
+        let data = JSON.stringify(obj)
+        console.log(data)
+        window.location.href = `epipe://?&mark=newsdetail&title=${title}&_id=${item.resId}TTTTTT`+'&data='+data;
       },
       transitionend (current) {
         this.currentSlide = current;
@@ -173,6 +238,7 @@
       }
       if (window.localStorage.newsData) {
         this.newsData = JSON.parse(window.localStorage.newsData)
+        console.log(this.newsData)
       }
       /*根据屏幕分辨率设置轮播图大小*/
       const deviceWidth = document.body.clientWidth;
@@ -335,7 +401,7 @@
 
   .home_title_con1 div:last-child {
     margin-left: 0.08rem;
-    font-size: 0.17rem;
+    font-size: 0.15rem;
   }
 
   .home_nav_top {
@@ -348,7 +414,7 @@
   }
 
   .home_nav_top li {
-    flex: 1;
+    width:25%;
     font-size: 0.14rem;
     align-items: center;
     display: flex;
@@ -386,5 +452,9 @@
     height 0.025rem
     width 0.14rem
     border-radius 0.6rem
+  }
+  .sub-desc{
+    display: flex;
+    justify-content space-between;
   }
 </style>

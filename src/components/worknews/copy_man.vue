@@ -39,8 +39,6 @@
           height 0.33rem
           border-radius 0.33rem
     .day_chose_ul4
-      font-size 0.15rem
-      color $font_color_3
       display flex
       align-items center
       .day_div_two
@@ -51,19 +49,34 @@
         &:active
           opacity $opacity_common
       .day_div_one
-        font-weight bold
         flex 1
+        .title_h
+          font-size 0.15rem
+          color $font_color_3
+          font-weight bold
         span
           font-size 0.13rem
           color $font_color_6
           font-weight normal
+  .my-test
+    -webkit-box-shadow: 0 0 0.2rem rgba(238,65,54,.1)   
+    box-shadow 0 0 0.2rem rgba(238,65,54,.1)
+    .day_chose_ul2
+      margin 0
+      margin-top 0.15rem;
 </style>
 <template>
-  <section>
+  <section :class="special_class?'my-test':''">
     <ul class="day_chose_ul2">
       <li class="day_chose_ul4">
-        <div class="day_div_one">抄送人 <span v-if="has_journal">（已添加{{data_list.length}}人）</span></div>
-        <div v-if="more_prople"  @click="open_people" class="day_div_two">点击收缩</div>
+        <div class="day_div_one">
+           <span v-if="types==2" class="title_h">抄送人</span>
+           <span v-if="types==3" class="title_h">审批人</span>
+           <span v-if="(has_journal)&&(data_list.length)">（已添加{{data_list.length}}人）</span>
+           <span v-if="(!data_list.length)&&(types==2)">（审批通过后抄送相关人员）</span>
+           <span v-if="types==3">（请添加审批人）</span>
+           </div>
+        <div v-if="more_prople&data_list.length<4"  @click="open_people" class="day_div_two">点击收缩</div>
         <div v-if="!more_prople&data_list.length>4"  @click="open_people" class="day_div_two">
           查看全部
         </div>
@@ -97,7 +110,7 @@
       }
     },
     props: [
-      'color', 'data_list', 'has_journal'
+      'color', 'data_list', 'has_journal','special_class','types'
     ],
     methods: {
       open_people: function () {
