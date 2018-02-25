@@ -25,7 +25,7 @@
               <div class="spec-name">{{item.spName}}</div>
               <div class="con-spec">
                 <span  v-for="(obj,j) in item.specValueList" :key="j"  :data-value-id=obj.spValueId  :class="{specActive:checkedArr[i]==j || item.specValueList.length==1}"  @click="selt(i,j)">{{obj.spValueName}}</span>
-              </div
+              </div>
             </li>
             <li>
               <div class="spec-name">数量</div>

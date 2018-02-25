@@ -112,6 +112,7 @@
     methods:{
       getUserInfo(){
         this.axios.post(this.baseURL.mall + '/m/my/queryPersonalMsg' + this.Service.queryString({
+          isApp:this.isApp.state,
           token: this.mallToken.getToken()
         })).then(res =>{
           console.log("个人信息",res);
@@ -119,7 +120,11 @@
             this.userInfo = res.data.b;
           }
           if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.replace("/accountlogin");
+            if(this.isApp.state){
+              window.location.href = "epipe://?&mark=login";
+            }else{
+              this.$router.replace("/accountlogin");
+            }
           }
         })
       },

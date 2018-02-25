@@ -94,6 +94,7 @@
           this.totalPrice+=this.shopList[i].list[j].goodsPrice
         }
         this.axios.post(this.baseURL.mall + "/m/cart/mergeCartQuantity"+this.Service.queryString({
+          isApp:this.isApp.state,
           token:this.mallToken.getToken(),
           cartId:this.shopList[i].list[j].cartId,
           specId:this.shopList[i].list[j].specId,
@@ -103,7 +104,11 @@
           if(res.data.h.code==200){
             this.getCartList();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.replace("/accountlogin");
+          	if(this.isApp.state){
+              window.location.href = "epipe://?&mark=login";
+            }else{
+              this.$router.replace("/accountlogin");
+            }
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -117,6 +122,7 @@
           }
         }
         this.axios.post(this.baseURL.mall + "/m/cart/mergeCartQuantity"+this.Service.queryString({
+          isApp:this.isApp.state,
           token:this.mallToken.getToken(),
           cartId:this.shopList[i].list[j].cartId,
           specId:this.shopList[i].list[j].specId,
@@ -126,7 +132,11 @@
           if(res.data.h.code==200){
             this.getCartList();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.replace("/accountlogin");
+            if(this.isApp.state){
+              window.location.href = "epipe://?&mark=login";
+            }else{
+              this.$router.replace("/accountlogin");
+            }
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -141,6 +151,7 @@
            value=1;
          }
         this.axios.post(this.baseURL.mall + "/m/cart/mergeCartQuantity"+this.Service.queryString({
+          isApp:this.isApp.state,
           token:this.mallToken.getToken(),
           cartId:this.shopList[i].list[j].cartId,
           specId:this.shopList[i].list[j].specId,
@@ -150,7 +161,11 @@
           if(res.data.h.code==200){
             this.getCartList();
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.replace("/accountlogin");
+            if(this.isApp.state){
+              window.location.href = "epipe://?&mark=login";
+            }else{
+              this.$router.replace("/accountlogin");
+            }
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -159,6 +174,7 @@
       //获取购物车列表信息
       getCartList(){
         this.axios.post(this.baseURL.mall + "/m/cart/myCart"+this.Service.queryString({
+          isApp:this.isApp.state,
           token:this.mallToken.getToken()
         })).then(res=>{
           console.log('购物车信息',res);
@@ -174,7 +190,11 @@
             console.log(this.shopList);
             this.imgPrefix=res.data.b.imgPrefix;
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.replace("/accountlogin");
+            if(this.isApp.state){
+              window.location.href = "epipe://?&mark=login";
+            }else{
+              this.$router.replace("/accountlogin");
+            }
           }
         })
       },
