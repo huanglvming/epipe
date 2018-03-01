@@ -212,7 +212,11 @@
           if(res.data.h.code==200){
             this.$toast(res.data.b.msg);
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            if(this.isApp.state){
+              window.location.href = "epipe://?&mark=login";
+            }else{
+              this.$router.replace("/accountlogin");
+            }
           }else{
             this.$toast(res.data.h.msg);
           }
@@ -233,7 +237,11 @@
               this.$router.push({path:'/ConfirmOrder'});
             }
           }else  if(res.data.h.code === 50 || res.data.h.code === 30){
-            this.$router.push("/accountlogin");
+            if(this.isApp.state){
+              window.location.href = "epipe://?&mark=login";
+            }else{
+              this.$router.replace("/accountlogin");
+            }
           }else{
             this.$toast(res.data.h.msg);
           }

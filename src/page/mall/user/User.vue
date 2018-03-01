@@ -108,11 +108,18 @@
     created(){
       document.title="个人中心";
       this.getUserInfo();
+      //alert('token:'+this.mallToken.getToken());
     },
     methods:{
       getUserInfo(){
+//      let queryPer='';
+//      if(this.isApp.state){
+//         queryPer='queryPersonalMsgAPP';
+//       }else{
+//         queryPer='queryPersonalMsg';
+//       }
         this.axios.post(this.baseURL.mall + '/m/my/queryPersonalMsg' + this.Service.queryString({
-          isApp:this.isApp.state,
+          //isApp:this.isApp.state,
           token: this.mallToken.getToken()
         })).then(res =>{
           console.log("个人信息",res);

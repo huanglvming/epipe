@@ -1,6 +1,7 @@
 export const baseURL = {
-  // mall: "http://192.168.3.111/epmall-front",  //梁焱升本地
-	//mall: "http://192.168.3.167:8888",             //167测试环境
+  //mall: "http://192.168.3.111/epmall-front",  //梁焱升本地
+	//mall: "http://192.168.3.146/epmall-front",  //刘春祥本地
+	//mall: "http://192.168.3.167:8888",          //167测试环境
   mall: "https://mall.epipe.cn",                //正式环境
 };
 export const mallToken = {
@@ -10,7 +11,11 @@ export const mallToken = {
   },
   getToken: function(){
     const token = localStorage.getItem("mallLoginToken");
-    return token;
+    if(!isApp.state){
+	    return token;
+    }else{
+	    return  window.localStorage.auth_token + '=app';
+    }
   }
 };
 export const isApp = {
@@ -37,7 +42,7 @@ export const browser = {
 
 if (browser.versions.mobile) {//判断是否是移动设备打开。browser代码在下面
 	var ua = navigator.userAgent.toLowerCase();//获取判断用的对象
-	if (ua.match(/MicroMessenger/i) == "micromessenger" || browser.versions.ios || browser.versions.android) {
+	if (ua.match(/MicroMessenger/i) == "micromessenger" ) {
 		//在微信中打开  || 在IOS浏览器打开  ||  在安卓浏览器打开
 		isApp.state=false;
 	}else{
